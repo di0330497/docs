@@ -68,7 +68,8 @@ for (const t of topics) {
 
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const label = (s) => s.replace(/_/g, ' ');
-const fmt = (ms) => new Date(ms).toISOString().slice(0, 10);
+const fmt = (ms) => { const d = new Date(ms); const z = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; };  // 로컬 시각 기준
 
 const rows = topics.map((t) =>
   `    <li><a href="../../p/${slugs.pages[t.topic]}/">${esc(label(t.topic))}</a><span>${fmt(t.mtime)}</span></li>`

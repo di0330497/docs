@@ -43,8 +43,17 @@ body{zoom:var(--zoom)}
 .filter:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(122,162,247,.14)}
 .tree{flex:1;overflow-y:auto;padding:10px 8px 60px;min-height:0}
 .nav-stage{margin-bottom:12px}
-.nav-stage-t{display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:11.5px;font-weight:700;
-  color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.nav-stage-t{display:flex;align-items:center;gap:8px;width:100%;padding:6px 8px;font-size:11.5px;font-weight:700;
+  color:var(--muted);letter-spacing:.04em;text-transform:uppercase;
+  background:none;border:0;border-radius:6px;font-family:inherit;text-align:left;cursor:pointer}
+.nav-stage-t:hover{background:var(--surface-2);color:var(--fg-dim)}
+.nav-stage-t .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-stage-t .cx{margin-left:auto;flex:0 0 auto;font-size:9px;color:var(--faint);
+  transition:transform .15s ease;transform:rotate(90deg)}
+.nav-stage.collapsed .nav-stage-t .cx{transform:none}
+.nav-stage.collapsed .nav-item{display:none}
+/* 검색 중에는 접어 둔 묶음도 결과를 보여 준다 — 안 그러면 "없다"고 오해한다 */
+body.searching .nav-stage.collapsed .nav-item:not(.hide){display:flex}
 .sn{display:inline-grid;place-items:center;width:19px;height:19px;border-radius:5px;flex:0 0 19px;
   background:rgba(122,162,247,.14);color:var(--blue);font-size:10.5px;font-weight:700;font-family:var(--mono)}
 .nav-item{display:flex;align-items:baseline;gap:8px;padding:5px 8px 5px 30px;font-size:13.5px;
@@ -99,11 +108,27 @@ h1{margin:0;font-size:clamp(34px,5vw,54px);line-height:1.12;letter-spacing:-.03e
 /* ── 벤더 묶음 ── */
 .vgroup{margin:0 0 38px;scroll-margin-top:20px}
 .vgroup.hide{display:none}
-.vh{display:flex;align-items:center;gap:10px;margin:0 0 3px}
+.vh{display:flex;align-items:center;gap:10px;width:100%;margin:0 0 3px;padding:4px 6px 4px 0;
+  background:none;border:0;color:inherit;font-family:inherit;text-align:left;cursor:pointer;border-radius:8px}
+.vh:hover{background:var(--surface-2)}
 .vh h2{margin:0;font-size:17px;font-weight:700;letter-spacing:-.015em}
 .vh .vn{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--faint);
   background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:2px 7px}
+.vh .cx{flex:0 0 auto;font-size:10px;color:var(--faint);transition:transform .15s ease;transform:rotate(90deg)}
+.vgroup.collapsed .vh .cx{transform:none}
+.vgroup.collapsed .vsub{display:none}
+.vgroup.collapsed .stage-grid{display:none}
+.vgroup.collapsed{margin-bottom:10px}
+body.searching .vgroup.collapsed .stage-grid{display:grid}
+body.searching .vgroup.collapsed .vsub{display:block}
 .vsub{margin:0 0 14px 29px;font-size:12.5px;color:var(--muted)}
+/* 모두 접기·펴기 */
+.foldall{display:flex;gap:6px;margin:0 0 18px}
+.foldall button{all:unset;cursor:pointer;padding:4px 10px;border:1px solid var(--line-2);border-radius:6px;
+  color:var(--muted);font-family:var(--mono);font-size:11px}
+.foldall button:hover{color:var(--fg);border-color:var(--blue)}
+.side-foldall{all:unset;cursor:pointer;float:right;color:var(--faint);font-family:var(--mono);font-size:10.5px}
+.side-foldall:hover{color:var(--blue)}
 .stage-grid{display:grid;gap:8px}
 .st-card{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--surface);
   border:1px solid var(--line);border-radius:10px;text-decoration:none;transition:border-color .12s,background .12s}
@@ -147,12 +172,12 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <aside class="side">
   <div class="side-head">
     <a class="brand" href="#top">IT 학습자료</a>
-    <p class="meta">34 topics · 10 vendors</p>
+    <p class="meta">34 topics · 10 vendors<button type="button" class="side-foldall">모두 접기</button></p>
     <input class="filter" type="text" placeholder="토픽 필터  /" spellcheck="false">
   </div>
   <nav class="tree">
     <div class="nav-stage" data-v="aws">
-      <div class="nav-stage-t"><span class="sn">1</span><span>Amazon Web Services</span></div>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">1</span><span class="nm">Amazon Web Services</span><span class="cx">▸</span></button>
       <a class="nav-item" href="../../p/35b7298fe89ce0ca/" data-text="amazon aurora amazon web services">Amazon Aurora<span class="nid">69</span></a>
       <a class="nav-item" href="../../p/202060ea4f3d456b/" data-text="amazon cloudfront amazon web services">Amazon CloudFront<span class="nid">69</span></a>
       <a class="nav-item" href="../../p/58c5c246e8435081/" data-text="amazon cloudwatch amazon web services">Amazon CloudWatch<span class="nid">69</span></a>
@@ -175,43 +200,43 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
       <a class="nav-item" href="../../p/32d1a11883fefa3f/" data-text="elastic load balancing amazon web services">Elastic Load Balancing<span class="nid">70</span></a>
     </div>
     <div class="nav-stage" data-v="cncf">
-      <div class="nav-stage-t"><span class="sn">2</span><span>Cloud Native Computing Foundation</span></div>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">2</span><span class="nm">Cloud Native Computing Foundation</span><span class="cx">▸</span></button>
       <a class="nav-item" href="../../p/814cae054287442b/" data-text="argo cd cloud native computing foundation">Argo CD<span class="nid">69</span></a>
       <a class="nav-item" href="../../p/1e6be196b5f9a43d/" data-text="helm cloud native computing foundation">Helm<span class="nid">67</span></a>
       <a class="nav-item" href="../../p/3fe4f85bcfcb9101/" data-text="kubernetes cloud native computing foundation">Kubernetes<span class="nid">67</span></a>
     </div>
     <div class="nav-stage" data-v="cisco">
-      <div class="nav-stage-t"><span class="sn">3</span><span>Cisco Systems</span></div>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">3</span><span class="nm">Cisco Systems</span><span class="cx">▸</span></button>
       <a class="nav-item" href="../../p/83c51d1a79c80244/" data-text="350-401_encor_cisco_enterprise_network_core_technologies cisco systems">350-401_ENCOR_Cisco_Enterprise_Network_Core_Technologies<span class="nid">68</span></a>
       <a class="nav-item" href="../../p/5be19ccf0f0bf3a4/" data-text="350-601_dccor_cisco_data_center_core_technologies cisco systems">350-601_DCCOR_Cisco_Data_Center_Core_Technologies<span class="nid">68</span></a>
       <a class="nav-item" href="../../p/2d6f15766c0cc71b/" data-text="ccna_200-301 cisco systems">CCNA_200-301<span class="nid">66</span></a>
     </div>
     <div class="nav-stage" data-v="docker">
-      <div class="nav-stage-t"><span class="sn">4</span><span>Docker, Inc.</span></div>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">4</span><span class="nm">Docker, Inc.</span><span class="cx">▸</span></button>
       <a class="nav-item" href="../../p/891d0f394ac1a0ec/" data-text="docker docker, inc.">Docker<span class="nid">66</span></a>
     </div>
     <div class="nav-stage" data-v="hashicorp">
-      <div class="nav-stage-t"><span class="sn">5</span><span>HashiCorp</span></div>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">5</span><span class="nm">HashiCorp</span><span class="cx">▸</span></button>
       <a class="nav-item" href="../../p/2193ed7d49e4fa65/" data-text="terraform hashicorp">Terraform<span class="nid">68</span></a>
     </div>
     <div class="nav-stage" data-v="github">
-      <div class="nav-stage-t"><span class="sn">6</span><span>GitHub</span></div>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">6</span><span class="nm">GitHub</span><span class="cx">▸</span></button>
       <a class="nav-item" href="../../p/0a0957209b9772ab/" data-text="github actions github">GitHub Actions<span class="nid">68</span></a>
     </div>
     <div class="nav-stage" data-v="git">
-      <div class="nav-stage-t"><span class="sn">7</span><span>Git 프로젝트</span></div>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">7</span><span class="nm">Git 프로젝트</span><span class="cx">▸</span></button>
       <a class="nav-item" href="../../p/9fb306559a5f797f/" data-text="git git 프로젝트">Git<span class="nid">69</span></a>
     </div>
     <div class="nav-stage" data-v="microsoft">
-      <div class="nav-stage-t"><span class="sn">8</span><span>Microsoft</span></div>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">8</span><span class="nm">Microsoft</span><span class="cx">▸</span></button>
       <a class="nav-item" href="../../p/43ef5db39672f2ff/" data-text="windows server microsoft">Windows Server<span class="nid">69</span></a>
     </div>
     <div class="nav-stage" data-v="fortinet">
-      <div class="nav-stage-t"><span class="sn">9</span><span>Fortinet</span></div>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">9</span><span class="nm">Fortinet</span><span class="cx">▸</span></button>
       <a class="nav-item" href="../../p/d0ae411527bdaeb9/" data-text="fortigate_7.6_administrator fortinet">FortiGate_7.6_Administrator<span class="nid">70</span></a>
     </div>
     <div class="nav-stage" data-v="neutral">
-      <div class="nav-stage-t"><span class="sn">10</span><span>벤더 중립</span></div>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">10</span><span class="nm">벤더 중립</span><span class="cx">▸</span></button>
       <a class="nav-item" href="../../p/82e8bf40cc0df9a3/" data-text="cicd 벤더 중립">CICD<span class="nid">68</span></a>
       <a class="nav-item" href="../../p/b6a627d6ef33d47b/" data-text="devops 벤더 중립">DevOps<span class="nid">67</span></a>
     </div>
@@ -236,8 +261,9 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
           <div><dt>색인</dt><dd>검색엔진 비노출</dd></div>
         </dl>
       </section>
-      <section class="vgroup" id="v-aws">
-        <div class="vh"><span class="sn">1</span><h2>Amazon Web Services</h2><span class="vn">20</span></div>
+      <div class="foldall"><button type="button" data-all="open">모두 펴기</button><button type="button" data-all="close">모두 접기</button></div>
+      <section class="vgroup" id="v-aws" data-v="aws">
+        <button type="button" class="vh" aria-expanded="true"><span class="cx">▸</span><span class="sn">1</span><h2>Amazon Web Services</h2><span class="vn">20</span></button>
         <p class="vsub">AWS 클라우드 서비스</p>
         <div class="stage-grid">
           <a class="st-card" href="../../p/35b7298fe89ce0ca/" data-key="Amazon Aurora" data-total="69" data-text="amazon aurora amazon web services aws의 관리형 관계형 데이터베이스 amazon aurora(mysql 호환 / postgresql 호환)를 처음부터 운영까지 배우는 과정으로 해석했다."><span class="sn">1</span><span class="st-body"><b>Amazon Aurora</b><em>AWS의 관리형 관계형 데이터베이스 Amazon Aurora(MySQL 호환 / PostgreSQL 호환)를 처음부터 운영까지 배우는 과정으로 해석했다.</em></span><span class="st-n"><span>69항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
@@ -262,8 +288,8 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
           <a class="st-card" href="../../p/32d1a11883fefa3f/" data-key="Elastic Load Balancing" data-total="70" data-text="elastic load balancing amazon web services aws elastic load balancing(elb) 서비스 전체 - alb/nlb/gwlb를 중심으로 하고 clb는 이전 세대로만 다룬다"><span class="sn">20</span><span class="st-body"><b>Elastic Load Balancing</b><em>AWS Elastic Load Balancing(ELB) 서비스 전체 - ALB/NLB/GWLB를 중심으로 하고 CLB는 이전 세대로만 다룬다</em></span><span class="st-n"><span>70항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
         </div>
       </section>
-      <section class="vgroup" id="v-cncf">
-        <div class="vh"><span class="sn">2</span><h2>Cloud Native Computing Foundation</h2><span class="vn">3</span></div>
+      <section class="vgroup" id="v-cncf" data-v="cncf">
+        <button type="button" class="vh" aria-expanded="true"><span class="cx">▸</span><span class="sn">2</span><h2>Cloud Native Computing Foundation</h2><span class="vn">3</span></button>
         <p class="vsub">쿠버네티스 생태계 오픈소스 재단</p>
         <div class="stage-grid">
           <a class="st-card" href="../../p/814cae054287442b/" data-key="Argo CD" data-total="69" data-text="argo cd cloud native computing foundation kubernetes 선언적 gitops 지속적 배포 도구 argo cd 를, 처음 배우는 사람이 위에서 아래로 읽을 수 있게 재배열한 학습 목차"><span class="sn">1</span><span class="st-body"><b>Argo CD</b><em>Kubernetes 선언적 GitOps 지속적 배포 도구 Argo CD 를, 처음 배우는 사람이 위에서 아래로 읽을 수 있게 재배열한 학습 목차</em></span><span class="st-n"><span>69항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
@@ -271,8 +297,8 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
           <a class="st-card" href="../../p/3fe4f85bcfcb9101/" data-key="Kubernetes" data-total="67" data-text="kubernetes cloud native computing foundation 컨테이너 오케스트레이션 플랫폼 kubernetes 본체(kubernetes.io 공식 docs 의 concepts·tasks·tutorials·setup·reference)를 처음 배우는 사람이 위에서 아래로 읽는 순서로 재배열했다."><span class="sn">3</span><span class="st-body"><b>Kubernetes</b><em>컨테이너 오케스트레이션 플랫폼 Kubernetes 본체(kubernetes.io 공식 Docs 의 Concepts·Tasks·Tutorials·Setup·Reference)를 처음 배우는 사람이 위에서 아래로 읽는 순서로 재배열했다.</em></span><span class="st-n"><span>67항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
         </div>
       </section>
-      <section class="vgroup" id="v-cisco">
-        <div class="vh"><span class="sn">3</span><h2>Cisco Systems</h2><span class="vn">3</span></div>
+      <section class="vgroup" id="v-cisco" data-v="cisco">
+        <button type="button" class="vh" aria-expanded="true"><span class="cx">▸</span><span class="sn">3</span><h2>Cisco Systems</h2><span class="vn">3</span></button>
         <p class="vsub">네트워크 장비와 공인 자격증</p>
         <div class="stage-grid">
           <a class="st-card" href="../../p/83c51d1a79c80244/" data-key="350-401_ENCOR_Cisco_Enterprise_Network_Core_Technologies" data-total="68" data-text="350-401_encor_cisco_enterprise_network_core_technologies cisco systems cisco ccnp/ccie enterprise 코어 시험 350-401 encor의 공식 시험 주제 전체를, 처음 배우는 사람이 위에서 아래로 순서대로 읽을 수 있게 재배열한 학습 커리큘럼"><span class="sn">1</span><span class="st-body"><b>350-401_ENCOR_Cisco_Enterprise_Network_Core_Technologies</b><em>Cisco CCNP/CCIE Enterprise 코어 시험 350-401 ENCOR의 공식 시험 주제 전체를, 처음 배우는 사람이 위에서 아래로 순서대로 읽을 수 있게 재배열한 학습 커리큘럼</em></span><span class="st-n"><span>68항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
@@ -280,50 +306,50 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
           <a class="st-card" href="../../p/2d6f15766c0cc71b/" data-key="CCNA_200-301" data-total="66" data-text="ccna_200-301 cisco systems cisco ccna 자격 시험 200-301의 공식 시험 토픽(블루프린트) 전 범위를, 네트워크를 처음 배우는 사람이 위에서 아래로 읽을 수 있도록 재배열한 입문 커리큘럼."><span class="sn">3</span><span class="st-body"><b>CCNA_200-301</b><em>Cisco CCNA 자격 시험 200-301의 공식 시험 토픽(블루프린트) 전 범위를, 네트워크를 처음 배우는 사람이 위에서 아래로 읽을 수 있도록 재배열한 입문 커리큘럼.</em></span><span class="st-n"><span>66항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
         </div>
       </section>
-      <section class="vgroup" id="v-docker">
-        <div class="vh"><span class="sn">4</span><h2>Docker, Inc.</h2><span class="vn">1</span></div>
+      <section class="vgroup" id="v-docker" data-v="docker">
+        <button type="button" class="vh" aria-expanded="true"><span class="cx">▸</span><span class="sn">4</span><h2>Docker, Inc.</h2><span class="vn">1</span></button>
         <p class="vsub">컨테이너 플랫폼</p>
         <div class="stage-grid">
           <a class="st-card" href="../../p/891d0f394ac1a0ec/" data-key="Docker" data-total="66" data-text="docker docker, inc. 컨테이너 플랫폼 docker 전반 — docker engine(런타임·이미지·네트워크·스토리지) + dockerfile/buildkit 빌드 + docker compose + 레지스트리/docker hub + 보안·운영."><span class="sn">1</span><span class="st-body"><b>Docker</b><em>컨테이너 플랫폼 Docker 전반 — Docker Engine(런타임·이미지·네트워크·스토리지) + Dockerfile/BuildKit 빌드 + Docker Compose + 레지스트리/Docker Hub + 보안·운영.</em></span><span class="st-n"><span>66항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
         </div>
       </section>
-      <section class="vgroup" id="v-hashicorp">
-        <div class="vh"><span class="sn">5</span><h2>HashiCorp</h2><span class="vn">1</span></div>
+      <section class="vgroup" id="v-hashicorp" data-v="hashicorp">
+        <button type="button" class="vh" aria-expanded="true"><span class="cx">▸</span><span class="sn">5</span><h2>HashiCorp</h2><span class="vn">1</span></button>
         <p class="vsub">인프라 자동화 도구</p>
         <div class="stage-grid">
           <a class="st-card" href="../../p/2193ed7d49e4fa65/" data-key="Terraform" data-total="68" data-text="terraform hashicorp hashicorp terraform - 선언형 iac 도구."><span class="sn">1</span><span class="st-body"><b>Terraform</b><em>HashiCorp Terraform - 선언형 IaC 도구.</em></span><span class="st-n"><span>68항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
         </div>
       </section>
-      <section class="vgroup" id="v-github">
-        <div class="vh"><span class="sn">6</span><h2>GitHub</h2><span class="vn">1</span></div>
+      <section class="vgroup" id="v-github" data-v="github">
+        <button type="button" class="vh" aria-expanded="true"><span class="cx">▸</span><span class="sn">6</span><h2>GitHub</h2><span class="vn">1</span></button>
         <p class="vsub">코드 호스팅과 자동화</p>
         <div class="stage-grid">
           <a class="st-card" href="../../p/0a0957209b9772ab/" data-key="GitHub Actions" data-total="68" data-text="github actions github github 리포지터리에 내장된 이벤트 기반 자동화·ci/cd 플랫폼인 github actions 를, 워크플로 작성부터 러너 운영·보안·배포·재사용·운영까지 처음 배우는 사람이 순서대로 읽도록 재배열했다"><span class="sn">1</span><span class="st-body"><b>GitHub Actions</b><em>GitHub 리포지터리에 내장된 이벤트 기반 자동화·CI/CD 플랫폼인 GitHub Actions 를, 워크플로 작성부터 러너 운영·보안·배포·재사용·운영까지 처음 배우는 사람이 순서대로 읽도록 재배열했다</em></span><span class="st-n"><span>68항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
         </div>
       </section>
-      <section class="vgroup" id="v-git">
-        <div class="vh"><span class="sn">7</span><h2>Git 프로젝트</h2><span class="vn">1</span></div>
+      <section class="vgroup" id="v-git" data-v="git">
+        <button type="button" class="vh" aria-expanded="true"><span class="cx">▸</span><span class="sn">7</span><h2>Git 프로젝트</h2><span class="vn">1</span></button>
         <p class="vsub">분산 버전 관리 오픈소스</p>
         <div class="stage-grid">
           <a class="st-card" href="../../p/9fb306559a5f797f/" data-key="Git" data-total="69" data-text="git git 프로젝트 분산 버전 관리 시스템 git 본체(공식 cli와 그 개념 모델)를 처음 배우는 사람이 순서대로 읽는 커리큘럼."><span class="sn">1</span><span class="st-body"><b>Git</b><em>분산 버전 관리 시스템 Git 본체(공식 CLI와 그 개념 모델)를 처음 배우는 사람이 순서대로 읽는 커리큘럼.</em></span><span class="st-n"><span>69항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
         </div>
       </section>
-      <section class="vgroup" id="v-microsoft">
-        <div class="vh"><span class="sn">8</span><h2>Microsoft</h2><span class="vn">1</span></div>
+      <section class="vgroup" id="v-microsoft" data-v="microsoft">
+        <button type="button" class="vh" aria-expanded="true"><span class="cx">▸</span><span class="sn">8</span><h2>Microsoft</h2><span class="vn">1</span></button>
         <p class="vsub">서버 운영체제와 클라우드</p>
         <div class="stage-grid">
           <a class="st-card" href="../../p/43ef5db39672f2ff/" data-key="Windows Server" data-total="69" data-text="windows server microsoft microsoft가 만드는 서버용 운영체제 windows server 자체와, 그 위에서 동작하는 기본 역할·기능(디렉터리, 파일/스토리지, 네트워크, 가상화, 클러스터링, 원격 접근, 보안·운영)을 처음 배우는 사람이 순서대로 읽을 수 있게 재배열한 것."><span class="sn">1</span><span class="st-body"><b>Windows Server</b><em>Microsoft가 만드는 서버용 운영체제 Windows Server 자체와, 그 위에서 동작하는 기본 역할·기능(디렉터리, 파일/스토리지, 네트워크, 가상화, 클러스터링, 원격 접근, 보안·운영)을 처음 배우는 사람이 순서대로 읽을 수 있게 재배열한 것.</em></span><span class="st-n"><span>69항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
         </div>
       </section>
-      <section class="vgroup" id="v-fortinet">
-        <div class="vh"><span class="sn">9</span><h2>Fortinet</h2><span class="vn">1</span></div>
+      <section class="vgroup" id="v-fortinet" data-v="fortinet">
+        <button type="button" class="vh" aria-expanded="true"><span class="cx">▸</span><span class="sn">9</span><h2>Fortinet</h2><span class="vn">1</span></button>
         <p class="vsub">네트워크 보안 장비</p>
         <div class="stage-grid">
           <a class="st-card" href="../../p/d0ae411527bdaeb9/" data-key="FortiGate_7.6_Administrator" data-total="70" data-text="fortigate_7.6_administrator fortinet fortios 7.6 이 올라간 fortigate 방화벽을 실무에서 관리하는 관리자(administrator)가 알아야 할 전 범위 — administration guide 를 기준으로 한 운영 커리큘럼"><span class="sn">1</span><span class="st-body"><b>FortiGate_7.6_Administrator</b><em>FortiOS 7.6 이 올라간 FortiGate 방화벽을 실무에서 관리하는 관리자(Administrator)가 알아야 할 전 범위 — Administration Guide 를 기준으로 한 운영 커리큘럼</em></span><span class="st-n"><span>70항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
         </div>
       </section>
-      <section class="vgroup" id="v-neutral">
-        <div class="vh"><span class="sn">10</span><h2>벤더 중립</h2><span class="vn">2</span></div>
+      <section class="vgroup" id="v-neutral" data-v="neutral">
+        <button type="button" class="vh" aria-expanded="true"><span class="cx">▸</span><span class="sn">10</span><h2>벤더 중립</h2><span class="vn">2</span></button>
         <p class="vsub">특정 회사에 매이지 않는 방법론·관행</p>
         <div class="stage-grid">
           <a class="st-card" href="../../p/82e8bf40cc0df9a3/" data-key="CICD" data-total="68" data-text="cicd 벤더 중립 cicd = ci/cd(지속적 통합·지속적 전달/배포) 파이프라인을 설계·구축·운영하는 법."><span class="sn">1</span><span class="st-body"><b>CICD</b><em>CICD = CI/CD(지속적 통합·지속적 전달/배포) 파이프라인을 설계·구축·운영하는 법.</em></span><span class="st-n"><span>68항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
@@ -376,9 +402,46 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
     a.querySelector('em').textContent=best.seen+' / '+best.total+' 읽음';
   }
 
+  // ── 접기·펴기 : 사이드바와 본문이 각자 기억한다
+  var FK=NS+'gw-fold', fold={nav:[],main:[]};
+  try{ var fr=JSON.parse(localStorage.getItem(FK)||'null');
+    if(fr&&typeof fr==='object'){ fold.nav=fr.nav||[]; fold.main=fr.main||[]; } }catch(e){}
+  function saveFold(){ try{ localStorage.setItem(FK,JSON.stringify(fold)); }catch(e){} }
+  function paintFold(){
+    stages.forEach(function(s){ s.classList.toggle('collapsed',fold.nav.indexOf(s.getAttribute('data-v'))>-1);
+      s.querySelector('.nav-stage-t').setAttribute('aria-expanded',!s.classList.contains('collapsed')); });
+    groups.forEach(function(g){ g.classList.toggle('collapsed',fold.main.indexOf(g.getAttribute('data-v'))>-1);
+      g.querySelector('.vh').setAttribute('aria-expanded',!g.classList.contains('collapsed')); });
+    var allNav=fold.nav.length===stages.length;
+    document.querySelector('.side-foldall').textContent=allNav?'모두 펴기':'모두 접기';
+  }
+  function toggle(where,id){
+    var i=fold[where].indexOf(id);
+    if(i>-1) fold[where].splice(i,1); else fold[where].push(id);
+    saveFold(); paintFold();
+  }
+  stages.forEach(function(s){
+    s.querySelector('.nav-stage-t').addEventListener('click',function(){ toggle('nav',s.getAttribute('data-v')); });
+  });
+  groups.forEach(function(g){
+    g.querySelector('.vh').addEventListener('click',function(){ toggle('main',g.getAttribute('data-v')); });
+  });
+  document.querySelector('.side-foldall').addEventListener('click',function(){
+    fold.nav = fold.nav.length===stages.length ? [] : stages.map(function(s){ return s.getAttribute('data-v'); });
+    saveFold(); paintFold();
+  });
+  [].slice.call(document.querySelectorAll('.foldall button')).forEach(function(b){
+    b.addEventListener('click',function(){
+      fold.main = b.getAttribute('data-all')==='close' ? groups.map(function(g){ return g.getAttribute('data-v'); }) : [];
+      saveFold(); paintFold();
+    });
+  });
+  paintFold();
+
   // ── 필터 : 사이드바와 카드를 같이 걸러 낸다
   function apply(){
     var q=filter.value.trim().toLowerCase(), n=0;
+    document.body.classList.toggle('searching',!!q);
     cards.forEach(function(c){
       var hit=!q||c.getAttribute('data-text').indexOf(q)>-1;
       c.classList.toggle('hide',!hit); if(hit) n++;

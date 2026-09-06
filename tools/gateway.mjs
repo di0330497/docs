@@ -43,8 +43,17 @@ body{zoom:var(--zoom)}
 .filter:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(122,162,247,.14)}
 .tree{flex:1;overflow-y:auto;padding:10px 8px 60px;min-height:0}
 .nav-stage{margin-bottom:12px}
-.nav-stage-t{display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:11.5px;font-weight:700;
-  color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.nav-stage-t{display:flex;align-items:center;gap:8px;width:100%;padding:6px 8px;font-size:11.5px;font-weight:700;
+  color:var(--muted);letter-spacing:.04em;text-transform:uppercase;
+  background:none;border:0;border-radius:6px;font-family:inherit;text-align:left;cursor:pointer}
+.nav-stage-t:hover{background:var(--surface-2);color:var(--fg-dim)}
+.nav-stage-t .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-stage-t .cx{margin-left:auto;flex:0 0 auto;font-size:9px;color:var(--faint);
+  transition:transform .15s ease;transform:rotate(90deg)}
+.nav-stage.collapsed .nav-stage-t .cx{transform:none}
+.nav-stage.collapsed .nav-item{display:none}
+/* 검색 중에는 접어 둔 묶음도 결과를 보여 준다 — 안 그러면 "없다"고 오해한다 */
+body.searching .nav-stage.collapsed .nav-item:not(.hide){display:flex}
 .sn{display:inline-grid;place-items:center;width:19px;height:19px;border-radius:5px;flex:0 0 19px;
   background:rgba(122,162,247,.14);color:var(--blue);font-size:10.5px;font-weight:700;font-family:var(--mono)}
 .nav-item{display:flex;align-items:baseline;gap:8px;padding:5px 8px 5px 30px;font-size:13.5px;
@@ -99,11 +108,27 @@ h1{margin:0;font-size:clamp(34px,5vw,54px);line-height:1.12;letter-spacing:-.03e
 /* ── 벤더 묶음 ── */
 .vgroup{margin:0 0 38px;scroll-margin-top:20px}
 .vgroup.hide{display:none}
-.vh{display:flex;align-items:center;gap:10px;margin:0 0 3px}
+.vh{display:flex;align-items:center;gap:10px;width:100%;margin:0 0 3px;padding:4px 6px 4px 0;
+  background:none;border:0;color:inherit;font-family:inherit;text-align:left;cursor:pointer;border-radius:8px}
+.vh:hover{background:var(--surface-2)}
 .vh h2{margin:0;font-size:17px;font-weight:700;letter-spacing:-.015em}
 .vh .vn{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--faint);
   background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:2px 7px}
+.vh .cx{flex:0 0 auto;font-size:10px;color:var(--faint);transition:transform .15s ease;transform:rotate(90deg)}
+.vgroup.collapsed .vh .cx{transform:none}
+.vgroup.collapsed .vsub{display:none}
+.vgroup.collapsed .stage-grid{display:none}
+.vgroup.collapsed{margin-bottom:10px}
+body.searching .vgroup.collapsed .stage-grid{display:grid}
+body.searching .vgroup.collapsed .vsub{display:block}
 .vsub{margin:0 0 14px 29px;font-size:12.5px;color:var(--muted)}
+/* 모두 접기·펴기 */
+.foldall{display:flex;gap:6px;margin:0 0 18px}
+.foldall button{all:unset;cursor:pointer;padding:4px 10px;border:1px solid var(--line-2);border-radius:6px;
+  color:var(--muted);font-family:var(--mono);font-size:11px}
+.foldall button:hover{color:var(--fg);border-color:var(--blue)}
+.side-foldall{all:unset;cursor:pointer;float:right;color:var(--faint);font-family:var(--mono);font-size:10.5px}
+.side-foldall:hover{color:var(--blue)}
 .stage-grid{display:grid;gap:8px}
 .st-card{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--surface);
   border:1px solid var(--line);border-radius:10px;text-decoration:none;transition:border-color .12s,background .12s}
@@ -151,12 +176,12 @@ export function renderGateway({ topics, noindex, updated }) {
   const totalItems = topics.reduce((n, t) => n + (t.items || 0), 0);
 
   const nav = groups.map((g, gi) => `    <div class="nav-stage" data-v="${g.id}">
-      <div class="nav-stage-t"><span class="sn">${gi + 1}</span><span>${esc(g.name)}</span></div>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">${gi + 1}</span><span class="nm">${esc(g.name)}</span><span class="cx">▸</span></button>
 ${g.items.map((t) => `      <a class="nav-item" href="${t.href}" data-text="${esc((t.title + ' ' + g.name).toLowerCase())}">${esc(t.title)}<span class="nid">${t.items || ''}</span></a>`).join('\n')}
     </div>`).join('\n');
 
-  const cards = groups.map((g, gi) => `      <section class="vgroup" id="v-${g.id}">
-        <div class="vh"><span class="sn">${gi + 1}</span><h2>${esc(g.name)}</h2><span class="vn">${g.items.length}</span></div>
+  const cards = groups.map((g, gi) => `      <section class="vgroup" id="v-${g.id}" data-v="${g.id}">
+        <button type="button" class="vh" aria-expanded="true"><span class="cx">▸</span><span class="sn">${gi + 1}</span><h2>${esc(g.name)}</h2><span class="vn">${g.items.length}</span></button>
         <p class="vsub">${esc(g.sub)}</p>
         <div class="stage-grid">
 ${g.items.map((t, i) => `          <a class="st-card" href="${t.href}" data-key="${esc(t.key)}" data-total="${t.items || 0}" data-text="${esc((t.title + ' ' + g.name + ' ' + t.lead).toLowerCase())}"><span class="sn">${i + 1}</span><span class="st-body"><b>${esc(t.title)}</b><em>${esc(t.lead)}</em></span><span class="st-n"><span>${t.items || '?'}항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>`).join('\n')}
@@ -175,7 +200,7 @@ ${g.items.map((t, i) => `          <a class="st-card" href="${t.href}" data-key=
 <aside class="side">
   <div class="side-head">
     <a class="brand" href="#top">IT 학습자료</a>
-    <p class="meta">${topics.length} topics · ${groups.length} vendors</p>
+    <p class="meta">${topics.length} topics · ${groups.length} vendors<button type="button" class="side-foldall">모두 접기</button></p>
     <input class="filter" type="text" placeholder="토픽 필터  /" spellcheck="false">
   </div>
   <nav class="tree">
@@ -201,6 +226,7 @@ ${nav}
           <div><dt>색인</dt><dd>검색엔진 비노출</dd></div>
         </dl>
       </section>
+      <div class="foldall"><button type="button" data-all="open">모두 펴기</button><button type="button" data-all="close">모두 접기</button></div>
 ${cards}
       <p class="note">읽은 진도와 화면 배율은 이 브라우저에만 저장된다. 다른 기기에서는 따로 쌓인다.</p>
     </div>
@@ -248,9 +274,46 @@ ${cards}
     a.querySelector('em').textContent=best.seen+' / '+best.total+' 읽음';
   }
 
+  // ── 접기·펴기 : 사이드바와 본문이 각자 기억한다
+  var FK=NS+'gw-fold', fold={nav:[],main:[]};
+  try{ var fr=JSON.parse(localStorage.getItem(FK)||'null');
+    if(fr&&typeof fr==='object'){ fold.nav=fr.nav||[]; fold.main=fr.main||[]; } }catch(e){}
+  function saveFold(){ try{ localStorage.setItem(FK,JSON.stringify(fold)); }catch(e){} }
+  function paintFold(){
+    stages.forEach(function(s){ s.classList.toggle('collapsed',fold.nav.indexOf(s.getAttribute('data-v'))>-1);
+      s.querySelector('.nav-stage-t').setAttribute('aria-expanded',!s.classList.contains('collapsed')); });
+    groups.forEach(function(g){ g.classList.toggle('collapsed',fold.main.indexOf(g.getAttribute('data-v'))>-1);
+      g.querySelector('.vh').setAttribute('aria-expanded',!g.classList.contains('collapsed')); });
+    var allNav=fold.nav.length===stages.length;
+    document.querySelector('.side-foldall').textContent=allNav?'모두 펴기':'모두 접기';
+  }
+  function toggle(where,id){
+    var i=fold[where].indexOf(id);
+    if(i>-1) fold[where].splice(i,1); else fold[where].push(id);
+    saveFold(); paintFold();
+  }
+  stages.forEach(function(s){
+    s.querySelector('.nav-stage-t').addEventListener('click',function(){ toggle('nav',s.getAttribute('data-v')); });
+  });
+  groups.forEach(function(g){
+    g.querySelector('.vh').addEventListener('click',function(){ toggle('main',g.getAttribute('data-v')); });
+  });
+  document.querySelector('.side-foldall').addEventListener('click',function(){
+    fold.nav = fold.nav.length===stages.length ? [] : stages.map(function(s){ return s.getAttribute('data-v'); });
+    saveFold(); paintFold();
+  });
+  [].slice.call(document.querySelectorAll('.foldall button')).forEach(function(b){
+    b.addEventListener('click',function(){
+      fold.main = b.getAttribute('data-all')==='close' ? groups.map(function(g){ return g.getAttribute('data-v'); }) : [];
+      saveFold(); paintFold();
+    });
+  });
+  paintFold();
+
   // ── 필터 : 사이드바와 카드를 같이 걸러 낸다
   function apply(){
     var q=filter.value.trim().toLowerCase(), n=0;
+    document.body.classList.toggle('searching',!!q);
     cards.forEach(function(c){
       var hit=!q||c.getAttribute('data-text').indexOf(q)>-1;
       c.classList.toggle('hide',!hit); if(hit) n++;

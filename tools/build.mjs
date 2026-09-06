@@ -4,6 +4,8 @@ import { readdirSync, statSync, readFileSync, writeFileSync, mkdirSync, rmSync, 
 import { randomBytes } from 'node:crypto';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { vendorOf } from './vendors.mjs';
+import { renderGateway } from './gateway.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SOURCES = [
@@ -60,10 +62,44 @@ const inject = (html) => {
   return html.replace(/<head(\s[^>]*)?>/i, (m) => m + NOINDEX);
 };
 
+// 게이트웨이가 쓸 정보를 페이지에서 직접 뽑는다 — 목록과 본문이 어긋날 일이 없다.
+const strip = (s) => s.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+const pick = (html, re) => (html.match(re) || [])[1];
+
+function meta(html) {
+  const stats = [...html.matchAll(/<span class="stat"><b>([^<]*)<\/b>([^<]*)<\/span>/g)]
+    .reduce((o, m) => ({ ...o, [m[2].trim()]: m[1].trim() }), {});
+  const lead = strip(pick(html, /<p class="lead">([\s\S]*?)<\/p>/) || '');
+  // 첫 문장만. 그래도 길면 잘라서 말줄임표.
+  let short = (lead.split(/(?<=[.。])\s/)[0] || lead).trim();
+  if (short.length > 170) short = short.slice(0, 168).replace(/[\s,·]+\S*$/, '') + '…';
+  return {
+    title: strip(pick(html, /<article class="page cover"[^>]*>[\s\S]*?<h1>([\s\S]*?)<\/h1>/) || pick(html, /<title>([^<]*)<\/title>/) || ''),
+    key: pick(html, /var TITLE\s*=\s*"((?:[^"\\]|\\.)*)"/) || '',
+    items: Number(stats['항목']) || 0,
+    stages: Number(stats['단계']) || 0,
+    lead: short,
+  };
+}
+
+// 학습자료 쪽에서도 색인으로 한 번에 돌아올 수 있게 사이드바 맨 위에 링크를 넣는다.
+const BACK_CSS = '<style>.gw-back{display:block;margin:0 0 8px;font-family:var(--mono);font-size:11px;' +
+  'color:var(--faint);text-decoration:none}.gw-back:hover{color:var(--blue)}</style>';
+const addBackLink = (html, hub) => html
+  .replace(/<\/head>/i, BACK_CSS + '</head>')
+  .replace(/<a class="brand"/, `<a class="gw-back" href="../../h/${hub}/">← 전체 목록</a><a class="brand"`);
+
 for (const t of topics) {
   const dir = join(ROOT, 'p', slugs.pages[t.topic]);
   mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, 'index.html'), inject(readFileSync(t.file, 'utf8')));
+  const src = readFileSync(t.file, 'utf8');
+  Object.assign(t, meta(src), {
+    vendor: vendorOf(t.topic).id,
+    href: `../../p/${slugs.pages[t.topic]}/`,
+  });
+  if (!t.title) t.title = t.topic.replace(/_/g, ' ');
+  if (!t.key) t.key = t.title;
+  writeFileSync(join(dir, 'index.html'), addBackLink(inject(src), slugs.hub));
 }
 
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -71,39 +107,9 @@ const label = (s) => s.replace(/_/g, ' ');
 const fmt = (ms) => { const d = new Date(ms); const z = (n) => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; };  // 로컬 시각 기준
 
-const rows = topics.map((t) =>
-  `    <li><a href="../../p/${slugs.pages[t.topic]}/">${esc(label(t.topic))}</a><span>${fmt(t.mtime)}</span></li>`
-).join('\n');
-
-const hub = `<!doctype html>
-<html lang="ko"><head><meta charset="utf-8">${NOINDEX}
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Notes</title>
-<style>
-:root{color-scheme:dark;--bg:#1a1b26;--surface:#24283b;--line:#2f3549;--fg:#c0caf5;--muted:#787c99;--blue:#7aa2f7}
-*{box-sizing:border-box}
-body{margin:0;padding:48px 20px;background:var(--bg);color:var(--fg);
-     font-family:"Malgun Gothic","맑은 고딕",system-ui,sans-serif}
-main{max-width:760px;margin:0 auto}
-h1{font-size:1.5rem;margin:0 0 4px}
-p.sub{margin:0 0 28px;color:var(--muted);font-size:.85rem}
-ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
-li{border-bottom:1px solid var(--line)}
-li a{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-     padding:13px 12px;color:var(--fg);text-decoration:none}
-li a:hover{background:var(--surface);color:var(--blue)}
-li span{color:var(--muted);font-size:.75rem;font-variant-numeric:tabular-nums;flex:none}
-</style></head>
-<body><main>
-  <h1>IT 학습자료</h1>
-  <p class="sub">${topics.length}개 · 갱신 ${fmt(Date.now())}</p>
-  <ul>
-${rows}
-  </ul>
-</main></body></html>
-`;
 mkdirSync(join(ROOT, 'h', slugs.hub), { recursive: true });
-writeFileSync(join(ROOT, 'h', slugs.hub, 'index.html'), hub);
+writeFileSync(join(ROOT, 'h', slugs.hub, 'index.html'),
+  renderGateway({ topics, noindex: NOINDEX, updated: fmt(Date.now()) }));
 
 // 루트/404 — 아무 정보도 링크도 없는 껍데기
 const blank = `<!doctype html>

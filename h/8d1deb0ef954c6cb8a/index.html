@@ -1,59 +1,418 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex"><meta name="googlebot" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Notes</title>
+<meta name="color-scheme" content="dark">
+<title>IT 학습자료</title>
 <style>
-:root{color-scheme:dark;--bg:#1a1b26;--surface:#24283b;--line:#2f3549;--fg:#c0caf5;--muted:#787c99;--blue:#7aa2f7}
+:root{
+  --bg:#1a1b26; --bg-deep:#16161e; --surface:#24283b; --surface-2:#1f2335;
+  --line:#2f3549; --line-2:#3b4261;
+  --fg:#c0caf5; --fg-dim:#a9b1d6; --muted:#787c99; --faint:#565f89;
+  --blue:#7aa2f7; --cyan:#7dcfff; --magenta:#bb9af7; --green:#9ece6a;
+  --mono:"Malgun Gothic","맑은 고딕",system-ui,sans-serif;
+  --sans:"Malgun Gothic","맑은 고딕",system-ui,sans-serif;
+}
 *{box-sizing:border-box}
-body{margin:0;padding:48px 20px;background:var(--bg);color:var(--fg);
-     font-family:"Malgun Gothic","맑은 고딕",system-ui,sans-serif}
-main{max-width:760px;margin:0 auto}
-h1{font-size:1.5rem;margin:0 0 4px}
-p.sub{margin:0 0 28px;color:var(--muted);font-size:.85rem}
-ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
-li{border-bottom:1px solid var(--line)}
-li a{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-     padding:13px 12px;color:var(--fg);text-decoration:none}
-li a:hover{background:var(--surface);color:var(--blue)}
-li span{color:var(--muted);font-size:.75rem;font-variant-numeric:tabular-nums;flex:none}
+html,body{margin:0;padding:0;height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16.5px;line-height:1.8;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:inherit}
+::selection{background:rgba(122,162,247,.28)}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:6px;border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:var(--faint)}
+::-webkit-scrollbar-track{background:transparent}
+
+/* 학습자료 페이지와 같은 기본 배율 150%. 배율 설정은 localStorage 로 공유된다. */
+html{--zoom:1.5}
+body{zoom:var(--zoom)}
+.app{display:flex;height:calc(100vh / var(--zoom));overflow:hidden}
+.zoom{all:unset;cursor:pointer;margin-left:10px;padding:2px 8px;border:1px solid var(--line-2);border-radius:5px;
+  color:var(--muted);font-family:var(--mono);font-size:11px;white-space:nowrap}
+.zoom:hover{color:var(--fg);border-color:var(--blue)}
+
+/* ── 사이드바 ── */
+.side{width:300px;flex:0 0 300px;background:var(--bg-deep);border-right:1px solid var(--line);
+  display:flex;flex-direction:column;min-height:0}
+.side-head{padding:16px 14px 12px;border-bottom:1px solid var(--line)}
+.brand{display:block;font-weight:700;font-size:15px;text-decoration:none;letter-spacing:-.01em;color:var(--fg)}
+.side-head .meta{margin:3px 0 10px;font-size:11.5px;color:var(--faint);font-family:var(--mono)}
+.filter{width:100%;background:var(--surface-2);border:1px solid var(--line-2);border-radius:7px;
+  color:var(--fg);font-family:var(--sans);font-size:13px;padding:7px 10px;outline:none}
+.filter::placeholder{color:var(--faint)}
+.filter:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(122,162,247,.14)}
+.tree{flex:1;overflow-y:auto;padding:10px 8px 60px;min-height:0}
+.nav-stage{margin-bottom:12px}
+.nav-stage-t{display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:11.5px;font-weight:700;
+  color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.sn{display:inline-grid;place-items:center;width:19px;height:19px;border-radius:5px;flex:0 0 19px;
+  background:rgba(122,162,247,.14);color:var(--blue);font-size:10.5px;font-weight:700;font-family:var(--mono)}
+.nav-item{display:flex;align-items:baseline;gap:8px;padding:5px 8px 5px 30px;font-size:13.5px;
+  color:var(--fg-dim);text-decoration:none;border-radius:6px;line-height:1.5;cursor:pointer}
+.nav-item:hover{background:var(--surface-2);color:var(--fg)}
+.nav-item .nid{font-family:var(--mono);font-size:10px;color:var(--faint);flex:0 0 auto;margin-left:auto}
+.nav-item.hide,.nav-stage.hide{display:none}
+.nav-empty{padding:14px 12px;font-size:12.5px;color:var(--faint)}
+.nav-empty.hide{display:none}
+
+/* ── 본문 ── */
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{position:relative;height:44px;flex:0 0 44px;display:flex;align-items:center;gap:12px;padding:0 22px;
+  border-bottom:1px solid var(--line);background:rgba(26,27,38,.86);backdrop-filter:blur(8px);
+  font-size:12.5px;color:var(--muted);font-family:var(--mono)}
+.topbar .crumb{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.topbar .pos{margin-left:auto;color:var(--faint);flex:0 0 auto}
+.topbar .keys{flex:0 0 auto}
+.topbar kbd{font-family:var(--mono);font-size:10.5px;background:var(--surface-2);border:1px solid var(--line-2);
+  border-bottom-width:2px;border-radius:4px;padding:1px 5px;color:var(--muted)}
+.scroll{flex:1;overflow-y:auto;min-height:0;scroll-behavior:smooth}
+.wrap{max-width:760px;margin:0 auto;padding:44px 28px 120px}
+
+/* ── 표지 ── */
+.eyebrow{margin:0 0 10px;font-size:12px;color:var(--magenta);font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;font-family:var(--mono)}
+h1{margin:0;font-size:clamp(34px,5vw,54px);line-height:1.12;letter-spacing:-.03em;font-weight:800}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 26px}
+.stat{display:flex;align-items:baseline;gap:6px;padding:7px 12px;background:var(--surface);
+  border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--muted)}
+.stat b{font-family:var(--mono);font-size:15px;color:var(--cyan);font-weight:700}
+
+.panel{padding:18px 20px;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:34px}
+.panel .lead{margin:0 0 14px;font-size:14.5px;color:var(--fg-dim);line-height:1.7}
+.kv{display:flex;flex-wrap:wrap;gap:10px 26px;margin:0}
+.kv>div{display:flex;align-items:baseline;gap:8px}
+.kv dt{font-size:10.5px;font-weight:700;color:var(--faint);letter-spacing:.06em;white-space:nowrap;
+  text-transform:uppercase;font-family:var(--mono)}
+.kv dd{margin:0;font-size:13px;color:var(--fg-dim)}
+
+/* 이어서 읽기 — 가장 많이 읽어 둔 자료로 한 번에 돌아간다 */
+.resume{display:none;margin:0 0 26px}
+.resume.on{display:block}
+.resume a{display:flex;align-items:center;gap:12px;padding:13px 16px;text-decoration:none;
+  background:rgba(122,162,247,.09);border:1px solid rgba(122,162,247,.28);border-radius:10px}
+.resume a:hover{background:rgba(122,162,247,.16);border-color:var(--blue)}
+.resume .tag{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--blue);background:rgba(122,162,247,.16);border-radius:5px;padding:3px 7px;flex:0 0 auto}
+.resume b{font-size:14.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.resume em{font-style:normal;margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--faint);flex:0 0 auto}
+
+/* ── 벤더 묶음 ── */
+.vgroup{margin:0 0 38px;scroll-margin-top:20px}
+.vgroup.hide{display:none}
+.vh{display:flex;align-items:center;gap:10px;margin:0 0 3px}
+.vh h2{margin:0;font-size:17px;font-weight:700;letter-spacing:-.015em}
+.vh .vn{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--faint);
+  background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:2px 7px}
+.vsub{margin:0 0 14px 29px;font-size:12.5px;color:var(--muted)}
+.stage-grid{display:grid;gap:8px}
+.st-card{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--surface);
+  border:1px solid var(--line);border-radius:10px;text-decoration:none;transition:border-color .12s,background .12s}
+.st-card:hover{border-color:var(--blue);background:var(--surface-2)}
+.st-card.hide{display:none}
+.st-card .sn{margin-top:3px}
+.st-body{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.st-body b{font-size:15px;font-weight:700;letter-spacing:-.01em}
+.st-body em{font-style:normal;font-size:12.5px;color:var(--muted);line-height:1.6}
+.st-n{font-family:var(--mono);font-size:11.5px;color:var(--faint);flex:0 0 auto;
+  display:flex;flex-direction:column;align-items:flex-end;gap:5px;padding-top:2px}
+/* 읽은 비율 — 각 토픽 페이지가 localStorage 에 남긴 기록을 그대로 읽는다 */
+.bar{width:54px;height:3px;border-radius:2px;background:var(--line-2);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--blue);border-radius:2px}
+.st-card.done .bar i{background:var(--green)}
+.pct{font-size:10px;color:var(--faint);min-height:15px}
+.st-card.done .pct{color:var(--green)}
+
+.note{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:12.5px;color:var(--faint);line-height:1.7}
+
+/* ── 모바일 ── */
+.burger{display:none}
+.scrim{display:none}
+html.narrow .side{position:fixed;z-index:30;left:0;top:0;height:calc(100vh / var(--zoom));transform:translateX(-100%);
+  transition:transform .2s ease;box-shadow:0 0 50px rgba(0,0,0,.5)}
+html.narrow .side.open{transform:none}
+html.narrow .scrim.on{display:block;position:fixed;inset:0;z-index:29;background:rgba(0,0,0,.5)}
+html.narrow .wrap{padding:32px 20px 100px}
+html.narrow .topbar{padding:0 16px}
+html.narrow .topbar .keys{display:none}
+html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;right:18px;bottom:18px;
+  width:50px;height:50px;border-radius:14px;background:var(--blue);color:#16161e;border:0;
+  font-size:19px;cursor:pointer;box-shadow:0 8px 24px rgba(122,162,247,.4)}
+@media print{ .side,.topbar,.burger,.scrim,.resume{display:none!important}
+  .app,.scroll{display:block;height:auto;overflow:visible} body{background:#fff;color:#111;zoom:1} }
 </style></head>
-<body><main>
-  <h1>IT 학습자료</h1>
-  <p class="sub">34개 · 갱신 2026-09-07</p>
-  <ul>
-    <li><a href="../../p/83c51d1a79c80244/">350-401 ENCOR Cisco Enterprise Network Core Technologies</a><span>2026-09-05</span></li>
-    <li><a href="../../p/5be19ccf0f0bf3a4/">350-601 DCCOR Cisco Data Center Core Technologies</a><span>2026-09-05</span></li>
-    <li><a href="../../p/35b7298fe89ce0ca/">Amazon Aurora</a><span>2026-09-05</span></li>
-    <li><a href="../../p/202060ea4f3d456b/">Amazon CloudFront</a><span>2026-09-05</span></li>
-    <li><a href="../../p/58c5c246e8435081/">Amazon CloudWatch</a><span>2026-09-05</span></li>
-    <li><a href="../../p/6c69a44d0ec02612/">Amazon DynamoDB</a><span>2026-09-05</span></li>
-    <li><a href="../../p/0d3e0f112acb4b11/">Amazon EC2</a><span>2026-09-05</span></li>
-    <li><a href="../../p/3e3e74b242eff716/">Amazon ECR</a><span>2026-09-05</span></li>
-    <li><a href="../../p/c5356d996122422c/">Amazon ECS</a><span>2026-09-05</span></li>
-    <li><a href="../../p/fe84f51c8efefb22/">Amazon EKS</a><span>2026-09-05</span></li>
-    <li><a href="../../p/45a33f702aae501d/">Amazon ElastiCache</a><span>2026-09-06</span></li>
-    <li><a href="../../p/95f99803e27ecf8e/">Amazon GuardDuty</a><span>2026-09-05</span></li>
-    <li><a href="../../p/f803782404ab96a1/">Amazon RDS</a><span>2026-09-05</span></li>
-    <li><a href="../../p/88e9819e9f9cab4e/">Amazon S3</a><span>2026-09-05</span></li>
-    <li><a href="../../p/2c05be0043835dae/">Amazon VPC</a><span>2026-09-05</span></li>
-    <li><a href="../../p/814cae054287442b/">Argo CD</a><span>2026-09-06</span></li>
-    <li><a href="../../p/2505cc3fce76a513/">AWS Backup</a><span>2026-09-06</span></li>
-    <li><a href="../../p/83c9716a0b6c800f/">AWS Certificate Manager</a><span>2026-09-06</span></li>
-    <li><a href="../../p/7dd956721d18a9db/">AWS CodeDeploy</a><span>2026-09-05</span></li>
-    <li><a href="../../p/2e6bc4d0d8087c7e/">AWS IAM</a><span>2026-09-05</span></li>
-    <li><a href="../../p/fca46b472f2470c3/">AWS KMS</a><span>2026-09-06</span></li>
-    <li><a href="../../p/c2c0ed3c82b1a2b3/">AWS Lambda</a><span>2026-09-06</span></li>
-    <li><a href="../../p/2d6f15766c0cc71b/">CCNA 200-301</a><span>2026-09-05</span></li>
-    <li><a href="../../p/82e8bf40cc0df9a3/">CICD</a><span>2026-09-05</span></li>
-    <li><a href="../../p/b6a627d6ef33d47b/">DevOps</a><span>2026-09-05</span></li>
-    <li><a href="../../p/891d0f394ac1a0ec/">Docker</a><span>2026-09-06</span></li>
-    <li><a href="../../p/32d1a11883fefa3f/">Elastic Load Balancing</a><span>2026-09-05</span></li>
-    <li><a href="../../p/d0ae411527bdaeb9/">FortiGate 7.6 Administrator</a><span>2026-09-05</span></li>
-    <li><a href="../../p/9fb306559a5f797f/">Git</a><span>2026-09-05</span></li>
-    <li><a href="../../p/0a0957209b9772ab/">GitHub Actions</a><span>2026-09-06</span></li>
-    <li><a href="../../p/1e6be196b5f9a43d/">Helm</a><span>2026-09-06</span></li>
-    <li><a href="../../p/3fe4f85bcfcb9101/">Kubernetes</a><span>2026-09-06</span></li>
-    <li><a href="../../p/2193ed7d49e4fa65/">Terraform</a><span>2026-09-06</span></li>
-    <li><a href="../../p/43ef5db39672f2ff/">Windows Server</a><span>2026-09-05</span></li>
-  </ul>
-</main></body></html>
+<body>
+<div class="scrim"></div>
+<div class="app">
+<aside class="side">
+  <div class="side-head">
+    <a class="brand" href="#top">IT 학습자료</a>
+    <p class="meta">34 topics · 10 vendors</p>
+    <input class="filter" type="text" placeholder="토픽 필터  /" spellcheck="false">
+  </div>
+  <nav class="tree">
+    <div class="nav-stage" data-v="aws">
+      <div class="nav-stage-t"><span class="sn">1</span><span>Amazon Web Services</span></div>
+      <a class="nav-item" href="../../p/35b7298fe89ce0ca/" data-text="amazon aurora amazon web services">Amazon Aurora<span class="nid">69</span></a>
+      <a class="nav-item" href="../../p/202060ea4f3d456b/" data-text="amazon cloudfront amazon web services">Amazon CloudFront<span class="nid">69</span></a>
+      <a class="nav-item" href="../../p/58c5c246e8435081/" data-text="amazon cloudwatch amazon web services">Amazon CloudWatch<span class="nid">69</span></a>
+      <a class="nav-item" href="../../p/6c69a44d0ec02612/" data-text="amazon dynamodb amazon web services">Amazon DynamoDB<span class="nid">70</span></a>
+      <a class="nav-item" href="../../p/0d3e0f112acb4b11/" data-text="amazon ec2 amazon web services">Amazon EC2<span class="nid">69</span></a>
+      <a class="nav-item" href="../../p/3e3e74b242eff716/" data-text="amazon ecr amazon web services">Amazon ECR<span class="nid">69</span></a>
+      <a class="nav-item" href="../../p/c5356d996122422c/" data-text="amazon ecs amazon web services">Amazon ECS<span class="nid">69</span></a>
+      <a class="nav-item" href="../../p/fe84f51c8efefb22/" data-text="amazon eks amazon web services">Amazon EKS<span class="nid">69</span></a>
+      <a class="nav-item" href="../../p/45a33f702aae501d/" data-text="amazon elasticache amazon web services">Amazon ElastiCache<span class="nid">68</span></a>
+      <a class="nav-item" href="../../p/95f99803e27ecf8e/" data-text="amazon guardduty amazon web services">Amazon GuardDuty<span class="nid">68</span></a>
+      <a class="nav-item" href="../../p/f803782404ab96a1/" data-text="amazon rds amazon web services">Amazon RDS<span class="nid">69</span></a>
+      <a class="nav-item" href="../../p/88e9819e9f9cab4e/" data-text="amazon s3 amazon web services">Amazon S3<span class="nid">68</span></a>
+      <a class="nav-item" href="../../p/2c05be0043835dae/" data-text="amazon vpc amazon web services">Amazon VPC<span class="nid">67</span></a>
+      <a class="nav-item" href="../../p/2505cc3fce76a513/" data-text="aws backup amazon web services">AWS Backup<span class="nid">70</span></a>
+      <a class="nav-item" href="../../p/83c9716a0b6c800f/" data-text="aws certificate manager amazon web services">AWS Certificate Manager<span class="nid">68</span></a>
+      <a class="nav-item" href="../../p/7dd956721d18a9db/" data-text="aws codedeploy amazon web services">AWS CodeDeploy<span class="nid">67</span></a>
+      <a class="nav-item" href="../../p/2e6bc4d0d8087c7e/" data-text="aws iam amazon web services">AWS IAM<span class="nid">67</span></a>
+      <a class="nav-item" href="../../p/fca46b472f2470c3/" data-text="aws kms amazon web services">AWS KMS<span class="nid">68</span></a>
+      <a class="nav-item" href="../../p/c2c0ed3c82b1a2b3/" data-text="aws lambda amazon web services">AWS Lambda<span class="nid">69</span></a>
+      <a class="nav-item" href="../../p/32d1a11883fefa3f/" data-text="elastic load balancing amazon web services">Elastic Load Balancing<span class="nid">70</span></a>
+    </div>
+    <div class="nav-stage" data-v="cncf">
+      <div class="nav-stage-t"><span class="sn">2</span><span>Cloud Native Computing Foundation</span></div>
+      <a class="nav-item" href="../../p/814cae054287442b/" data-text="argo cd cloud native computing foundation">Argo CD<span class="nid">69</span></a>
+      <a class="nav-item" href="../../p/1e6be196b5f9a43d/" data-text="helm cloud native computing foundation">Helm<span class="nid">67</span></a>
+      <a class="nav-item" href="../../p/3fe4f85bcfcb9101/" data-text="kubernetes cloud native computing foundation">Kubernetes<span class="nid">67</span></a>
+    </div>
+    <div class="nav-stage" data-v="cisco">
+      <div class="nav-stage-t"><span class="sn">3</span><span>Cisco Systems</span></div>
+      <a class="nav-item" href="../../p/83c51d1a79c80244/" data-text="350-401_encor_cisco_enterprise_network_core_technologies cisco systems">350-401_ENCOR_Cisco_Enterprise_Network_Core_Technologies<span class="nid">68</span></a>
+      <a class="nav-item" href="../../p/5be19ccf0f0bf3a4/" data-text="350-601_dccor_cisco_data_center_core_technologies cisco systems">350-601_DCCOR_Cisco_Data_Center_Core_Technologies<span class="nid">68</span></a>
+      <a class="nav-item" href="../../p/2d6f15766c0cc71b/" data-text="ccna_200-301 cisco systems">CCNA_200-301<span class="nid">66</span></a>
+    </div>
+    <div class="nav-stage" data-v="docker">
+      <div class="nav-stage-t"><span class="sn">4</span><span>Docker, Inc.</span></div>
+      <a class="nav-item" href="../../p/891d0f394ac1a0ec/" data-text="docker docker, inc.">Docker<span class="nid">66</span></a>
+    </div>
+    <div class="nav-stage" data-v="hashicorp">
+      <div class="nav-stage-t"><span class="sn">5</span><span>HashiCorp</span></div>
+      <a class="nav-item" href="../../p/2193ed7d49e4fa65/" data-text="terraform hashicorp">Terraform<span class="nid">68</span></a>
+    </div>
+    <div class="nav-stage" data-v="github">
+      <div class="nav-stage-t"><span class="sn">6</span><span>GitHub</span></div>
+      <a class="nav-item" href="../../p/0a0957209b9772ab/" data-text="github actions github">GitHub Actions<span class="nid">68</span></a>
+    </div>
+    <div class="nav-stage" data-v="git">
+      <div class="nav-stage-t"><span class="sn">7</span><span>Git 프로젝트</span></div>
+      <a class="nav-item" href="../../p/9fb306559a5f797f/" data-text="git git 프로젝트">Git<span class="nid">69</span></a>
+    </div>
+    <div class="nav-stage" data-v="microsoft">
+      <div class="nav-stage-t"><span class="sn">8</span><span>Microsoft</span></div>
+      <a class="nav-item" href="../../p/43ef5db39672f2ff/" data-text="windows server microsoft">Windows Server<span class="nid">69</span></a>
+    </div>
+    <div class="nav-stage" data-v="fortinet">
+      <div class="nav-stage-t"><span class="sn">9</span><span>Fortinet</span></div>
+      <a class="nav-item" href="../../p/d0ae411527bdaeb9/" data-text="fortigate_7.6_administrator fortinet">FortiGate_7.6_Administrator<span class="nid">70</span></a>
+    </div>
+    <div class="nav-stage" data-v="neutral">
+      <div class="nav-stage-t"><span class="sn">10</span><span>벤더 중립</span></div>
+      <a class="nav-item" href="../../p/82e8bf40cc0df9a3/" data-text="cicd 벤더 중립">CICD<span class="nid">68</span></a>
+      <a class="nav-item" href="../../p/b6a627d6ef33d47b/" data-text="devops 벤더 중립">DevOps<span class="nid">67</span></a>
+    </div>
+    <p class="nav-empty hide">일치하는 토픽이 없습니다.</p>
+  </nav>
+</aside>
+<main class="main">
+  <div class="topbar"><span class="crumb">전체 토픽</span><span class="pos"></span>
+    <span class="keys"><kbd>/</kbd> 검색 <kbd>Esc</kbd> 지우기</span>
+    <button type="button" class="zoom" title="화면 배율 (100 → 125 → 150 → 175%)">150%</button></div>
+  <div class="scroll">
+    <div class="wrap" id="top">
+      <p class="eyebrow">벤더별 색인</p>
+      <h1>IT 학습자료</h1>
+      <div class="stats"><span class="stat"><b>34</b>토픽</span><span class="stat"><b>10</b>벤더</span><span class="stat"><b>2,322</b>항목</span></div>
+      <div class="resume"><a href="#"><span class="tag">이어서 읽기</span><b></b><em></em></a></div>
+      <section class="panel">
+        <p class="lead">공식 문서를 근거로 만든 IT 학습자료 모음이다. 만든 회사·재단 기준으로 묶었고, 카드를 누르면 해당 자료로 바로 넘어간다. 읽은 진도는 각 자료가 이 브라우저에 남긴 기록을 그대로 읽어 표시한다.</p>
+        <dl class="kv">
+          <div><dt>분류</dt><dd>벤더 · 제조사 · 개발사</dd></div>
+          <div><dt>갱신</dt><dd>2026-09-07</dd></div>
+          <div><dt>색인</dt><dd>검색엔진 비노출</dd></div>
+        </dl>
+      </section>
+      <section class="vgroup" id="v-aws">
+        <div class="vh"><span class="sn">1</span><h2>Amazon Web Services</h2><span class="vn">20</span></div>
+        <p class="vsub">AWS 클라우드 서비스</p>
+        <div class="stage-grid">
+          <a class="st-card" href="../../p/35b7298fe89ce0ca/" data-key="Amazon Aurora" data-total="69" data-text="amazon aurora amazon web services aws의 관리형 관계형 데이터베이스 amazon aurora(mysql 호환 / postgresql 호환)를 처음부터 운영까지 배우는 과정으로 해석했다."><span class="sn">1</span><span class="st-body"><b>Amazon Aurora</b><em>AWS의 관리형 관계형 데이터베이스 Amazon Aurora(MySQL 호환 / PostgreSQL 호환)를 처음부터 운영까지 배우는 과정으로 해석했다.</em></span><span class="st-n"><span>69항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/202060ea4f3d456b/" data-key="Amazon CloudFront" data-total="69" data-text="amazon cloudfront amazon web services aws의 cdn 서비스 amazon cloudfront를 처음 배우는 사람이 위에서 아래로 읽는 학습 순서."><span class="sn">2</span><span class="st-body"><b>Amazon CloudFront</b><em>AWS의 CDN 서비스 Amazon CloudFront를 처음 배우는 사람이 위에서 아래로 읽는 학습 순서.</em></span><span class="st-n"><span>69항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/58c5c246e8435081/" data-key="Amazon CloudWatch" data-total="69" data-text="amazon cloudwatch amazon web services aws 관측성(observability) 서비스인 amazon cloudwatch 전체 — 메트릭·경보·대시보드·cloudwatch logs·에이전트/otel 수집·apm(application signals/synthetics/rum)·인프라 인사이트·네트워크 모니터링까지 하나의 제품군으로 본다."><span class="sn">3</span><span class="st-body"><b>Amazon CloudWatch</b><em>AWS 관측성(observability) 서비스인 Amazon CloudWatch 전체 — 메트릭·경보·대시보드·CloudWatch Logs·에이전트/OTel 수집·APM(Application Signals/Synthetics/RUM)·인프라 인사이트·네트워크 모니터링까지 하나의 제품군으로 본다.</em></span><span class="st-n"><span>69항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/6c69a44d0ec02612/" data-key="Amazon DynamoDB" data-total="70" data-text="amazon dynamodb amazon web services aws 관리형 nosql 키-값/문서 데이터베이스 서비스인 amazon dynamodb를, 처음 배우는 사람이 개념→내부동작→용량→조작→조회→인덱스→고급기능→모델링→개발→다중리전→보안→운영 순으로 읽도록 재배열한 목차."><span class="sn">4</span><span class="st-body"><b>Amazon DynamoDB</b><em>AWS 관리형 NoSQL 키-값/문서 데이터베이스 서비스인 Amazon DynamoDB를, 처음 배우는 사람이 개념→내부동작→용량→조작→조회→인덱스→고급기능→모델링→개발→다중리전→보안→운영 순으로 읽도록 재배열한 목차.</em></span><span class="st-n"><span>70항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/0d3e0f112acb4b11/" data-key="Amazon EC2" data-total="69" data-text="amazon ec2 amazon web services aws 퍼블릭 클라우드의 가상 서버 서비스 amazon elastic compute cloud(ec2) 자체 — 인스턴스·ami·구매 옵션·네트워킹·스토리지 연결·운영까지, ec2 user guide가 다루는 범위를 처음 배우는 사람이 순서대로 읽도록 재배열한 것."><span class="sn">5</span><span class="st-body"><b>Amazon EC2</b><em>AWS 퍼블릭 클라우드의 가상 서버 서비스 Amazon Elastic Compute Cloud(EC2) 자체 — 인스턴스·AMI·구매 옵션·네트워킹·스토리지 연결·운영까지, EC2 User Guide가 다루는 범위를 처음 배우는 사람이 순서대로 읽도록 재배열한 것.</em></span><span class="st-n"><span>69항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/3e3e74b242eff716/" data-key="Amazon ECR" data-total="69" data-text="amazon ecr amazon web services aws 관리형 컨테이너 이미지 레지스트리 amazon elastic container registry 전체 — 프라이빗 레지스트리를 중심축으로 하고 ecr public을 마지막에 붙인다"><span class="sn">6</span><span class="st-body"><b>Amazon ECR</b><em>AWS 관리형 컨테이너 이미지 레지스트리 Amazon Elastic Container Registry 전체 — 프라이빗 레지스트리를 중심축으로 하고 ECR Public을 마지막에 붙인다</em></span><span class="st-n"><span>69항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/c5356d996122422c/" data-key="Amazon ECS" data-total="69" data-text="amazon ecs amazon web services aws 의 완전관리형 컨테이너 오케스트레이션 서비스 amazon elastic container service 를 처음 배우는 사람이 순서대로 읽는 학습 목차"><span class="sn">7</span><span class="st-body"><b>Amazon ECS</b><em>AWS 의 완전관리형 컨테이너 오케스트레이션 서비스 Amazon Elastic Container Service 를 처음 배우는 사람이 순서대로 읽는 학습 목차</em></span><span class="st-n"><span>69항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/fe84f51c8efefb22/" data-key="Amazon EKS" data-total="69" data-text="amazon eks amazon web services aws 클라우드에서 관리형 쿠버네티스 클러스터를 만들고 운영하는 서비스인 amazon elastic kubernetes service(eks)를, 쿠버네티스를 처음 다루는 사람이 위에서 아래로 읽어 실무 운영까지 갈 수 있게 정리한다."><span class="sn">8</span><span class="st-body"><b>Amazon EKS</b><em>AWS 클라우드에서 관리형 쿠버네티스 클러스터를 만들고 운영하는 서비스인 Amazon Elastic Kubernetes Service(EKS)를, 쿠버네티스를 처음 다루는 사람이 위에서 아래로 읽어 실무 운영까지 갈 수 있게 정리한다.</em></span><span class="st-n"><span>69항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/45a33f702aae501d/" data-key="Amazon ElastiCache" data-total="68" data-text="amazon elasticache amazon web services aws 완전관리형 인메모리 캐시 서비스 amazon elasticache 전체 — valkey / redis oss / memcached 세 엔진과 서버리스·노드 기반 두 배포 형태를 모두 포함한다"><span class="sn">9</span><span class="st-body"><b>Amazon ElastiCache</b><em>AWS 완전관리형 인메모리 캐시 서비스 Amazon ElastiCache 전체 — Valkey / Redis OSS / Memcached 세 엔진과 서버리스·노드 기반 두 배포 형태를 모두 포함한다</em></span><span class="st-n"><span>68항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/95f99803e27ecf8e/" data-key="Amazon GuardDuty" data-total="68" data-text="amazon guardduty amazon web services aws 계정·워크로드·데이터를 대상으로 하는 관리형 위협 탐지 서비스 amazon guardduty를, 처음 켜는 사람이 순서대로 익힐 수 있게 배열한다"><span class="sn">10</span><span class="st-body"><b>Amazon GuardDuty</b><em>AWS 계정·워크로드·데이터를 대상으로 하는 관리형 위협 탐지 서비스 Amazon GuardDuty를, 처음 켜는 사람이 순서대로 익힐 수 있게 배열한다</em></span><span class="st-n"><span>68항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/f803782404ab96a1/" data-key="Amazon RDS" data-total="69" data-text="amazon rds amazon web services aws의 관리형 관계형 데이터베이스 서비스 amazon rds(aurora 제외한 db2/mariadb/mysql/sql server/oracle/postgresql 엔진)를 처음 배우는 사람이 순서대로 읽는 관점으로 해석했다."><span class="sn">11</span><span class="st-body"><b>Amazon RDS</b><em>AWS의 관리형 관계형 데이터베이스 서비스 Amazon RDS(Aurora 제외한 Db2/MariaDB/MySQL/SQL Server/Oracle/PostgreSQL 엔진)를 처음 배우는 사람이 순서대로 읽는 관점으로 해석했다.</em></span><span class="st-n"><span>69항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/88e9819e9f9cab4e/" data-key="Amazon S3" data-total="68" data-text="amazon s3 amazon web services aws의 객체 스토리지 서비스 amazon s3 전반 — 버킷/객체 데이터 모델부터 접근 제어, 암호화, 복제, 스토리지 클래스, 관측, 성능, 그리고 디렉터리/테이블/벡터 버킷과 s3 files까지."><span class="sn">12</span><span class="st-body"><b>Amazon S3</b><em>AWS의 객체 스토리지 서비스 Amazon S3 전반 — 버킷/객체 데이터 모델부터 접근 제어, 암호화, 복제, 스토리지 클래스, 관측, 성능, 그리고 디렉터리/테이블/벡터 버킷과 S3 Files까지.</em></span><span class="st-n"><span>68항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/2c05be0043835dae/" data-key="Amazon VPC" data-total="67" data-text="amazon vpc amazon web services aws의 가상 네트워크 서비스 amazon virtual private cloud 를, vpc user guide 를 중심 축으로 두고 같은 vpc 제품군 문서(privatelink·transit gateway·peering·site-to-site vpn·ipam·traffic…"><span class="sn">13</span><span class="st-body"><b>Amazon VPC</b><em>AWS의 가상 네트워크 서비스 Amazon Virtual Private Cloud 를, VPC User Guide 를 중심 축으로 두고 같은 VPC 제품군 문서(PrivateLink·Transit Gateway·Peering·Site-to-Site VPN·IPAM·Traffic…</em></span><span class="st-n"><span>67항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/2505cc3fce76a513/" data-key="AWS Backup" data-total="70" data-text="aws backup amazon web services aws 관리형 중앙 집중식 백업 서비스 aws backup 을 처음 배우는 사람이 위에서 아래로 읽는 순서로 재배열한 목차"><span class="sn">14</span><span class="st-body"><b>AWS Backup</b><em>AWS 관리형 중앙 집중식 백업 서비스 AWS Backup 을 처음 배우는 사람이 위에서 아래로 읽는 순서로 재배열한 목차</em></span><span class="st-n"><span>70항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/83c9716a0b6c800f/" data-key="AWS Certificate Manager" data-total="68" data-text="aws certificate manager amazon web services aws의 관리형 ssl/tls 인증서 발급·저장·갱신 서비스인 aws certificate manager(acm)를, 인증서를 처음 다루는 사람이 위에서 아래로 읽을 수 있게 재배열한 목차"><span class="sn">15</span><span class="st-body"><b>AWS Certificate Manager</b><em>AWS의 관리형 SSL/TLS 인증서 발급·저장·갱신 서비스인 AWS Certificate Manager(ACM)를, 인증서를 처음 다루는 사람이 위에서 아래로 읽을 수 있게 재배열한 목차</em></span><span class="st-n"><span>68항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/7dd956721d18a9db/" data-key="AWS CodeDeploy" data-total="67" data-text="aws codedeploy amazon web services aws의 관리형 배포 서비스인 aws codedeploy를, 세 컴퓨팅 플랫폼(ec2/온프레미스·aws lambda·amazon ecs)에 대한 애플리케이션 배포 자동화 도구로 해석하고 처음 배우는 사람이 위에서 아래로 읽는 순서로 재배열했다."><span class="sn">16</span><span class="st-body"><b>AWS CodeDeploy</b><em>AWS의 관리형 배포 서비스인 AWS CodeDeploy를, 세 컴퓨팅 플랫폼(EC2/온프레미스·AWS Lambda·Amazon ECS)에 대한 애플리케이션 배포 자동화 도구로 해석하고 처음 배우는 사람이 위에서 아래로 읽는 순서로 재배열했다.</em></span><span class="st-n"><span>67항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/2e6bc4d0d8087c7e/" data-key="AWS IAM" data-total="67" data-text="aws iam amazon web services aws identity and access management(iam) 서비스 자체 — 누가(신원) 무엇을(권한) 할 수 있는지를 정의하고 평가하는 aws의 인증·인가 체계."><span class="sn">17</span><span class="st-body"><b>AWS IAM</b><em>AWS Identity and Access Management(IAM) 서비스 자체 — 누가(신원) 무엇을(권한) 할 수 있는지를 정의하고 평가하는 AWS의 인증·인가 체계.</em></span><span class="st-n"><span>67항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/fca46b472f2470c3/" data-key="AWS KMS" data-total="68" data-text="aws kms amazon web services aws key management service — aws 관리형 키 관리·암호화 연산 서비스를 개발자/보안 담당자 관점에서 처음부터 배우는 순서"><span class="sn">18</span><span class="st-body"><b>AWS KMS</b><em>AWS Key Management Service — AWS 관리형 키 관리·암호화 연산 서비스를 개발자/보안 담당자 관점에서 처음부터 배우는 순서</em></span><span class="st-n"><span>68항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/c2c0ed3c82b1a2b3/" data-key="AWS Lambda" data-total="69" data-text="aws lambda amazon web services aws lambda 서버리스 컴퓨팅 서비스 전반 — 함수 작성·배포·설정·권한·호출·스케일링·이벤트 소스 통합·관측, 그리고 durable functions/managed instances/microvms 같은 확장 실행 모델까지"><span class="sn">19</span><span class="st-body"><b>AWS Lambda</b><em>AWS Lambda 서버리스 컴퓨팅 서비스 전반 — 함수 작성·배포·설정·권한·호출·스케일링·이벤트 소스 통합·관측, 그리고 Durable functions/Managed Instances/MicroVMs 같은 확장 실행 모델까지</em></span><span class="st-n"><span>69항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/32d1a11883fefa3f/" data-key="Elastic Load Balancing" data-total="70" data-text="elastic load balancing amazon web services aws elastic load balancing(elb) 서비스 전체 - alb/nlb/gwlb를 중심으로 하고 clb는 이전 세대로만 다룬다"><span class="sn">20</span><span class="st-body"><b>Elastic Load Balancing</b><em>AWS Elastic Load Balancing(ELB) 서비스 전체 - ALB/NLB/GWLB를 중심으로 하고 CLB는 이전 세대로만 다룬다</em></span><span class="st-n"><span>70항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+        </div>
+      </section>
+      <section class="vgroup" id="v-cncf">
+        <div class="vh"><span class="sn">2</span><h2>Cloud Native Computing Foundation</h2><span class="vn">3</span></div>
+        <p class="vsub">쿠버네티스 생태계 오픈소스 재단</p>
+        <div class="stage-grid">
+          <a class="st-card" href="../../p/814cae054287442b/" data-key="Argo CD" data-total="69" data-text="argo cd cloud native computing foundation kubernetes 선언적 gitops 지속적 배포 도구 argo cd 를, 처음 배우는 사람이 위에서 아래로 읽을 수 있게 재배열한 학습 목차"><span class="sn">1</span><span class="st-body"><b>Argo CD</b><em>Kubernetes 선언적 GitOps 지속적 배포 도구 Argo CD 를, 처음 배우는 사람이 위에서 아래로 읽을 수 있게 재배열한 학습 목차</em></span><span class="st-n"><span>69항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/1e6be196b5f9a43d/" data-key="Helm" data-total="67" data-text="helm cloud native computing foundation kubernetes 패키지 매니저 helm — cli 사용법과 차트 저작·배포 전체를 처음부터 순서대로 배우는 과정"><span class="sn">2</span><span class="st-body"><b>Helm</b><em>Kubernetes 패키지 매니저 Helm — CLI 사용법과 차트 저작·배포 전체를 처음부터 순서대로 배우는 과정</em></span><span class="st-n"><span>67항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/3fe4f85bcfcb9101/" data-key="Kubernetes" data-total="67" data-text="kubernetes cloud native computing foundation 컨테이너 오케스트레이션 플랫폼 kubernetes 본체(kubernetes.io 공식 docs 의 concepts·tasks·tutorials·setup·reference)를 처음 배우는 사람이 위에서 아래로 읽는 순서로 재배열했다."><span class="sn">3</span><span class="st-body"><b>Kubernetes</b><em>컨테이너 오케스트레이션 플랫폼 Kubernetes 본체(kubernetes.io 공식 Docs 의 Concepts·Tasks·Tutorials·Setup·Reference)를 처음 배우는 사람이 위에서 아래로 읽는 순서로 재배열했다.</em></span><span class="st-n"><span>67항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+        </div>
+      </section>
+      <section class="vgroup" id="v-cisco">
+        <div class="vh"><span class="sn">3</span><h2>Cisco Systems</h2><span class="vn">3</span></div>
+        <p class="vsub">네트워크 장비와 공인 자격증</p>
+        <div class="stage-grid">
+          <a class="st-card" href="../../p/83c51d1a79c80244/" data-key="350-401_ENCOR_Cisco_Enterprise_Network_Core_Technologies" data-total="68" data-text="350-401_encor_cisco_enterprise_network_core_technologies cisco systems cisco ccnp/ccie enterprise 코어 시험 350-401 encor의 공식 시험 주제 전체를, 처음 배우는 사람이 위에서 아래로 순서대로 읽을 수 있게 재배열한 학습 커리큘럼"><span class="sn">1</span><span class="st-body"><b>350-401_ENCOR_Cisco_Enterprise_Network_Core_Technologies</b><em>Cisco CCNP/CCIE Enterprise 코어 시험 350-401 ENCOR의 공식 시험 주제 전체를, 처음 배우는 사람이 위에서 아래로 순서대로 읽을 수 있게 재배열한 학습 커리큘럼</em></span><span class="st-n"><span>68항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/5be19ccf0f0bf3a4/" data-key="350-601_DCCOR_Cisco_Data_Center_Core_Technologies" data-total="68" data-text="350-601_dccor_cisco_data_center_core_technologies cisco systems cisco ccnp/ccie data center 필수 시험 350-601 dccor(implementing cisco data center core technologies)의 공식 시험 청사진 5개 도메인(network 25% / compute 25% / storage network 20% /…"><span class="sn">2</span><span class="st-body"><b>350-601_DCCOR_Cisco_Data_Center_Core_Technologies</b><em>Cisco CCNP/CCIE Data Center 필수 시험 350-601 DCCOR(Implementing Cisco Data Center Core Technologies)의 공식 시험 청사진 5개 도메인(Network 25% / Compute 25% / Storage Network 20% /…</em></span><span class="st-n"><span>68항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/2d6f15766c0cc71b/" data-key="CCNA_200-301" data-total="66" data-text="ccna_200-301 cisco systems cisco ccna 자격 시험 200-301의 공식 시험 토픽(블루프린트) 전 범위를, 네트워크를 처음 배우는 사람이 위에서 아래로 읽을 수 있도록 재배열한 입문 커리큘럼."><span class="sn">3</span><span class="st-body"><b>CCNA_200-301</b><em>Cisco CCNA 자격 시험 200-301의 공식 시험 토픽(블루프린트) 전 범위를, 네트워크를 처음 배우는 사람이 위에서 아래로 읽을 수 있도록 재배열한 입문 커리큘럼.</em></span><span class="st-n"><span>66항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+        </div>
+      </section>
+      <section class="vgroup" id="v-docker">
+        <div class="vh"><span class="sn">4</span><h2>Docker, Inc.</h2><span class="vn">1</span></div>
+        <p class="vsub">컨테이너 플랫폼</p>
+        <div class="stage-grid">
+          <a class="st-card" href="../../p/891d0f394ac1a0ec/" data-key="Docker" data-total="66" data-text="docker docker, inc. 컨테이너 플랫폼 docker 전반 — docker engine(런타임·이미지·네트워크·스토리지) + dockerfile/buildkit 빌드 + docker compose + 레지스트리/docker hub + 보안·운영."><span class="sn">1</span><span class="st-body"><b>Docker</b><em>컨테이너 플랫폼 Docker 전반 — Docker Engine(런타임·이미지·네트워크·스토리지) + Dockerfile/BuildKit 빌드 + Docker Compose + 레지스트리/Docker Hub + 보안·운영.</em></span><span class="st-n"><span>66항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+        </div>
+      </section>
+      <section class="vgroup" id="v-hashicorp">
+        <div class="vh"><span class="sn">5</span><h2>HashiCorp</h2><span class="vn">1</span></div>
+        <p class="vsub">인프라 자동화 도구</p>
+        <div class="stage-grid">
+          <a class="st-card" href="../../p/2193ed7d49e4fa65/" data-key="Terraform" data-total="68" data-text="terraform hashicorp hashicorp terraform - 선언형 iac 도구."><span class="sn">1</span><span class="st-body"><b>Terraform</b><em>HashiCorp Terraform - 선언형 IaC 도구.</em></span><span class="st-n"><span>68항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+        </div>
+      </section>
+      <section class="vgroup" id="v-github">
+        <div class="vh"><span class="sn">6</span><h2>GitHub</h2><span class="vn">1</span></div>
+        <p class="vsub">코드 호스팅과 자동화</p>
+        <div class="stage-grid">
+          <a class="st-card" href="../../p/0a0957209b9772ab/" data-key="GitHub Actions" data-total="68" data-text="github actions github github 리포지터리에 내장된 이벤트 기반 자동화·ci/cd 플랫폼인 github actions 를, 워크플로 작성부터 러너 운영·보안·배포·재사용·운영까지 처음 배우는 사람이 순서대로 읽도록 재배열했다"><span class="sn">1</span><span class="st-body"><b>GitHub Actions</b><em>GitHub 리포지터리에 내장된 이벤트 기반 자동화·CI/CD 플랫폼인 GitHub Actions 를, 워크플로 작성부터 러너 운영·보안·배포·재사용·운영까지 처음 배우는 사람이 순서대로 읽도록 재배열했다</em></span><span class="st-n"><span>68항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+        </div>
+      </section>
+      <section class="vgroup" id="v-git">
+        <div class="vh"><span class="sn">7</span><h2>Git 프로젝트</h2><span class="vn">1</span></div>
+        <p class="vsub">분산 버전 관리 오픈소스</p>
+        <div class="stage-grid">
+          <a class="st-card" href="../../p/9fb306559a5f797f/" data-key="Git" data-total="69" data-text="git git 프로젝트 분산 버전 관리 시스템 git 본체(공식 cli와 그 개념 모델)를 처음 배우는 사람이 순서대로 읽는 커리큘럼."><span class="sn">1</span><span class="st-body"><b>Git</b><em>분산 버전 관리 시스템 Git 본체(공식 CLI와 그 개념 모델)를 처음 배우는 사람이 순서대로 읽는 커리큘럼.</em></span><span class="st-n"><span>69항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+        </div>
+      </section>
+      <section class="vgroup" id="v-microsoft">
+        <div class="vh"><span class="sn">8</span><h2>Microsoft</h2><span class="vn">1</span></div>
+        <p class="vsub">서버 운영체제와 클라우드</p>
+        <div class="stage-grid">
+          <a class="st-card" href="../../p/43ef5db39672f2ff/" data-key="Windows Server" data-total="69" data-text="windows server microsoft microsoft가 만드는 서버용 운영체제 windows server 자체와, 그 위에서 동작하는 기본 역할·기능(디렉터리, 파일/스토리지, 네트워크, 가상화, 클러스터링, 원격 접근, 보안·운영)을 처음 배우는 사람이 순서대로 읽을 수 있게 재배열한 것."><span class="sn">1</span><span class="st-body"><b>Windows Server</b><em>Microsoft가 만드는 서버용 운영체제 Windows Server 자체와, 그 위에서 동작하는 기본 역할·기능(디렉터리, 파일/스토리지, 네트워크, 가상화, 클러스터링, 원격 접근, 보안·운영)을 처음 배우는 사람이 순서대로 읽을 수 있게 재배열한 것.</em></span><span class="st-n"><span>69항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+        </div>
+      </section>
+      <section class="vgroup" id="v-fortinet">
+        <div class="vh"><span class="sn">9</span><h2>Fortinet</h2><span class="vn">1</span></div>
+        <p class="vsub">네트워크 보안 장비</p>
+        <div class="stage-grid">
+          <a class="st-card" href="../../p/d0ae411527bdaeb9/" data-key="FortiGate_7.6_Administrator" data-total="70" data-text="fortigate_7.6_administrator fortinet fortios 7.6 이 올라간 fortigate 방화벽을 실무에서 관리하는 관리자(administrator)가 알아야 할 전 범위 — administration guide 를 기준으로 한 운영 커리큘럼"><span class="sn">1</span><span class="st-body"><b>FortiGate_7.6_Administrator</b><em>FortiOS 7.6 이 올라간 FortiGate 방화벽을 실무에서 관리하는 관리자(Administrator)가 알아야 할 전 범위 — Administration Guide 를 기준으로 한 운영 커리큘럼</em></span><span class="st-n"><span>70항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+        </div>
+      </section>
+      <section class="vgroup" id="v-neutral">
+        <div class="vh"><span class="sn">10</span><h2>벤더 중립</h2><span class="vn">2</span></div>
+        <p class="vsub">특정 회사에 매이지 않는 방법론·관행</p>
+        <div class="stage-grid">
+          <a class="st-card" href="../../p/82e8bf40cc0df9a3/" data-key="CICD" data-total="68" data-text="cicd 벤더 중립 cicd = ci/cd(지속적 통합·지속적 전달/배포) 파이프라인을 설계·구축·운영하는 법."><span class="sn">1</span><span class="st-body"><b>CICD</b><em>CICD = CI/CD(지속적 통합·지속적 전달/배포) 파이프라인을 설계·구축·운영하는 법.</em></span><span class="st-n"><span>68항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+          <a class="st-card" href="../../p/b6a627d6ef33d47b/" data-key="DevOps" data-total="67" data-text="devops 벤더 중립 devops를 특정 벤더 제품(예: azure devops)이 아니라 '개발과 운영을 잇는 소프트웨어 전달 실천(문화·프로세스·자동화 도구체인)' 이라는 가장 일반적인 해석으로 잡고, 공식 문서가 존재하는 표준 실천(dora 역량 모델)과 정본 도구 문서(git, github actions…"><span class="sn">2</span><span class="st-body"><b>DevOps</b><em>DevOps를 특정 벤더 제품(예: Azure DevOps)이 아니라 '개발과 운영을 잇는 소프트웨어 전달 실천(문화·프로세스·자동화 도구체인)' 이라는 가장 일반적인 해석으로 잡고, 공식 문서가 존재하는 표준 실천(DORA 역량 모델)과 정본 도구 문서(Git, GitHub Actions…</em></span><span class="st-n"><span>67항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>
+        </div>
+      </section>
+      <p class="note">읽은 진도와 화면 배율은 이 브라우저에만 저장된다. 다른 기기에서는 따로 쌓인다.</p>
+    </div>
+  </div>
+</main>
+</div>
+<button type="button" class="burger" aria-label="목록 열기">☰</button>
+<script>
+(function(){
+  var cards=[].slice.call(document.querySelectorAll('.st-card'));
+  var navs=[].slice.call(document.querySelectorAll('.nav-item'));
+  var groups=[].slice.call(document.querySelectorAll('.vgroup'));
+  var stages=[].slice.call(document.querySelectorAll('.nav-stage'));
+  var filter=document.querySelector('.filter');
+  var empty=document.querySelector('.nav-empty');
+  var pos=document.querySelector('.topbar .pos');
+  var side=document.querySelector('.side');
+  var scrim=document.querySelector('.scrim');
+  var NS='it-2026-09-05:';
+
+  // ── 읽은 진도 : 학습자료 페이지들과 같은 오리진이라 그 기록을 그대로 읽을 수 있다
+  var best=null;
+  cards.forEach(function(c){
+    var total=+c.getAttribute('data-total')||0, seen=0;
+    try{
+      var raw=localStorage.getItem(NS+c.getAttribute('data-key'));
+      if(raw){
+        var o=JSON.parse(raw);
+        if(o&&Array.isArray(o.seen)) seen=o.seen.length;
+        if(o&&o.last&&seen&&(!best||seen>best.seen)) best={card:c,seen:seen,total:total,last:o.last};
+      }
+    }catch(e){}
+    if(!total||!seen) return;
+    var p=Math.min(100,Math.round(seen/total*100));
+    c.querySelector('.bar i').style.width=p+'%';
+    c.querySelector('.pct').textContent=p+'%';
+    if(p>=100) c.classList.add('done');
+  });
+  if(best){
+    var r=document.querySelector('.resume');
+    r.classList.add('on');
+    var a=r.querySelector('a');
+    a.href=best.card.getAttribute('href')+'#'+best.last;
+    a.querySelector('b').textContent=best.card.querySelector('b').textContent;
+    a.querySelector('em').textContent=best.seen+' / '+best.total+' 읽음';
+  }
+
+  // ── 필터 : 사이드바와 카드를 같이 걸러 낸다
+  function apply(){
+    var q=filter.value.trim().toLowerCase(), n=0;
+    cards.forEach(function(c){
+      var hit=!q||c.getAttribute('data-text').indexOf(q)>-1;
+      c.classList.toggle('hide',!hit); if(hit) n++;
+    });
+    navs.forEach(function(a){
+      a.classList.toggle('hide',!(!q||a.getAttribute('data-text').indexOf(q)>-1));
+    });
+    groups.forEach(function(g){ g.classList.toggle('hide',!g.querySelector('.st-card:not(.hide)')); });
+    stages.forEach(function(s){ s.classList.toggle('hide',!s.querySelector('.nav-item:not(.hide)')); });
+    empty.classList.toggle('hide',n>0);
+    pos.textContent=q?(n+' / '+cards.length):'';
+  }
+  filter.addEventListener('input',apply);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='/'&&document.activeElement!==filter){ e.preventDefault(); filter.focus(); filter.select(); }
+    else if(e.key==='Escape'&&document.activeElement===filter){ filter.value=''; apply(); filter.blur(); }
+  });
+
+  // ── 화면 배율 : 학습자료 페이지와 같은 키를 써서 설정이 이어진다
+  var ZK=NS+'zoom', ZS=[1,1.25,1.5,1.75], z=1.5;
+  try{ var zz=parseFloat(localStorage.getItem(ZK)); if(ZS.indexOf(zz)>-1) z=zz; }catch(e){}
+  var zb=document.querySelector('.zoom');
+  function narrow(){ document.documentElement.classList.toggle('narrow', window.innerWidth/z<900); }
+  function applyZoom(){ document.documentElement.style.setProperty('--zoom',z); zb.textContent=Math.round(z*100)+'%';
+    try{ localStorage.setItem(ZK,z); }catch(e){} narrow(); }
+  zb.addEventListener('click',function(){ z=ZS[(ZS.indexOf(z)+1)%ZS.length]; applyZoom(); });
+  window.addEventListener('resize',narrow);
+  applyZoom();
+
+  // ── 모바일 서랍
+  var burger=document.querySelector('.burger');
+  function drawer(on){ side.classList.toggle('open',on); scrim.classList.toggle('on',on); }
+  burger.addEventListener('click',function(){ drawer(!side.classList.contains('open')); });
+  scrim.addEventListener('click',function(){ drawer(false); });
+})();
+</script>
+</body></html>

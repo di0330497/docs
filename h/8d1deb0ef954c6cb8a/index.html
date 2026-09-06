@@ -48,8 +48,9 @@ body{zoom:var(--zoom)}
   background:none;border:0;border-radius:6px;font-family:inherit;text-align:left;cursor:pointer}
 .nav-stage-t:hover{background:var(--surface-2);color:var(--fg-dim)}
 .nav-stage-t .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.nav-stage-t .cx{margin-left:auto;flex:0 0 auto;font-size:9px;color:var(--faint);
+.cx{flex:0 0 9px;font-size:11px;line-height:1;color:var(--faint);
   transition:transform .15s ease;transform:rotate(90deg)}
+.nav-stage-t:hover .cx,.vh:hover .cx{color:var(--blue)}
 .nav-stage.collapsed .nav-stage-t .cx{transform:none}
 .nav-stage.collapsed .nav-item{display:none}
 /* 검색 중에는 접어 둔 묶음도 결과를 보여 준다 — 안 그러면 "없다"고 오해한다 */
@@ -114,7 +115,6 @@ h1{margin:0;font-size:clamp(34px,5vw,54px);line-height:1.12;letter-spacing:-.03e
 .vh h2{margin:0;font-size:17px;font-weight:700;letter-spacing:-.015em}
 .vh .vn{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--faint);
   background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:2px 7px}
-.vh .cx{flex:0 0 auto;font-size:10px;color:var(--faint);transition:transform .15s ease;transform:rotate(90deg)}
 .vgroup.collapsed .vh .cx{transform:none}
 .vgroup.collapsed .vsub{display:none}
 .vgroup.collapsed .stage-grid{display:none}
@@ -141,10 +141,11 @@ body.searching .vgroup.collapsed .vsub{display:block}
 .st-n{font-family:var(--mono);font-size:11.5px;color:var(--faint);flex:0 0 auto;
   display:flex;flex-direction:column;align-items:flex-end;gap:5px;padding-top:2px}
 /* 읽은 비율 — 각 토픽 페이지가 localStorage 에 남긴 기록을 그대로 읽는다 */
-.bar{width:54px;height:3px;border-radius:2px;background:var(--line-2);overflow:hidden}
+.bar{display:none;width:54px;height:3px;border-radius:2px;background:var(--line-2);overflow:hidden}
+.st-card.read .bar{display:block}
 .bar i{display:block;height:100%;width:0;background:var(--blue);border-radius:2px}
 .st-card.done .bar i{background:var(--green)}
-.pct{font-size:10px;color:var(--faint);min-height:15px}
+.pct{font-size:10px;color:var(--faint)}
 .st-card.done .pct{color:var(--green)}
 
 .note{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);
@@ -177,7 +178,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
   </div>
   <nav class="tree">
     <div class="nav-stage" data-v="aws">
-      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">1</span><span class="nm">Amazon Web Services</span><span class="cx">▸</span></button>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="cx">▸</span><span class="sn">1</span><span class="nm">Amazon Web Services</span></button>
       <a class="nav-item" href="../../p/35b7298fe89ce0ca/" data-text="amazon aurora amazon web services">Amazon Aurora<span class="nid">69</span></a>
       <a class="nav-item" href="../../p/202060ea4f3d456b/" data-text="amazon cloudfront amazon web services">Amazon CloudFront<span class="nid">69</span></a>
       <a class="nav-item" href="../../p/58c5c246e8435081/" data-text="amazon cloudwatch amazon web services">Amazon CloudWatch<span class="nid">69</span></a>
@@ -200,43 +201,43 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
       <a class="nav-item" href="../../p/32d1a11883fefa3f/" data-text="elastic load balancing amazon web services">Elastic Load Balancing<span class="nid">70</span></a>
     </div>
     <div class="nav-stage" data-v="cncf">
-      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">2</span><span class="nm">Cloud Native Computing Foundation</span><span class="cx">▸</span></button>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="cx">▸</span><span class="sn">2</span><span class="nm">Cloud Native Computing Foundation</span></button>
       <a class="nav-item" href="../../p/814cae054287442b/" data-text="argo cd cloud native computing foundation">Argo CD<span class="nid">69</span></a>
       <a class="nav-item" href="../../p/1e6be196b5f9a43d/" data-text="helm cloud native computing foundation">Helm<span class="nid">67</span></a>
       <a class="nav-item" href="../../p/3fe4f85bcfcb9101/" data-text="kubernetes cloud native computing foundation">Kubernetes<span class="nid">67</span></a>
     </div>
     <div class="nav-stage" data-v="cisco">
-      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">3</span><span class="nm">Cisco Systems</span><span class="cx">▸</span></button>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="cx">▸</span><span class="sn">3</span><span class="nm">Cisco Systems</span></button>
       <a class="nav-item" href="../../p/83c51d1a79c80244/" data-text="350-401_encor_cisco_enterprise_network_core_technologies cisco systems">350-401_ENCOR_Cisco_Enterprise_Network_Core_Technologies<span class="nid">68</span></a>
       <a class="nav-item" href="../../p/5be19ccf0f0bf3a4/" data-text="350-601_dccor_cisco_data_center_core_technologies cisco systems">350-601_DCCOR_Cisco_Data_Center_Core_Technologies<span class="nid">68</span></a>
       <a class="nav-item" href="../../p/2d6f15766c0cc71b/" data-text="ccna_200-301 cisco systems">CCNA_200-301<span class="nid">66</span></a>
     </div>
     <div class="nav-stage" data-v="docker">
-      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">4</span><span class="nm">Docker, Inc.</span><span class="cx">▸</span></button>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="cx">▸</span><span class="sn">4</span><span class="nm">Docker, Inc.</span></button>
       <a class="nav-item" href="../../p/891d0f394ac1a0ec/" data-text="docker docker, inc.">Docker<span class="nid">66</span></a>
     </div>
     <div class="nav-stage" data-v="hashicorp">
-      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">5</span><span class="nm">HashiCorp</span><span class="cx">▸</span></button>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="cx">▸</span><span class="sn">5</span><span class="nm">HashiCorp</span></button>
       <a class="nav-item" href="../../p/2193ed7d49e4fa65/" data-text="terraform hashicorp">Terraform<span class="nid">68</span></a>
     </div>
     <div class="nav-stage" data-v="github">
-      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">6</span><span class="nm">GitHub</span><span class="cx">▸</span></button>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="cx">▸</span><span class="sn">6</span><span class="nm">GitHub</span></button>
       <a class="nav-item" href="../../p/0a0957209b9772ab/" data-text="github actions github">GitHub Actions<span class="nid">68</span></a>
     </div>
     <div class="nav-stage" data-v="git">
-      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">7</span><span class="nm">Git 프로젝트</span><span class="cx">▸</span></button>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="cx">▸</span><span class="sn">7</span><span class="nm">Git 프로젝트</span></button>
       <a class="nav-item" href="../../p/9fb306559a5f797f/" data-text="git git 프로젝트">Git<span class="nid">69</span></a>
     </div>
     <div class="nav-stage" data-v="microsoft">
-      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">8</span><span class="nm">Microsoft</span><span class="cx">▸</span></button>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="cx">▸</span><span class="sn">8</span><span class="nm">Microsoft</span></button>
       <a class="nav-item" href="../../p/43ef5db39672f2ff/" data-text="windows server microsoft">Windows Server<span class="nid">69</span></a>
     </div>
     <div class="nav-stage" data-v="fortinet">
-      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">9</span><span class="nm">Fortinet</span><span class="cx">▸</span></button>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="cx">▸</span><span class="sn">9</span><span class="nm">Fortinet</span></button>
       <a class="nav-item" href="../../p/d0ae411527bdaeb9/" data-text="fortigate_7.6_administrator fortinet">FortiGate_7.6_Administrator<span class="nid">70</span></a>
     </div>
     <div class="nav-stage" data-v="neutral">
-      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">10</span><span class="nm">벤더 중립</span><span class="cx">▸</span></button>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="cx">▸</span><span class="sn">10</span><span class="nm">벤더 중립</span></button>
       <a class="nav-item" href="../../p/82e8bf40cc0df9a3/" data-text="cicd 벤더 중립">CICD<span class="nid">68</span></a>
       <a class="nav-item" href="../../p/b6a627d6ef33d47b/" data-text="devops 벤더 중립">DevOps<span class="nid">67</span></a>
     </div>
@@ -389,6 +390,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
     }catch(e){}
     if(!total||!seen) return;
     var p=Math.min(100,Math.round(seen/total*100));
+    c.classList.add('read');
     c.querySelector('.bar i').style.width=p+'%';
     c.querySelector('.pct').textContent=p+'%';
     if(p>=100) c.classList.add('done');

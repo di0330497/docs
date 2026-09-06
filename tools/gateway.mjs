@@ -48,8 +48,9 @@ body{zoom:var(--zoom)}
   background:none;border:0;border-radius:6px;font-family:inherit;text-align:left;cursor:pointer}
 .nav-stage-t:hover{background:var(--surface-2);color:var(--fg-dim)}
 .nav-stage-t .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.nav-stage-t .cx{margin-left:auto;flex:0 0 auto;font-size:9px;color:var(--faint);
+.cx{flex:0 0 9px;font-size:11px;line-height:1;color:var(--faint);
   transition:transform .15s ease;transform:rotate(90deg)}
+.nav-stage-t:hover .cx,.vh:hover .cx{color:var(--blue)}
 .nav-stage.collapsed .nav-stage-t .cx{transform:none}
 .nav-stage.collapsed .nav-item{display:none}
 /* 검색 중에는 접어 둔 묶음도 결과를 보여 준다 — 안 그러면 "없다"고 오해한다 */
@@ -114,7 +115,6 @@ h1{margin:0;font-size:clamp(34px,5vw,54px);line-height:1.12;letter-spacing:-.03e
 .vh h2{margin:0;font-size:17px;font-weight:700;letter-spacing:-.015em}
 .vh .vn{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--faint);
   background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:2px 7px}
-.vh .cx{flex:0 0 auto;font-size:10px;color:var(--faint);transition:transform .15s ease;transform:rotate(90deg)}
 .vgroup.collapsed .vh .cx{transform:none}
 .vgroup.collapsed .vsub{display:none}
 .vgroup.collapsed .stage-grid{display:none}
@@ -141,10 +141,11 @@ body.searching .vgroup.collapsed .vsub{display:block}
 .st-n{font-family:var(--mono);font-size:11.5px;color:var(--faint);flex:0 0 auto;
   display:flex;flex-direction:column;align-items:flex-end;gap:5px;padding-top:2px}
 /* 읽은 비율 — 각 토픽 페이지가 localStorage 에 남긴 기록을 그대로 읽는다 */
-.bar{width:54px;height:3px;border-radius:2px;background:var(--line-2);overflow:hidden}
+.bar{display:none;width:54px;height:3px;border-radius:2px;background:var(--line-2);overflow:hidden}
+.st-card.read .bar{display:block}
 .bar i{display:block;height:100%;width:0;background:var(--blue);border-radius:2px}
 .st-card.done .bar i{background:var(--green)}
-.pct{font-size:10px;color:var(--faint);min-height:15px}
+.pct{font-size:10px;color:var(--faint)}
 .st-card.done .pct{color:var(--green)}
 
 .note{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);
@@ -176,7 +177,7 @@ export function renderGateway({ topics, noindex, updated }) {
   const totalItems = topics.reduce((n, t) => n + (t.items || 0), 0);
 
   const nav = groups.map((g, gi) => `    <div class="nav-stage" data-v="${g.id}">
-      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="sn">${gi + 1}</span><span class="nm">${esc(g.name)}</span><span class="cx">▸</span></button>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="cx">▸</span><span class="sn">${gi + 1}</span><span class="nm">${esc(g.name)}</span></button>
 ${g.items.map((t) => `      <a class="nav-item" href="${t.href}" data-text="${esc((t.title + ' ' + g.name).toLowerCase())}">${esc(t.title)}<span class="nid">${t.items || ''}</span></a>`).join('\n')}
     </div>`).join('\n');
 
@@ -261,6 +262,7 @@ ${cards}
     }catch(e){}
     if(!total||!seen) return;
     var p=Math.min(100,Math.round(seen/total*100));
+    c.classList.add('read');
     c.querySelector('.bar i').style.width=p+'%';
     c.querySelector('.pct').textContent=p+'%';
     if(p>=100) c.classList.add('done');

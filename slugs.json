@@ -34,6 +34,7 @@
     "Helm": "1e6be196b5f9a43d",
     "Kubernetes": "3fe4f85bcfcb9101",
     "Terraform": "2193ed7d49e4fa65",
-    "Windows_Server": "43ef5db39672f2ff"
+    "Windows_Server": "43ef5db39672f2ff",
+    "Amazon_Opensearch": "6d9c541550487a14"
   }
 }

@@ -19,7 +19,7 @@ export const VENDORS = [
   { id: 'fortinet',  name: 'Fortinet', sub: '네트워크 보안 장비',
     test: (t) => /^Forti/.test(t) },
   { id: 'neutral',   name: '벤더 중립', sub: '특정 회사에 매이지 않는 방법론·관행',
-    test: (t) => ['DevOps', 'CICD', 'CI_CD', 'SRE', 'Agile', 'SDLC', 'ITGC', 'ITSM'].includes(t) },
+    test: (t) => ['DevOps', 'CICD', 'CI_CD', 'SRE', 'Agile', 'SDLC', 'ITGC', 'ITSM', 'ITIL'].includes(t) },
   { id: 'ietf',      name: 'Internet Engineering Task Force', sub: '인터넷 프로토콜 표준(RFC)',
     test: (t) => /^(TCP_IP|TCP|UDP|HTTP|DNS|TLS|IPv[46])/.test(t) },
   { id: 'etc',       name: '기타', sub: '아직 분류되지 않은 토픽', test: () => true },

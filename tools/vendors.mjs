@@ -18,6 +18,8 @@ export const VENDORS = [
     test: (t) => /^(Windows|Azure|Active_Directory)/.test(t) },
   { id: 'fortinet',  name: 'Fortinet', sub: '네트워크 보안 장비',
     test: (t) => /^Forti/.test(t) },
+  { id: 'stanford', name: 'Stanford University', sub: '대학 공개 강의',
+    test: (t) => /^(CS|EE|STATS|MS&E)\d{2,3}[A-Z]?(_|$)/.test(t) },
   { id: 'neutral',   name: '벤더 중립', sub: '특정 회사에 매이지 않는 방법론·관행',
     test: (t) => ['DevOps', 'CICD', 'CI_CD', 'SRE', 'Agile', 'SDLC', 'ITGC', 'ITSM', 'ITIL'].includes(t) },
   { id: 'opengroup', name: 'The Open Group', sub: '엔터프라이즈 아키텍처 표준',

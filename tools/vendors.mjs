@@ -28,3 +28,19 @@ export const VENDORS = [
 ];
 
 export const vendorOf = (topic) => VENDORS.find((v) => v.test(topic));
+
+// ── 두 번째 축 : 같은 벤더 안에서 서비스·제품과 공인 자격증을 가른다 ──
+// 벤더 한 축만으로는 AWS 그룹에 S3 와 시험 대비서가 한 덩어리로 섞인다.
+// 배열 순서가 곧 화면에 그려지는 순서다. 두 test 는 서로 배타적이라 먼저 맞는 쪽 규칙이 필요 없다.
+const isCert = (t) =>
+  /(^|_)Certified(_|$)/.test(t)          // AWS_Certified_*
+  || /^(CCNA|CCNP|CCIE|CCDE)/.test(t)    // Cisco 자격증
+  || /^\d{3}-\d{3}_/.test(t)             // 350-401_ENCOR 같은 시험 코드
+  || /_(Administrator|Specialist|Professional|Associate)$/.test(t);
+
+export const KINDS = [
+  { id: 'product', name: '서비스 · 제품', test: (t) => !isCert(t) },
+  { id: 'cert',    name: '공인 자격증',   test: isCert },
+];
+
+export const kindOf = (topic) => KINDS.find((k) => k.test(topic));

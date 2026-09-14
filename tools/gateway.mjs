@@ -1,5 +1,5 @@
 // 게이트웨이(색인) 페이지 — 실제 학습자료 페이지와 같은 토큰·클래스·조작감을 쓴다.
-import { VENDORS } from './vendors.mjs';
+import { VENDORS, KINDS } from './vendors.mjs';
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
@@ -122,6 +122,22 @@ h1{margin:0;font-size:clamp(34px,5vw,54px);line-height:1.12;letter-spacing:-.03e
 body.searching .vgroup.collapsed .stage-grid{display:grid}
 body.searching .vgroup.collapsed .vsub{display:block}
 .vsub{margin:0 0 14px 29px;font-size:12.5px;color:var(--muted)}
+/* 벤더 안의 소분류 — 서비스·제품 / 공인 자격증 */
+.kpart{margin:0 0 20px}
+.kpart:last-child{margin-bottom:0}
+.kpart.hide{display:none}
+.kh{display:flex;align-items:center;gap:9px;margin:0 0 9px 2px;font-family:var(--mono);font-size:10.5px;
+  font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.kh .kc{font-weight:400;color:var(--faint)}
+.kh::after{content:"";flex:1;height:1px;background:var(--line)}
+.vgroup.collapsed .kpart{display:none}
+body.searching .vgroup.collapsed .kpart{display:block}
+.nav-kgrp.hide{display:none}
+.nav-kh{margin:7px 0 2px 30px;font-family:var(--mono);font-size:10px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.nav-stage.collapsed .nav-kh{display:none}
+body.searching .nav-stage.collapsed .nav-kh{display:block}
+
 /* 모두 접기·펴기 */
 .foldall{display:flex;gap:6px;margin:0 0 18px}
 .foldall button{all:unset;cursor:pointer;padding:4px 10px;border:1px solid var(--line-2);border-radius:6px;
@@ -170,23 +186,39 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 
 export function renderGateway({ topics, noindex, updated }) {
   // 벤더별로 묶고 정의된 순서대로 늘어놓는다. 해당 토픽이 없는 벤더는 뺀다.
+  // 벤더 안에서 다시 서비스·제품 / 공인 자격증으로 가른다.
+  // 한 종류뿐인 벤더는 소분류 라벨 없이 예전처럼 한 덩어리로 그린다.
   const groups = VENDORS
-    .map((v) => ({ ...v, items: topics.filter((t) => t.vendor === v.id) }))
+    .map((v) => {
+      const items = topics.filter((t) => t.vendor === v.id);
+      const parts = KINDS
+        .map((k) => ({ ...k, items: items.filter((t) => t.kind === k.id) }))
+        .filter((p) => p.items.length);
+      return { ...v, items, parts, split: parts.length > 1 };
+    })
     .filter((g) => g.items.length);
 
   const totalItems = topics.reduce((n, t) => n + (t.items || 0), 0);
 
+  const navItem = (g, t) => `        <a class="nav-item" href="${t.href}" data-text="${esc((t.title + ' ' + g.name).toLowerCase())}">${esc(t.title)}<span class="nid">${t.items || ''}</span></a>`;
+
   const nav = groups.map((g, gi) => `    <div class="nav-stage" data-v="${g.id}">
       <button type="button" class="nav-stage-t" aria-expanded="true"><span class="cx">▸</span><span class="sn">${gi + 1}</span><span class="nm">${esc(g.name)}</span></button>
-${g.items.map((t) => `      <a class="nav-item" href="${t.href}" data-text="${esc((t.title + ' ' + g.name).toLowerCase())}">${esc(t.title)}<span class="nid">${t.items || ''}</span></a>`).join('\n')}
+${g.parts.map((p) => `      <div class="nav-kgrp" data-k="${p.id}">
+${g.split ? `        <p class="nav-kh">${esc(p.name)}</p>\n` : ''}${p.items.map((t) => navItem(g, t)).join('\n')}
+      </div>`).join('\n')}
     </div>`).join('\n');
+
+  const card = (g, p, t, i) => `            <a class="st-card" href="${t.href}" data-key="${esc(t.key)}" data-total="${t.items || 0}" data-text="${esc((t.title + ' ' + g.name + ' ' + p.name + ' ' + t.lead).toLowerCase())}"><span class="sn">${i + 1}</span><span class="st-body"><b>${esc(t.title)}</b><em>${esc(t.lead)}</em></span><span class="st-n"><span>${t.items || '?'}항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>`;
 
   const cards = groups.map((g, gi) => `      <section class="vgroup" id="v-${g.id}" data-v="${g.id}">
         <button type="button" class="vh" aria-expanded="true"><span class="cx">▸</span><span class="sn">${gi + 1}</span><h2>${esc(g.name)}</h2><span class="vn">${g.items.length}</span></button>
         <p class="vsub">${esc(g.sub)}</p>
-        <div class="stage-grid">
-${g.items.map((t, i) => `          <a class="st-card" href="${t.href}" data-key="${esc(t.key)}" data-total="${t.items || 0}" data-text="${esc((t.title + ' ' + g.name + ' ' + t.lead).toLowerCase())}"><span class="sn">${i + 1}</span><span class="st-body"><b>${esc(t.title)}</b><em>${esc(t.lead)}</em></span><span class="st-n"><span>${t.items || '?'}항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>`).join('\n')}
-        </div>
+${g.parts.map((p) => `        <div class="kpart" data-k="${p.id}">
+${g.split ? `          <p class="kh"><span class="kn">${esc(p.name)}</span><span class="kc">${p.items.length}</span></p>\n` : ''}          <div class="stage-grid">
+${p.items.map((t, i) => card(g, p, t, i)).join('\n')}
+          </div>
+        </div>`).join('\n')}
       </section>`).join('\n');
 
   return `<!doctype html>
@@ -220,9 +252,9 @@ ${nav}
       <div class="stats"><span class="stat"><b>${topics.length}</b>토픽</span><span class="stat"><b>${groups.length}</b>벤더</span><span class="stat"><b>${totalItems.toLocaleString('en-US')}</b>항목</span></div>
       <div class="resume"><a href="#"><span class="tag">이어서 읽기</span><b></b><em></em></a></div>
       <section class="panel">
-        <p class="lead">공식 문서를 근거로 만든 IT 학습자료 모음이다. 만든 회사·재단 기준으로 묶었고, 카드를 누르면 해당 자료로 바로 넘어간다. 읽은 진도는 각 자료가 이 브라우저에 남긴 기록을 그대로 읽어 표시한다.</p>
+        <p class="lead">공식 문서를 근거로 만든 IT 학습자료 모음이다. 만든 회사·재단 기준으로 묶고, 그 안에서 다시 서비스·제품과 공인 자격증으로 갈랐다. 카드를 누르면 해당 자료로 바로 넘어간다. 읽은 진도는 각 자료가 이 브라우저에 남긴 기록을 그대로 읽어 표시한다.</p>
         <dl class="kv">
-          <div><dt>분류</dt><dd>벤더 · 제조사 · 개발사</dd></div>
+          <div><dt>분류</dt><dd>벤더 → 서비스 · 자격증</dd></div>
           <div><dt>갱신</dt><dd>${updated}</dd></div>
           <div><dt>색인</dt><dd>검색엔진 비노출</dd></div>
         </dl>
@@ -240,6 +272,8 @@ ${cards}
   var cards=[].slice.call(document.querySelectorAll('.st-card'));
   var navs=[].slice.call(document.querySelectorAll('.nav-item'));
   var groups=[].slice.call(document.querySelectorAll('.vgroup'));
+  var kparts=[].slice.call(document.querySelectorAll('.kpart'));
+  var kgrps=[].slice.call(document.querySelectorAll('.nav-kgrp'));
   var stages=[].slice.call(document.querySelectorAll('.nav-stage'));
   var filter=document.querySelector('.filter');
   var empty=document.querySelector('.nav-empty');
@@ -323,6 +357,8 @@ ${cards}
     navs.forEach(function(a){
       a.classList.toggle('hide',!(!q||a.getAttribute('data-text').indexOf(q)>-1));
     });
+    kparts.forEach(function(k){ k.classList.toggle('hide',!k.querySelector('.st-card:not(.hide)')); });
+    kgrps.forEach(function(k){ k.classList.toggle('hide',!k.querySelector('.nav-item:not(.hide)')); });
     groups.forEach(function(g){ g.classList.toggle('hide',!g.querySelector('.st-card:not(.hide)')); });
     stages.forEach(function(s){ s.classList.toggle('hide',!s.querySelector('.nav-item:not(.hide)')); });
     empty.classList.toggle('hide',n>0);

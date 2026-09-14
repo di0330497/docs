@@ -4,7 +4,7 @@ import { readdirSync, statSync, readFileSync, writeFileSync, mkdirSync, rmSync, 
 import { randomBytes } from 'node:crypto';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { vendorOf } from './vendors.mjs';
+import { vendorOf, kindOf } from './vendors.mjs';
 import { renderGateway } from './gateway.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -95,6 +95,7 @@ for (const t of topics) {
   const src = readFileSync(t.file, 'utf8');
   Object.assign(t, meta(src), {
     vendor: vendorOf(t.topic).id,
+    kind: kindOf(t.topic).id,
     href: `../../p/${slugs.pages[t.topic]}/`,
   });
   if (!t.title) t.title = t.topic.replace(/_/g, ' ');

@@ -11,6 +11,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SOURCES = [
   'C:/Users/user/Downloads/IT-2026-09-05-v2/out',
   'C:/Users/user/Downloads/IT-eli5/out',
+  'C:/Users/user/Downloads/it-course-pipeline/out',
 ];
 
 const NOINDEX =

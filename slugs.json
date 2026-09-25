@@ -60,6 +60,7 @@
     "podman": "871abd31df1b012e",
     "Implementing_and_Administering_Cisco_Solutions_200-301_CCNA": "3986b95d6d0208ab",
     "Implementing_Cisco_Enterprise_Network_Core_Technologies_350-401_ENCOR": "05d84e24f2d900f2",
-    "Amazon_SQS": "69b935e14c73b52f"
+    "Amazon_SQS": "69b935e14c73b52f",
+    "Amazon_EventBridge": "07efc47f28ee8668"
   }
 }

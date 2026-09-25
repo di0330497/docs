@@ -62,6 +62,7 @@
     "Implementing_Cisco_Enterprise_Network_Core_Technologies_350-401_ENCOR": "05d84e24f2d900f2",
     "Amazon_SQS": "69b935e14c73b52f",
     "Amazon_EventBridge": "07efc47f28ee8668",
-    "Amazon_EFS": "c4ece8959cb46a4d"
+    "Amazon_EFS": "c4ece8959cb46a4d",
+    "Amazon_Route_53": "1edfd6bfce5bc604"
   }
 }

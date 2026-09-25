@@ -63,6 +63,7 @@
     "Amazon_SQS": "69b935e14c73b52f",
     "Amazon_EventBridge": "07efc47f28ee8668",
     "Amazon_EFS": "c4ece8959cb46a4d",
-    "Amazon_Route_53": "1edfd6bfce5bc604"
+    "Amazon_Route_53": "1edfd6bfce5bc604",
+    "Amazon_SNS": "a999b16caaa2e5c8"
   }
 }

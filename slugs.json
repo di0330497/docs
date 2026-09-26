@@ -67,9 +67,6 @@
     "Amazon_SNS": "a999b16caaa2e5c8",
     "Amazon_API_Gateway": "1e81bf174c78697a",
     "AWS_WAF": "553ab8c08eb23335",
-    "AWS_Shield": "ebf6b002cf74fb06",
-    "CS106A": "78b5e72eaca9c066",
-    "CS224N": "6a9ff242997dec8c",
-    "CS229": "0e1f13e5aeca7853"
+    "AWS_Shield": "ebf6b002cf74fb06"
   }
 }

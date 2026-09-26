@@ -68,8 +68,8 @@
     "Amazon_API_Gateway": "1e81bf174c78697a",
     "AWS_WAF": "553ab8c08eb23335",
     "AWS_Shield": "ebf6b002cf74fb06",
-    "Amazon_Opensearch_FEYNMAN": "6053733dd12ee1dc",
-    "Amazon_Opensearch_HSW": "bbc05316efcd253b",
-    "Amazon_Opensearch_HWJ": "aadf298ea49ff3b5"
+    "CS106A": "78b5e72eaca9c066",
+    "CS224N": "6a9ff242997dec8c",
+    "CS229": "0e1f13e5aeca7853"
   }
 }

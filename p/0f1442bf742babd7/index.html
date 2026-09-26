@@ -54,12 +54,12 @@ body{zoom:var(--zoom)}
 .filter:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(122,162,247,.14)}
 .tree{flex:1;overflow-y:auto;padding:10px 8px 60px;min-height:0}
 .nav-stage{margin-bottom:12px}
-.nav-stage-t{display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:11.5px;font-weight:700;
+.nav-stage-t{display:flex;align-items:center;gap:8px;padding:6px 8px;font-size:12px;font-weight:700;
   color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
 .sn{display:inline-grid;place-items:center;width:19px;height:19px;border-radius:5px;flex:0 0 19px;
   background:rgba(122,162,247,.14);color:var(--blue);font-size:10.5px;font-weight:700;font-family:var(--mono)}
 .nav-group{padding:7px 8px 3px 30px;font-size:11.5px;font-weight:600;color:var(--faint)}
-.nav-item{display:flex;align-items:baseline;gap:8px;padding:5px 8px 5px 30px;font-size:13.5px;
+.nav-item{display:flex;align-items:baseline;gap:8px;padding:5px 8px 5px 30px;font-size:14px;
   color:var(--fg-dim);text-decoration:none;border-radius:6px;line-height:1.5}
 .nav-item.sub{padding-left:44px}
 .nid{font-family:var(--mono);font-size:10px;color:var(--faint);flex:0 0 auto}
@@ -93,7 +93,7 @@ body{zoom:var(--zoom)}
 /* ── 표지 ── */
 .eyebrow{margin:0 0 10px;font-size:12px;color:var(--magenta);font-weight:600;letter-spacing:.06em;
   text-transform:uppercase;font-family:var(--mono)}
-.cover h1{margin:0;font-size:clamp(34px,5vw,54px);line-height:1.12;letter-spacing:-.03em;font-weight:800}
+.cover h1{margin:0;font-size:clamp(34px,5vw,54px);line-height:1.12;letter-spacing:-.03em;font-weight:800;text-wrap:balance}
 .stats{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 26px}
 .stat{display:flex;align-items:baseline;gap:6px;padding:7px 12px;background:var(--surface);
   border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--muted)}
@@ -142,15 +142,15 @@ table.chk code{font-family:var(--mono);font-size:11px;color:var(--green);backgro
 .crumb{display:flex;align-items:center;gap:9px;margin:0 0 14px;font-size:12px;color:var(--muted);font-weight:600}
 .pid{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--faint);background:var(--surface);
   border:1px solid var(--line);border-radius:5px;padding:2px 7px}
-.phead h2{margin:0;font-size:clamp(26px,3.4vw,36px);line-height:1.25;letter-spacing:-.025em;font-weight:800}
-.deft{margin:14px 0 0;color:var(--fg-dim);font-size:15px;line-height:1.75;text-wrap:pretty}
+.phead h2{margin:0;font-size:clamp(26px,3.4vw,36px);line-height:1.25;letter-spacing:-.025em;font-weight:800;text-wrap:balance}
+.deft{margin:14px 0 0;color:var(--fg-dim);font-size:16px;line-height:1.75;text-wrap:pretty}
 .seealso{margin:10px 0 0;font-size:12.5px;color:var(--magenta);font-family:var(--mono)}
 
 /* ── 절 공통 : 왼쪽에 색 레일 ── */
 .part{position:relative;margin:0 0 44px;padding-left:20px}
 .part::before{content:"";position:absolute;left:0;top:5px;bottom:5px;width:2px;border-radius:2px;
   background:var(--rail,var(--line-2))}
-.part h3{display:flex;align-items:center;gap:9px;margin:0 0 14px;font-size:11.5px;font-weight:700;
+.part h3{display:flex;align-items:center;gap:9px;margin:0 0 14px;font-size:12px;font-weight:700;
   color:var(--rail,var(--muted));letter-spacing:.08em;text-transform:uppercase;font-family:var(--mono)}
 .pn{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;
   background:color-mix(in srgb,var(--rail,var(--muted)) 18%,transparent);
@@ -175,7 +175,7 @@ blockquote{margin:0 0 14px;padding:2px 0 2px 16px;border-left:2px solid var(--li
 /* 글은 본문과 같은 굵기·색. 카드 배경과 왼쪽 선만으로 "질문"임을 알린다. 굵은 색글자는 쓰지 않는다. */
 p.ask{margin:0;padding:16px 20px;background:rgba(139,147,216,.11);
   border:1px solid rgba(139,147,216,.3);border-left:3px solid var(--c-ask);border-radius:12px;
-  font-size:17px;font-weight:400;line-height:1.75;color:var(--fg);text-wrap:pretty}
+  font-size:18px;font-weight:400;line-height:1.75;color:var(--fg);text-wrap:pretty}
 
 /* 3. 구조적 핵심 예시 — 1번과 같은 평문(레일 + 문단). 카드 상자 없음. */
 
@@ -196,7 +196,7 @@ ol.steps span{color:var(--fg-dim);font-size:15px;text-wrap:pretty}
 .part-essence{margin-bottom:0}
 p.essence{margin:0;padding:16px 20px;background:rgba(139,147,216,.11);
   border:1px solid rgba(139,147,216,.3);border-left:3px solid var(--c-essence);border-radius:12px;
-  font-size:17px;font-weight:400;line-height:1.75;color:var(--fg);text-wrap:pretty}
+  font-size:18px;font-weight:400;line-height:1.75;color:var(--fg);text-wrap:pretty}
 p.essence .ess-sub{display:block;margin-bottom:5px;font-size:11.5px;font-weight:600;letter-spacing:.04em;
   color:var(--faint);font-family:var(--mono)}
 p.essence .ess-sub::after{content:"의 본질"}

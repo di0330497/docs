@@ -17,11 +17,9 @@
   --bg:#161616; --bg-deep:#080808; --surface:#242424; --surface-2:#2e2e2e;
   --line:#ffffff14; --line-2:#ffffff33;
   --fg:#fafafa; --fg-dim:#b0b0b0; --muted:#aeaeae; --faint:#808080;
-  /* 강조(링크·활성·레일)는 색이 아니라 흰색 하나. 나머지는 전부 회색 단계. */
+  /* 강조(링크·활성)는 색이 아니라 흰색/검정 하나(다크/라이트). 나머지는 전부 회색 단계. */
   --blue:#ffffff; --cyan:#e0e0e0; --magenta:#9a9a9a;
   --green:#a8a8a8; --orange:#b8b8b8; --yellow:#b8b8b8; --red:#9a9a9a;
-  --c-start:#ffffff; --c-ask:#ffffff; --c-example:#ffffff;
-  --c-steps:#ffffff; --c-essence:#ffffff;
   /* 폰트 — Desktop 앱과 동일: Inter + IBM Plex Mono. 한글은 시스템 폰트(맑은 고딕)로 폴백. */
   --mono:"IBM Plex Mono",ui-monospace,Consolas,"Malgun Gothic","맑은 고딕",monospace;
   --sans:"Inter","Segoe UI",system-ui,"Malgun Gothic","맑은 고딕",sans-serif;
@@ -34,8 +32,6 @@
   --fg:#161616; --fg-dim:#4d4d4d; --muted:#5c5c5c; --faint:#808080;
   --blue:#111111; --cyan:#333333; --magenta:#8a8a8a;
   --green:#5a5a5a; --orange:#666666; --yellow:#666666; --red:#7a7a7a;
-  --c-start:#1a1a1a; --c-ask:#1a1a1a; --c-example:#1a1a1a;
-  --c-steps:#1a1a1a; --c-essence:#1a1a1a;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;height:100%}
@@ -118,13 +114,13 @@ body{zoom:var(--zoom)}
 .stats{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 26px}
 .stat{display:flex;align-items:baseline;gap:6px;padding:7px 12px;background:var(--surface);
   border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--muted)}
-.stat b{font-family:var(--mono);font-size:15px;color:var(--cyan);font-weight:700}
+.stat b{font-family:var(--mono);font-size:15px;color:var(--fg);font-weight:600}
 
 .panel{padding:18px 20px;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:26px}
 .panel .lead{margin:0 0 14px;font-size:14px;color:var(--fg-dim);line-height:1.55;text-wrap:pretty}
 .kv{display:flex;flex-wrap:wrap;gap:10px 26px;margin:0}
 .kv>div{display:flex;align-items:baseline;gap:8px}
-.kv dt{font-size:10.5px;font-weight:700;color:var(--faint);letter-spacing:.06em;white-space:nowrap;
+.kv dt{font-size:10.5px;font-weight:500;color:var(--faint);letter-spacing:.06em;white-space:nowrap;
   text-transform:uppercase;font-family:var(--mono)}
 .kv dd{margin:0;font-size:13px;color:var(--fg-dim)}
 
@@ -135,7 +131,7 @@ body{zoom:var(--zoom)}
 .st-card.off{opacity:.45}
 .st-card .sn{margin-top:2px}
 .st-body{display:flex;flex-direction:column;gap:3px;min-width:0}
-.st-body b{font-size:15px;font-weight:700;letter-spacing:-.01em}
+.st-body b{font-size:15px;font-weight:600;letter-spacing:-.01em}
 .st-body em{font-style:normal;font-size:12.5px;color:var(--muted);line-height:1.6}
 .st-n{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--faint)}
 
@@ -166,7 +162,7 @@ table.chk code{font-family:var(--mono);font-size:11px;color:var(--green);backgro
 .deft{margin:10px 0 0;color:var(--muted);font-size:14px;line-height:1.55;text-wrap:pretty}
 .seealso{margin:10px 0 0;font-size:12.5px;color:var(--magenta);font-family:var(--mono)}
 
-/* ── 절 공통 : 왼쪽에 색 레일 ── */
+/* ── 절 공통 ── */
 /* OpenCode 식 절 머리 — 작은 회색 라벨(모노 숫자 + 제목). 배지·레일 없음. */
 .part{margin:0 0 36px}
 .part h3{display:flex;align-items:baseline;gap:8px;margin:0 0 12px;font-size:13px;font-weight:500;
@@ -175,11 +171,6 @@ table.chk code{font-family:var(--mono);font-size:11px;color:var(--green);backgro
 .part p{margin:0 0 14px;text-wrap:pretty}
 .part ul{margin:0 0 14px;padding-left:20px}
 .part li{margin:0 0 8px;text-wrap:pretty}
-.part-start{--rail:var(--c-start)}
-.part-ask{--rail:var(--c-ask)}
-.part-example{--rail:var(--c-example)}
-.part-steps{--rail:var(--c-steps)}
-.part-essence{--rail:var(--c-essence)}
 
 code{font-family:var(--mono);font-size:.86em;background:var(--surface);border:1px solid var(--line);
   padding:1px 5px;border-radius:4px;color:var(--cyan)}
@@ -192,14 +183,14 @@ blockquote{margin:0 0 14px;padding:2px 0 2px 16px;border-left:2px solid var(--li
 p.ask{margin:0 0 14px;padding:0;background:none;border:0;
   font-size:14px;font-weight:400;line-height:1.55;color:var(--fg);text-wrap:pretty}
 
-/* 3. 구조적 핵심 예시 — 1번과 같은 평문(레일 + 문단). 카드 상자 없음. */
+/* 3. 구조적 핵심 예시 — 1번과 같은 평문. 카드 상자 없음. */
 
 /* 4. 단계별 동작 과정 — OpenCode 식 리스트: 작은 모노 번호 + 이름/설명, 행 사이 헤어라인 */
 ol.steps{list-style:none;margin:0;padding:0 !important;counter-reset:s}
 ol.steps>li{position:relative;counter-increment:s;padding:10px 0 10px 30px;margin:0;border-bottom:1px solid var(--line)}
 ol.steps>li:last-child{border-bottom:0;padding-bottom:2px}
 ol.steps>li::before{content:counter(s);position:absolute;left:0;top:11px;width:20px;text-align:left;
-  font-family:var(--mono);font-size:11px;font-weight:600;color:var(--faint)}
+  font-family:var(--mono);font-size:11px;font-weight:500;color:var(--faint)}
 ol.steps b{display:block;font-size:14px;font-weight:500;margin-bottom:2px;color:var(--fg)}
 ol.steps span{color:var(--muted);font-size:14px;text-wrap:pretty}
 
@@ -220,7 +211,7 @@ p.essence .ess-sub::after{content:"의 본질"}
 .resume-go{flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:13px 16px;
   background:var(--surface);border:1px solid color-mix(in srgb,var(--blue) 35%,transparent);border-radius:10px;text-decoration:none}
 .resume-go:hover{border-color:var(--blue);background:var(--surface-2)}
-.resume .tag{flex:0 0 auto;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.05em;
+.resume .tag{flex:0 0 auto;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;
   text-transform:uppercase;color:var(--blue)}
 .resume b{font-size:14px;font-weight:600;color:var(--fg);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .resume em{margin-left:auto;flex:0 0 auto;font-style:normal;font-family:var(--mono);font-size:11.5px;color:var(--faint)}
@@ -231,7 +222,7 @@ p.essence .ess-sub::after{content:"의 본질"}
 /* ── 참고 문서 · 페이저 ── */
 .ref{display:flex;align-items:center;gap:10px;margin:36px 0 0;padding:13px 16px;background:var(--surface-2);
   border:1px solid var(--line);border-radius:10px;text-decoration:none;font-size:12.5px;overflow:hidden}
-.ref .tag{flex:0 0 auto;font-weight:700;color:var(--green);font-family:var(--mono);font-size:10.5px;
+.ref .tag{flex:0 0 auto;font-weight:600;color:var(--green);font-family:var(--mono);font-size:10.5px;
   letter-spacing:.05em;text-transform:uppercase}
 .ref .url{color:var(--muted);font-family:var(--mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ref:hover{border-color:var(--green)}
@@ -259,7 +250,7 @@ html.narrow .wrap{padding:32px 20px 100px}
 html.narrow .topbar{padding:0 16px}
 html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;right:18px;bottom:18px;
   width:50px;height:50px;border-radius:14px;background:var(--blue);color:var(--bg);border:0;
-  font-size:19px;cursor:pointer;box-shadow:0 8px 24px rgba(122,162,247,.4)}
+  font-size:19px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.5)}
 
 @media print{
   .side,.topbar,.pager,.burger,.scrim,.resume{display:none !important}

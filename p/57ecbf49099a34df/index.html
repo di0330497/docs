@@ -12,30 +12,31 @@
 
 :root{
   color-scheme:dark;
-  /* 다크 테마 — 설치된 OpenCode Desktop 앱에서 추출한 실제 값.
-     바탕 #161616(회색빛 검정), 사이드바·상단 #080808, 카드 #242424/#2e2e2e, 경계 흰색 알파. */
-  --bg:#161616; --bg-deep:#080808; --surface:#242424; --surface-2:#2e2e2e;
-  --line:#ffffff14; --line-2:#ffffff33;
-  --fg:#fafafa; --fg-dim:#b0b0b0; --muted:#aeaeae; --faint:#808080;
-  /* 강조(링크·활성)는 색이 아니라 흰색/검정 하나(다크/라이트). 나머지는 전부 회색 단계. */
-  --blue:#ffffff; --cyan:#e0e0e0; --magenta:#9a9a9a;
-  --green:#a8a8a8; --orange:#b8b8b8; --yellow:#b8b8b8; --red:#9a9a9a;
-  /* 폰트 — Desktop 앱과 동일: Inter + IBM Plex Mono. 한글은 시스템 폰트(맑은 고딕)로 폴백. */
-  --mono:"IBM Plex Mono",ui-monospace,Consolas,"Malgun Gothic","맑은 고딕",monospace;
-  --sans:"Inter","Segoe UI",system-ui,"Malgun Gothic","맑은 고딕",sans-serif;
+  /* 다크 테마 — opencode.ai/docs 실측 토큰 그대로.
+     바탕 hsl(0,9%,7%) #131010, 카드 weak #1b1717, 경계 #3d3a3a/#4a4646,
+     글자 strong #f2eded / 본문 #b8b2b2 / 약 #807b7b / 희미 #716c6c. 링크는 밑줄+글자색. */
+  --bg:#131010; --bg-deep:#131010; --surface:#1b1717; --surface-2:#252020;
+  --line:#3d3a3a; --line-2:#4a4646;
+  --fg:#f2eded; --fg-dim:#b8b2b2; --muted:#807b7b; --faint:#716c6c;
+  /* 강조는 글자색 계열 하나(다크/라이트). 나머지는 전부 회색 단계. */
+  --blue:#f2eded; --cyan:#d8d2d2; --magenta:#8f8888;
+  --green:#a8a3a3; --orange:#b8b2b2; --yellow:#b8b2b2; --red:#9a9494;
+  /* 폰트 — docs와 동일: 전체가 IBM Plex Mono. 한글은 맑은 고딕으로 폴백. */
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"Malgun Gothic","맑은 고딕",monospace;
+  --sans:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"Malgun Gothic","맑은 고딕",sans-serif;
 }
 :root[data-theme="light"]{
   color-scheme:light;
-  /* 라이트 테마 — Desktop 앱 라이트 값. 바탕 #fff, 카드 #fafafa/#f2f2f2, 경계 검정 알파. */
-  --bg:#ffffff; --bg-deep:#fafafa; --surface:#fafafa; --surface-2:#f2f2f2;
-  --line:#00000014; --line-2:#00000033;
-  --fg:#161616; --fg-dim:#4d4d4d; --muted:#5c5c5c; --faint:#808080;
-  --blue:#111111; --cyan:#333333; --magenta:#8a8a8a;
-  --green:#5a5a5a; --orange:#666666; --yellow:#666666; --red:#7a7a7a;
+  /* 라이트 테마 — docs 라이트 토큰. 바탕 #fefcfc, 글자 strong #1f1c1c/본문 #636161. */
+  --bg:#fefcfc; --bg-deep:#f7f4f4; --surface:#f7f4f4; --surface-2:#f0ecec;
+  --line:#d9d7d7; --line-2:#cfcaca;
+  --fg:#1f1c1c; --fg-dim:#636161; --muted:#999696; --faint:#8c8c8c;
+  --blue:#1f1c1c; --cyan:#3a3636; --magenta:#8c8c8c;
+  --green:#5f5b5b; --orange:#6e6969; --yellow:#6e6969; --red:#7d7878;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;height:100%}
-body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:14px;line-height:1.5;
+body{background:var(--bg);color:var(--fg-dim);font-family:var(--sans);font-size:14px;line-height:1.6875;
   /* 한글 줄바꿈: 어절 단위로만 끊는다(조사·어미·형태소 쪼갬 금지). 긴 URL·코드는 overflow-wrap 으로 대비 */
   word-break:keep-all;
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
@@ -76,12 +77,12 @@ body{zoom:var(--zoom)}
   color:var(--faint);letter-spacing:.06em;font-family:var(--mono)}
 .sn{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--faint)}
 .nav-group{padding:7px 8px 3px 12px;font-size:11px;font-weight:500;color:var(--faint)}
-.nav-item{display:flex;align-items:baseline;gap:8px;padding:5px 8px 5px 12px;font-size:13px;
+.nav-item{display:flex;align-items:baseline;gap:8px;padding:5px 8px 5px 12px;font-size:14px;
   color:var(--fg-dim);text-decoration:none;border-radius:6px;line-height:1.5}
 .nav-item.sub{padding-left:26px}
 .nid{font-family:var(--mono);font-size:10px;color:var(--faint);flex:0 0 auto}
-.nav-item:hover{background:var(--surface-2);color:var(--fg)}
-.nav-item.on{background:color-mix(in srgb,var(--blue) 16%,transparent);color:var(--blue);font-weight:600}
+.nav-item:hover{background:transparent;color:var(--fg)}
+.nav-item.on{background:transparent;color:var(--fg);font-weight:600}
 /* 표지 바로가기 — 트리 맨 위, 단계 목록과 한 줄 띄운다 */
 .nav-item.home{padding-left:8px;margin-bottom:10px;font-weight:600}
 .nav-item.home .nid{font-size:12px;width:19px;text-align:center}
@@ -110,7 +111,7 @@ body{zoom:var(--zoom)}
 /* ── 표지 ── */
 .eyebrow{margin:0 0 10px;font-size:12px;color:var(--magenta);font-weight:600;letter-spacing:.06em;
   text-transform:uppercase;font-family:var(--mono)}
-.cover h1{margin:0;font-size:24px;line-height:1.25;letter-spacing:-.02em;font-weight:600;text-wrap:balance}
+.cover h1{margin:0;font-size:32px;line-height:1.2;letter-spacing:-.02em;font-weight:500;text-wrap:balance}
 .stats{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 26px}
 .stat{display:flex;align-items:baseline;gap:6px;padding:7px 12px;background:var(--surface);
   border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--muted)}
@@ -158,22 +159,22 @@ table.chk code{font-family:var(--mono);font-size:11px;color:var(--green);backgro
 .phead{margin-bottom:44px;padding-bottom:22px;border-bottom:1px solid var(--line)}
 .crumb{display:flex;align-items:baseline;gap:9px;margin:0 0 14px;font-size:12px;color:var(--muted);font-weight:500}
 .pid{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--faint)}
-.phead h2{margin:0;font-size:20px;line-height:1.3;letter-spacing:-.02em;font-weight:600;text-wrap:balance}
+.phead h2{margin:0;font-size:30px;line-height:1.2;letter-spacing:-.02em;font-weight:500;text-wrap:balance}
 .deft{margin:10px 0 0;color:var(--muted);font-size:14px;line-height:1.55;text-wrap:pretty}
 .seealso{margin:10px 0 0;font-size:12.5px;color:var(--magenta);font-family:var(--mono)}
 
 /* ── 절 공통 ── */
 /* OpenCode 식 절 머리 — 작은 회색 라벨(모노 숫자 + 제목). 배지·레일 없음. */
 .part{margin:0 0 36px}
-.part h3{display:flex;align-items:baseline;gap:8px;margin:0 0 12px;font-size:13px;font-weight:500;
+.part h3{display:flex;align-items:baseline;gap:8px;margin:0 0 12px;font-size:13px;font-weight:600;
   color:var(--muted);letter-spacing:.02em;font-family:var(--mono)}
 .pn{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--faint)}
-.part p{margin:0 0 14px;text-wrap:pretty}
+.part p{margin:0 0 16px;text-wrap:pretty}
+.part p a,.part li a,.deft a,ol.steps span a{color:var(--fg);text-decoration:underline;text-underline-offset:.25rem}
 .part ul{margin:0 0 14px;padding-left:20px}
 .part li{margin:0 0 8px;text-wrap:pretty}
 
-code{font-family:var(--mono);font-size:.86em;background:var(--surface);border:1px solid var(--line);
-  padding:1px 5px;border-radius:4px;color:var(--cyan)}
+code{font-family:var(--mono);font-size:1em;background:none;border:0;padding:0;font-weight:600;color:var(--fg)}
 /* keep-all 로 못 끊는 긴 토큰(URL·명령행)만 예외적으로 넘겨 준다 */
 code,.part p,.part li,p.ask,p.essence,.deft,.panel .lead,ol.steps span,blockquote{overflow-wrap:anywhere}
 blockquote{margin:0 0 14px;padding:2px 0 2px 16px;border-left:2px solid var(--line-2);color:var(--muted)}
@@ -185,7 +186,7 @@ p.ask{margin:0 0 14px;padding:0;background:none;border:0;
 
 /* 3. 구조적 핵심 예시 — 1번과 같은 평문. 카드 상자 없음. */
 
-/* 4. 단계별 동작 과정 — OpenCode 식 리스트: 작은 모노 번호 + 이름/설명, 행 사이 헤어라인 */
+/* 4. 동작 과정 — OpenCode 식 리스트: 작은 모노 번호 + 이름/설명, 행 사이 헤어라인 */
 ol.steps{list-style:none;margin:0;padding:0 !important;counter-reset:s}
 ol.steps>li{position:relative;counter-increment:s;padding:10px 0 10px 30px;margin:0;border-bottom:1px solid var(--line)}
 ol.steps>li:last-child{border-bottom:0;padding-bottom:2px}

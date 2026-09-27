@@ -6,27 +6,26 @@
 <style>
 :root{
   color-scheme:dark;
-  /* 다크 테마 — OpenCode 콘솔/데스크탑 화면 그대로(모노크롬 회색조).
-     본문 바탕은 순검정이 아니라 검정에 가까운 회색(#161616), 카드/경계는 흰색 알파를 얹은 회색. */
-  --bg:#161616; --bg-deep:#0f0f0f; --surface:#222222; --surface-2:#282828;
-  --line:#2e2e2e; --line-2:#3c3c3c;
-  --fg:#fafafa; --fg-dim:#d0d0d0; --muted:#aeaeae; --faint:#808080;
+  /* 다크 테마 — 설치된 OpenCode Desktop 앱에서 추출한 실제 값.
+     바탕 #161616(회색빛 검정), 사이드바·상단 #080808, 카드 #242424/#2e2e2e, 경계 흰색 알파. */
+  --bg:#161616; --bg-deep:#080808; --surface:#242424; --surface-2:#2e2e2e;
+  --line:#ffffff14; --line-2:#ffffff33;
+  --fg:#fafafa; --fg-dim:#b0b0b0; --muted:#aeaeae; --faint:#808080;
   /* 강조(링크·활성·레일)는 색이 아니라 흰색 하나. 나머지는 전부 회색 단계. */
   --blue:#ffffff; --cyan:#e0e0e0; --magenta:#9a9a9a;
   --green:#a8a8a8; --orange:#b8b8b8; --yellow:#b8b8b8; --red:#9a9a9a;
   --c-start:#ffffff; --c-ask:#ffffff; --c-example:#ffffff;
   --c-steps:#ffffff; --c-essence:#ffffff;
-  /* 사용자 지정: 모든 폰트를 맑은 고딕으로 통일한다. --mono 도 같은 값이라 등폭이 아니다 —
-     id·카운터의 자릿수 정렬은 포기하는 대신 화면 전체의 글꼴이 하나로 맞는다. */
-  --mono:"Malgun Gothic","맑은 고딕",system-ui,sans-serif;
-  --sans:"Malgun Gothic","맑은 고딕",system-ui,sans-serif;
+  /* 폰트 — Desktop 앱과 동일: Inter + IBM Plex Mono. 한글은 시스템 폰트(맑은 고딕)로 폴백. */
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,"Malgun Gothic","맑은 고딕",monospace;
+  --sans:"Inter","Segoe UI",system-ui,"Malgun Gothic","맑은 고딕",sans-serif;
 }
 :root[data-theme="light"]{
   color-scheme:light;
-  /* 라이트 테마 — 회색조. 강조는 검정(활성 상태). */
-  --bg:#ffffff; --bg-deep:#f6f6f6; --surface:#f0f0f0; --surface-2:#e9e9e9;
-  --line:#e2e2e2; --line-2:#cfcfcf;
-  --fg:#1a1a1a; --fg-dim:#4d4d4d; --muted:#6b6b6b; --faint:#8a8a8a;
+  /* 라이트 테마 — Desktop 앱 라이트 값. 바탕 #fff, 카드 #fafafa/#f2f2f2, 경계 검정 알파. */
+  --bg:#ffffff; --bg-deep:#fafafa; --surface:#fafafa; --surface-2:#f2f2f2;
+  --line:#00000014; --line-2:#00000033;
+  --fg:#161616; --fg-dim:#4d4d4d; --muted:#5c5c5c; --faint:#808080;
   --blue:#111111; --cyan:#333333; --magenta:#8a8a8a;
   --green:#5a5a5a; --orange:#666666; --yellow:#666666; --red:#7a7a7a;
   --c-start:#1a1a1a; --c-ask:#1a1a1a; --c-example:#1a1a1a;

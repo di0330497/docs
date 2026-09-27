@@ -6,16 +6,16 @@
 <style>
 :root{
   color-scheme:dark;
-  /* 다크 테마 — OpenCode Desktop 기본 테마(theme: opencode) 색을 그대로.
-     바탕은 회색빛 검정(#111), 사이드바·상단바만 더 검은색(#060606). 강조는 시그니처 피치(#fab283). */
+  /* 다크 테마 — OpenCode UI처럼 색 없이 회색조(모노크롬).
+     바탕 회색빛 검정(#111), 사이드바·상단바만 더 검은색(#060606). 강조는 색이 아니라 흰색. */
   --bg:#111111; --bg-deep:#060606; --surface:#1a1a1a; --surface-2:#222222;
   --line:#2a2a2a; --line-2:#3a3a3a;
-  --fg:#eeeeee; --fg-dim:#c8c8c8; --muted:#999999; --faint:#808080;
-  --blue:#fab283; --cyan:#56b6c2; --magenta:#9d7cd8;   /* primary / info / accent */
-  --green:#7fd88f; --orange:#f5a742; --yellow:#e5c07b; --red:#e06c75;
-  /* 절 색 — 시그니처 피치 하나. 절 구분은 번호·제목·모양으로만 한다. */
-  --c-start:#fab283; --c-ask:#fab283; --c-example:#fab283;
-  --c-steps:#fab283; --c-essence:#fab283;
+  --fg:#eeeeee; --fg-dim:#c4c4c4; --muted:#9a9a9a; --faint:#7a7a7a;
+  /* 강조(링크·활성·레일)는 흰색 하나. 나머지는 전부 회색 단계. */
+  --blue:#ffffff; --cyan:#dcdcdc; --magenta:#8f8f8f;
+  --green:#9a9a9a; --orange:#b0b0b0; --yellow:#b0b0b0; --red:#8f8f8f;
+  --c-start:#d4d4d4; --c-ask:#d4d4d4; --c-example:#d4d4d4;
+  --c-steps:#d4d4d4; --c-essence:#d4d4d4;
   /* 사용자 지정: 모든 폰트를 맑은 고딕으로 통일한다. --mono 도 같은 값이라 등폭이 아니다 —
      id·카운터의 자릿수 정렬은 포기하는 대신 화면 전체의 글꼴이 하나로 맞는다. */
   --mono:"Malgun Gothic","맑은 고딕",system-ui,sans-serif;
@@ -23,14 +23,14 @@
 }
 :root[data-theme="light"]{
   color-scheme:light;
-  /* 라이트 테마 — Desktop 기본 테마의 라이트 변형(neutral #fff / ink #1a1a1a / accent #d68c27). */
+  /* 라이트 테마 — 회색조. 강조는 검정(활성 상태). */
   --bg:#ffffff; --bg-deep:#f6f6f6; --surface:#f6f6f6; --surface-2:#ededed;
   --line:#e4e4e4; --line-2:#d2d2d2;
   --fg:#1a1a1a; --fg-dim:#4d4d4d; --muted:#6b6b6b; --faint:#8a8a8a;
-  --blue:#d68c27; --cyan:#318795; --magenta:#b0851f;   /* accent / info / type */
-  --green:#3d9a57; --orange:#d68c27; --yellow:#b0851f; --red:#d1383d;
-  --c-start:#d68c27; --c-ask:#d68c27; --c-example:#d68c27;
-  --c-steps:#d68c27; --c-essence:#d68c27;
+  --blue:#111111; --cyan:#333333; --magenta:#8a8a8a;
+  --green:#5a5a5a; --orange:#666666; --yellow:#666666; --red:#7a7a7a;
+  --c-start:#3a3a3a; --c-ask:#3a3a3a; --c-example:#3a3a3a;
+  --c-steps:#3a3a3a; --c-essence:#3a3a3a;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;height:100%}

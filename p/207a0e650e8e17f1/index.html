@@ -714,7 +714,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
   window.addEventListener('resize',narrow);
   if(zb) zb.addEventListener('click',function(){ z=ZS[(ZS.indexOf(z)+1)%ZS.length]; applyZoom(); });
   applyZoom();
-  // 테마 전환 — 다크(기본, opencode.ai 색감) / 라이트. localStorage 에 기억.
+  // 테마 전환 — 다크(기본) / 라이트. localStorage 에 기억.
   var TK='it-2026-09-05:theme', tb=document.querySelector('.theme'), th='dark';
   try{ th=localStorage.getItem(TK)||'dark'; }catch(e){}
   function applyTheme(){ document.documentElement.dataset.theme=th; if(tb) tb.textContent=th==='light'?'☀':'☾'; }

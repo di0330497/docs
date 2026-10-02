@@ -16,20 +16,28 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 
 const CSS = `${fontsCss}
 :root{
-  color-scheme:dark;
-  --bg:#131010; --bg-deep:#131010; --surface:#1b1717; --surface-2:#252020;
-  --line:#3d3a3a; --line-2:#4a4646;
-  --fg:#f2eded; --fg-dim:#b8b2b2; --muted:#807b7b; --faint:#716c6c;
-  --blue:#f2eded; --cyan:#d8d2d2; --magenta:#8f8888; --green:#a8a3a3;
-  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"Malgun Gothic","맑은 고딕",monospace;
-  --sans:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"Malgun Gothic","맑은 고딕",sans-serif;
-}
-:root[data-theme="light"]{
   color-scheme:light;
-  --bg:#fefcfc; --bg-deep:#f7f4f4; --surface:#f7f4f4; --surface-2:#f0ecec;
-  --line:#d9d7d7; --line-2:#cfcaca;
-  --fg:#1f1c1c; --fg-dim:#636161; --muted:#999696; --faint:#8c8c8c;
-  --blue:#1f1c1c; --cyan:#3a3636; --magenta:#8c8c8c; --green:#5f5b5b;
+  /* Mintlify 표준 라이트 — 흰 바탕·슬레이트 글자·시맨틱 액센트(기본값) */
+  --bg:#ffffff; --bg-deep:#ffffff; --surface:#ffffff; --surface-2:#f3f5f7;
+  --line:#e4e7ec; --line-2:#d0d5dd;
+  --fg:#101828; --fg-dim:#344054; --muted:#667085; --faint:#98a2b3;
+  --primary:#16a34a; --primary-ink:#15803d;
+  --blue:#2563eb; --cyan:#3b82f6; --magenta:#16a34a;
+  --green:#16a34a; --orange:#b54708; --yellow:#b54708; --red:#d92d20;
+  --info-bg:#eff6ff; --info-bd:#bfdbfe; --tip-bg:#f0fdf4; --tip-bd:#bbf7d0;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"Malgun Gothic","맑은 고딕",monospace;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","맑은 고딕",system-ui,sans-serif;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  /* Mintlify식 다크 */
+  --bg:#0d1117; --bg-deep:#0d1117; --surface:#161b22; --surface-2:#1c2128;
+  --line:#2a3139; --line-2:#3d444d;
+  --fg:#e8ecf1; --fg-dim:#b6bec9; --muted:#8b949e; --faint:#6e7681;
+  --primary:#3fb950; --primary-ink:#3fb950;
+  --blue:#58a6ff; --cyan:#79c0ff; --magenta:#3fb950; --green:#3fb950;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"Malgun Gothic","맑은 고딕",monospace;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","맑은 고딕",system-ui,sans-serif;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;height:100%}
@@ -188,6 +196,11 @@ body.searching .nav-stage.collapsed .nav-kh{display:block}
 .st-body b{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;letter-spacing:-.01em}
 .st-body b::after{content:"↗";font-size:11px;color:var(--faint);font-weight:400}
 .st-card:hover .st-body b::after{color:var(--fg)}
+/* ── Mintlify 테마 ── */
+.nav-item:hover{background:var(--surface-2);color:var(--fg)}
+h1{font-weight:700}
+.st-card{background:var(--surface)}
+.st-card:hover{border-color:var(--line-2);box-shadow:0 6px 18px rgba(16,24,40,.08)}
 .st-body em{font-style:normal;font-size:12.5px;color:var(--muted);line-height:1.6}
 .st-n{font-family:var(--mono);font-size:11.5px;color:var(--faint);flex:0 0 auto;
   display:flex;flex-direction:column;align-items:flex-end;gap:5px;padding-top:2px}
@@ -424,7 +437,7 @@ ${cards}
 
   // ── 테마 전환 : 학습자료 페이지와 같은 키를 써서 설정이 이어진다
   var TK=NS+'theme', tb=document.querySelector('.theme'), th='dark';
-  try{ th=localStorage.getItem(TK)||'dark'; }catch(e){}
+  try{ th=localStorage.getItem(TK)||'light'; }catch(e){}
   function applyTheme(){ document.documentElement.dataset.theme=th; if(tb) tb.textContent=th==='light'?'☀':'☾'; }
   if(tb) tb.addEventListener('click',function(){ th=th==='light'?'dark':'light';
     try{ localStorage.setItem(TK,th); }catch(e){} applyTheme(); });

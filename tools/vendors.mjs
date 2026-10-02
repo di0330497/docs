@@ -28,6 +28,8 @@ export const VENDORS = [
     test: (t) => /^(TOGAF|ArchiMate)/.test(t) },
   { id: 'ietf',      name: 'Internet Engineering Task Force', sub: '인터넷 프로토콜 표준(RFC)',
     test: (t) => /^(TCP_IP|TCP|UDP|HTTP|DNS|TLS|IPv[46])/.test(t) },
+  { id: 'suse',       name: 'SUSE', sub: '컨테이너 관리와 오픈 인프라',
+    test: (t) => /^(Rancher|SUSE)/.test(t) },
   { id: 'etc',       name: '기타', sub: '아직 분류되지 않은 토픽', test: () => true },
 ];
 

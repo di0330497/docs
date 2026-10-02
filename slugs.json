@@ -74,6 +74,7 @@
     "CCNA_200-201_CCNACBR_Understanding_Cisco_Cybersecurity_Operations_Fundamentals": "0a0a325572a44620",
     "Rancher": "256f843f87f7279d",
     "gRPC": "137addf8a8102b30",
-    "graphQL": "b35852bd15ec4c77"
+    "graphQL": "b35852bd15ec4c77",
+    "Istio": "b36a26892cd8f8c3"
   }
 }

@@ -201,6 +201,12 @@ body.searching .nav-stage.collapsed .nav-kh{display:block}
 h1{font-weight:700}
 .st-card{background:var(--surface)}
 .st-card:hover{border-color:var(--line-2);box-shadow:0 6px 18px rgba(16,24,40,.08)}
+/* ── Mintlify full-fidelity ── */
+.side-head .meta,.pos,.topbar,.topbar kbd,.search-btn,.search-btn kbd,.nav-item .nid,.sn{font-family:var(--sans)}
+body{zoom:1;font-size:16px}
+.app{height:100vh}
+html.narrow .side{height:100vh}
+.zoom{display:none}
 .st-body em{font-style:normal;font-size:12.5px;color:var(--muted);line-height:1.6}
 .st-n{font-family:var(--mono);font-size:11.5px;color:var(--faint);flex:0 0 auto;
   display:flex;flex-direction:column;align-items:flex-end;gap:5px;padding-top:2px}
@@ -294,8 +300,7 @@ ${nav}
   <div class="topbar"><span class="crumb">전체 토픽</span><span class="pos"></span>
     <button type="button" class="search-btn" title="검색 (Ctrl/⌘+K)">검색 <kbd>⌘K</kbd></button>
     <span class="keys"><kbd>Esc</kbd> 지우기</span>
-    <button type="button" class="theme" title="테마 전환 (다크/라이트)">☾</button>
-    <button type="button" class="zoom" title="화면 배율 (100 → 125 → 150 → 175%)">150%</button></div>
+    <button type="button" class="theme" title="테마 전환 (다크/라이트)">☾</button></div>
   <div class="scroll">
     <div class="wrap" id="top">
       <p class="eyebrow">벤더별 색인</p>
@@ -424,16 +429,9 @@ ${cards}
     else if(e.key==='Escape'&&document.activeElement===filter){ filter.value=''; apply(); filter.blur(); }
   });
 
-  // ── 화면 배율 : 학습자료 페이지와 같은 키를 써서 설정이 이어진다
-  var ZK=NS+'zoom', ZS=[1,1.25,1.5,1.75], z=1.5;
-  try{ var zz=parseFloat(localStorage.getItem(ZK)); if(ZS.indexOf(zz)>-1) z=zz; }catch(e){}
-  var zb=document.querySelector('.zoom');
-  function narrow(){ document.documentElement.classList.toggle('narrow', window.innerWidth/z<900); }
-  function applyZoom(){ document.documentElement.style.setProperty('--zoom',z); zb.textContent=Math.round(z*100)+'%';
-    try{ localStorage.setItem(ZK,z); }catch(e){} narrow(); }
-  zb.addEventListener('click',function(){ z=ZS[(ZS.indexOf(z)+1)%ZS.length]; applyZoom(); });
+  function narrow(){ document.documentElement.classList.toggle('narrow', window.innerWidth<1024); }
   window.addEventListener('resize',narrow);
-  applyZoom();
+  narrow();
 
   // ── 테마 전환 : 학습자료 페이지와 같은 키를 써서 설정이 이어진다
   var TK=NS+'theme', tb=document.querySelector('.theme'), th='dark';

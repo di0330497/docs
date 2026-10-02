@@ -77,6 +77,7 @@
     "graphQL": "b35852bd15ec4c77",
     "Istio": "b36a26892cd8f8c3",
     "Ansible": "c78d12237051600e",
-    "RabbitMQ": "d692cf02ec33a826"
+    "RabbitMQ": "d692cf02ec33a826",
+    "Kafka": "ec706c8d1b9663f8"
   }
 }

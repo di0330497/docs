@@ -53,6 +53,16 @@ body{zoom:var(--zoom)}
 .theme{all:unset;cursor:pointer;margin-left:8px;padding:2px 8px;border:1px solid var(--line-2);border-radius:5px;
   color:var(--muted);font-family:var(--mono);font-size:12px;line-height:1.6;white-space:nowrap}
 .theme:hover{color:var(--fg);border-color:var(--blue)}
+.search-btn{all:unset;cursor:pointer;margin-left:auto;display:flex;align-items:center;gap:8px;
+  padding:4px 6px 4px 10px;border:1px solid var(--line-2);border-radius:7px;color:var(--muted);
+  font-family:var(--mono);font-size:12px;white-space:nowrap}
+.search-btn:hover{color:var(--fg);border-color:var(--blue)}
+.search-btn kbd{margin:0}
+.skip{position:fixed;left:12px;top:-60px;z-index:99;padding:8px 14px;background:var(--surface-2);
+  border:1px solid var(--blue);border-radius:8px;color:var(--fg);text-decoration:none;font-size:13px;
+  transition:top .15s ease}
+.skip:focus{top:12px}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 
 /* ── 사이드바 ── */
 .side{width:300px;flex:0 0 300px;background:var(--bg-deep);border-right:1px solid var(--line);
@@ -171,11 +181,13 @@ body.searching .nav-stage.collapsed .nav-kh{display:block}
 .stage-grid{display:grid;gap:8px}
 .st-card{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--surface);
   border:1px solid var(--line);border-radius:10px;text-decoration:none;transition:border-color .12s,background .12s}
-.st-card:hover{border-color:var(--blue);background:var(--surface-2)}
+.st-card:hover{border-color:var(--blue);background:var(--surface-2);transform:translateY(-1px)}
 .st-card.hide{display:none}
 .st-card .sn{margin-top:3px}
 .st-body{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
-.st-body b{font-size:15px;font-weight:600;letter-spacing:-.01em}
+.st-body b{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;letter-spacing:-.01em}
+.st-body b::after{content:"↗";font-size:11px;color:var(--faint);font-weight:400}
+.st-card:hover .st-body b::after{color:var(--fg)}
 .st-body em{font-style:normal;font-size:12.5px;color:var(--muted);line-height:1.6}
 .st-n{font-family:var(--mono);font-size:11.5px;color:var(--faint);flex:0 0 auto;
   display:flex;flex-direction:column;align-items:flex-end;gap:5px;padding-top:2px}
@@ -203,7 +215,7 @@ html.narrow .topbar .keys{display:none}
 html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;right:18px;bottom:18px;
   width:50px;height:50px;border-radius:14px;background:var(--blue);color:var(--bg);border:0;
   font-size:19px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.5)}
-@media print{ .side,.topbar,.burger,.scrim,.resume{display:none!important}
+@media print{ .side,.topbar,.burger,.scrim,.resume,.skip,.search-btn{display:none!important}
   .app,.scroll{display:block;height:auto;overflow:visible} body{background:#fff;color:#111;zoom:1} }
 `;
 
@@ -251,6 +263,7 @@ ${p.items.map((t, i) => card(g, p, t, i)).join('\n')}
 <title>IT 학습자료</title>
 <style>${CSS}</style></head>
 <body>
+<a class="skip" href="#top">본문으로 건너뛰기</a>
 <div class="scrim"></div>
 <div class="app">
 <aside class="side">
@@ -266,7 +279,8 @@ ${nav}
 </aside>
 <main class="main">
   <div class="topbar"><span class="crumb">전체 토픽</span><span class="pos"></span>
-    <span class="keys"><kbd>/</kbd> 검색 <kbd>Esc</kbd> 지우기</span>
+    <button type="button" class="search-btn" title="검색 (Ctrl/⌘+K)">검색 <kbd>⌘K</kbd></button>
+    <span class="keys"><kbd>Esc</kbd> 지우기</span>
     <button type="button" class="theme" title="테마 전환 (다크/라이트)">☾</button>
     <button type="button" class="zoom" title="화면 배율 (100 → 125 → 150 → 175%)">150%</button></div>
   <div class="scroll">
@@ -389,8 +403,11 @@ ${cards}
     pos.textContent=q?(n+' / '+cards.length):'';
   }
   filter.addEventListener('input',apply);
+  var sbtn=document.querySelector('.search-btn');
+  if(sbtn) sbtn.addEventListener('click',function(){ filter.focus(); filter.select(); });
   document.addEventListener('keydown',function(e){
-    if(e.key==='/'&&document.activeElement!==filter){ e.preventDefault(); filter.focus(); filter.select(); }
+    if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); filter.focus(); filter.select(); }
+    else if(e.key==='/'&&document.activeElement!==filter){ e.preventDefault(); filter.focus(); filter.select(); }
     else if(e.key==='Escape'&&document.activeElement===filter){ filter.value=''; apply(); filter.blur(); }
   });
 

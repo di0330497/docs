@@ -3,7 +3,9 @@ export const VENDORS = [
   { id: 'aws',       name: 'Amazon Web Services', sub: 'AWS 클라우드 서비스',
     test: (t) => /^(Amazon|AWS)_/.test(t) || t === 'Elastic_Load_Balancing' },
   { id: 'cncf',      name: 'Cloud Native Computing Foundation', sub: '쿠버네티스 생태계 오픈소스 재단',
-    test: (t) => ['Kubernetes', 'Helm', 'Argo_CD'].includes(t) },
+    test: (t) => ['Kubernetes', 'Helm', 'Argo_CD', 'podman'].includes(t) }, // podman=CNCF 샌드박스 Podman Container Tools
+  { id: 'haproxy',   name: 'HAProxy Technologies', sub: '로드밸런서 · 프록시',
+    test: (t) => /^HAProxy/.test(t) },
   { id: 'cisco',     name: 'Cisco Systems', sub: '네트워크 장비와 공인 자격증',
     test: (t) => /^(350-\d+|CCNA|Cisco)/.test(t) },
   { id: 'docker',    name: 'Docker, Inc.', sub: '컨테이너 플랫폼',

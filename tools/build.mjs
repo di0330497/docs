@@ -29,6 +29,7 @@ const SHORT_TITLES = {
   '350-701_SCOR_Implementing_and_Operating_Cisco_Security_Core_Technologies': '350-701 SCOR',
   'CCNA_200-201_CCNACBR_Understanding_Cisco_Cybersecurity_Operations_Fundamentals': 'CCNA 200-201',
   'FortiGate_7.6_Administrator': 'FortiGate 7.6 Administrator',
+  'podman': 'Podman', // 공식 표기(https://podman.io). 키는 그대로 둬 URL·읽음 진도 유지
 };
 const NOINDEX =
   '<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">' +

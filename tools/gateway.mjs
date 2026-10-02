@@ -82,6 +82,7 @@ body{zoom:var(--zoom)}
   color:var(--fg);font-family:var(--sans);font-size:13px;padding:7px 10px;outline:none}
 .filter::placeholder{color:var(--faint)}
 .filter:focus{border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 14%,transparent)}
+.filter.hero{max-width:520px;margin:0 0 20px;font-size:14px;padding:10px 14px;border-radius:9px}
 .tree{flex:1;overflow-y:auto;padding:10px 8px 60px;min-height:0}
 .nav-stage{margin-bottom:12px}
 .nav-stage+.nav-stage{border-top:1px solid var(--line);padding-top:12px}
@@ -207,6 +208,7 @@ body{zoom:1;font-size:16px}
 .app{height:100vh}
 html.narrow .side{height:100vh}
 .zoom{display:none}
+:root{--sans:"Inter","Pretendard Variable","Pretendard",-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","맑은 고딕",system-ui,sans-serif}
 .st-body em{font-style:normal;font-size:12.5px;color:var(--muted);line-height:1.6}
 .st-n{font-family:var(--mono);font-size:11.5px;color:var(--faint);flex:0 0 auto;
   display:flex;flex-direction:column;align-items:flex-end;gap:5px;padding-top:2px}
@@ -280,6 +282,7 @@ ${p.items.map((t, i) => card(g, p, t, i)).join('\n')}
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="dark light">
 <title>IT 학습자료</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>${CSS}</style></head>
 <body>
 <a class="skip" href="#top">본문으로 건너뛰기</a>
@@ -289,7 +292,6 @@ ${p.items.map((t, i) => card(g, p, t, i)).join('\n')}
   <div class="side-head">
     <a class="brand" href="#top">IT 학습자료</a>
     <p class="meta">${topics.length} topics · ${groups.length} vendors<button type="button" class="side-foldall">모두 접기</button></p>
-    <input class="filter" type="text" placeholder="토픽 필터  /" spellcheck="false">
   </div>
   <nav class="tree">
 ${nav}
@@ -316,6 +318,7 @@ ${nav}
         </dl>
       </section>
       <div class="foldall"><button type="button" data-all="open">모두 펴기</button><button type="button" data-all="close">모두 접기</button></div>
+      <input class="filter hero" type="text" placeholder="토픽 검색…" spellcheck="false" aria-label="토픽 검색">
 ${cards}
       <p class="note">읽은 진도와 화면 배율은 이 브라우저에만 저장된다. 다른 기기에서는 따로 쌓인다.</p>
     </div>

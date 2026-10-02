@@ -14,6 +14,22 @@ const SOURCES = [
   'C:/Users/user/Downloads/it-course-pipeline/out',
 ];
 
+// 같은 시험의 신·구 폴더명은 하나로 합친다. 후보 중 생성일 최신본이 이긴다.
+const ALIASES = new Map([
+  ['Implementing_and_Administering_Cisco_Solutions_200-301_CCNA', 'CCNA_200-301'],
+  ['Implementing_Cisco_Enterprise_Network_Core_Technologies_350-401_ENCOR', '350-401_ENCOR_Cisco_Enterprise_Network_Core_Technologies'],
+]);
+
+// 게이트웨이·표지에 그려질 짧은 표시명. 원본 out/은 손대지 않고 배포본에만 반영한다.
+// (var TITLE 키는 그대로 둬 읽음 진도가 이어진다)
+const SHORT_TITLES = {
+  'CCNA_200-301': 'CCNA 200-301',
+  '350-401_ENCOR_Cisco_Enterprise_Network_Core_Technologies': '350-401 ENCOR',
+  '350-601_DCCOR_Cisco_Data_Center_Core_Technologies': '350-601 DCCOR',
+  '350-701_SCOR_Implementing_and_Operating_Cisco_Security_Core_Technologies': '350-701 SCOR',
+  'CCNA_200-201_CCNACBR_Understanding_Cisco_Cybersecurity_Operations_Fundamentals': 'CCNA 200-201',
+  'FortiGate_7.6_Administrator': 'FortiGate 7.6 Administrator',
+};
 const NOINDEX =
   '<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">' +
   '<meta name="googlebot" content="noindex,nofollow">' +
@@ -25,14 +41,14 @@ const candidates = new Map(); // normKey -> {topic, file, mtime, ver, size}
 for (const src of SOURCES) {
   if (!existsSync(src)) { console.warn(`  (없음) ${src}`); continue; }
   for (const name of readdirSync(src)) {
-    if (/-backup$/i.test(name) || name === 'old') continue;      // 백업본 제외
+    if (/-backup/i.test(name) || name === 'old') continue;      // 백업본 제외 (-backup-날짜형 포함. 하이픈 없는 AWS_Backup은 유지)
     const file = join(src, name, 'index.html');
     if (!existsSync(file)) continue;
     const m = name.match(/^(.*?)(?:[._]v(\d+))?$/);              // Amazon_S3_v2 -> Amazon_S3 / 2
-    const key = m[1];
+    const key = ALIASES.get(m[1]) ?? ALIASES.get(name) ?? m[1];
     const ver = m[2] ? Number(m[2]) : 1;
-    const st = statSync(file);
-    const cur = { topic: key, file, mtime: st.mtimeMs, ver, size: st.size, src };
+    const st = statSync(join(src, name)); // 폴더 날짜가 곧 올린 시점 (index.html은 후처리로 건드려질 수 있다)
+    const cur = { topic: key, file, mtime: st.mtimeMs, ver, size: statSync(file).size, src };
     const prev = candidates.get(key);
     // 최신 생성일 우선 → 동률이면 높은 버전 → 그래도 동률이면 큰 파일
     const better = !prev
@@ -51,6 +67,8 @@ const slugPath = join(ROOT, 'slugs.json');
 const slugs = existsSync(slugPath) ? JSON.parse(readFileSync(slugPath, 'utf8')) : { hub: null, pages: {} };
 slugs.hub ??= randomBytes(9).toString('hex');
 for (const t of topics) slugs.pages[t.topic] ??= randomBytes(8).toString('hex');
+// 합병·백업 제외로 사라진 토픽의 슬러그는 함께 정리한다 (기존 키의 URL은 그대로 재사용)
+for (const k of Object.keys(slugs.pages)) if (!topics.some((t) => t.topic === k)) delete slugs.pages[k];
 
 // ── 3. 출력 ────────────────────────────────────────────────────
 for (const d of ['p', 'h']) rmSync(join(ROOT, d), { recursive: true, force: true });
@@ -93,14 +111,22 @@ const addBackLink = (html, hub) => html
 for (const t of topics) {
   const dir = join(ROOT, 'p', slugs.pages[t.topic]);
   mkdirSync(dir, { recursive: true });
-  const src = readFileSync(t.file, 'utf8');
+  let src = readFileSync(t.file, 'utf8');
   Object.assign(t, meta(src), {
     vendor: vendorOf(t.topic).id,
     kind: kindOf(t.topic).id,
     href: `../../p/${slugs.pages[t.topic]}/`,
   });
   if (!t.title) t.title = t.topic.replace(/_/g, ' ');
+  if (t.title.includes('_')) t.title = t.title.replace(/_/g, ' '); // 구 파이프라인의 밑줄 제목 보정
   if (!t.key) t.key = t.title;
+  const short = SHORT_TITLES[t.topic];
+  if (short) {
+    t.title = short; // 게이트웨이 카드 표시명. t.key(var TITLE)는 그대로 둬 읽음 진도가 이어진다
+    src = src
+      .replace(/(<article class="page cover"[^>]*>[\s\S]*?<h1>)[\s\S]*?(<\/h1>)/, `$1${short}$2`)
+      .replace(/(<title>)[^<]*(<\/title>)/, `$1${short}$2`);
+  }
   writeFileSync(join(dir, 'index.html'), addBackLink(inject(src), slugs.hub));
 }
 

@@ -4,10 +4,10 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { VENDORS, KINDS } from './vendors.mjs';
 
-// 학습자료 파이프라인의 폰트(IBM Plex Mono, base64)를 그대로 심는다. 없으면 시스템 폴백.
+// 학습자료 파이프라인의 폰트(Inter, base64)를 그대로 심는다. 없으면 시스템 폴백.
 const fontsCss = (() => {
   try {
-    const p = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'IT-2026-09-05-v2', 'pipeline', 'fonts.css');
+    const p = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'it-course-pipeline', 'pipeline', 'fonts.css');
     return existsSync(p) ? readFileSync(p, 'utf8') : '';
   } catch { return ''; }
 })();

@@ -759,7 +759,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 
   // 읽은 자리 기억 — 항목이 수십 개라 어디까지 읽었는지 기억해 주지 않으면 매번 표지에서 다시 찾는다.
   // 브라우저 localStorage 에만 남는다(파일 자체는 그대로).
-  var KEY='it-eli5:'+TITLE;
+  var KEY='it-2026-09-05:'+TITLE;
   var mem={last:'',seen:[]};
   try{ var raw=localStorage.getItem(KEY); if(raw){ var o=JSON.parse(raw); if(o&&typeof o==='object'){ mem.last=o.last||''; mem.seen=Array.isArray(o.seen)?o.seen:[]; } } }catch(e){}
   function save(){ try{ localStorage.setItem(KEY,JSON.stringify(mem)); }catch(e){} }

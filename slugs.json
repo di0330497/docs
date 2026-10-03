@@ -84,6 +84,8 @@
     "SCOR_350-701": "cff1de3d1a25cd21",
     "MySQL": "3a020b3ae055b8c3",
     "PostgreSQL": "5a6726c9806ed509",
-    "Semantic_Versioning": "75a63efbfc1d4959"
+    "Semantic_Versioning": "75a63efbfc1d4959",
+    "Semantic_Versioning_ling": "8cfd8ed39957f70d",
+    "Semantic_Versioning_spark": "f0bd2edb2c339793"
   }
 }

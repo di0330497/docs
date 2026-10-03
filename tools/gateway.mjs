@@ -185,8 +185,8 @@ body.searching .nav-stage.collapsed .nav-kh{display:block}
 .foldall button{all:unset;cursor:pointer;padding:4px 10px;border:1px solid var(--line-2);border-radius:6px;
   color:var(--muted);font-family:var(--mono);font-size:11px}
 .foldall button:hover{color:var(--fg);border-color:var(--blue)}
-.side-foldall{all:unset;cursor:pointer;float:right;color:var(--faint);font-family:var(--mono);font-size:10.5px}
-.side-foldall:hover{color:var(--blue)}
+.side-foldall{all:unset;cursor:pointer;float:right;color:var(--faint);font-family:var(--sans);font-size:11px;margin-top:4px;padding:2px 6px;border:1px solid var(--line);border-radius:6px}
+.side-foldall:hover{color:var(--fg);border-color:var(--blue)}
 .stage-grid{display:grid;gap:8px}
 .st-card{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--surface);
   border:1px solid var(--line);border-radius:10px;text-decoration:none;transition:border-color .12s,background .12s}
@@ -222,6 +222,7 @@ html.narrow .side{height:100vh}
 
 .note{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);
   font-size:12.5px;color:var(--faint);line-height:1.7}
+.zq{font-size:12px;color:var(--faint);line-height:1.7}
 
 /* ── 모바일 ── */
 .burger{display:none}
@@ -259,16 +260,16 @@ export function renderGateway({ topics, noindex, updated }) {
   const navItem = (g, t) => `        <a class="nav-item" href="${t.href}" data-text="${esc((t.title + ' ' + g.name).toLowerCase())}">${esc(t.title)}<span class="nid">${t.items || ''}</span></a>`;
 
   const nav = groups.map((g, gi) => `    <div class="nav-stage" data-v="${g.id}">
-      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="cx">▸</span><span class="sn">${gi + 1}</span><span class="nm">${esc(g.name)}</span></button>
+      <button type="button" class="nav-stage-t" aria-expanded="true"><span class="cx">▸</span><span class="nm">${esc(g.name)}</span></button>
 ${g.parts.map((p) => `      <div class="nav-kgrp" data-k="${p.id}">
 ${g.split ? `        <p class="nav-kh">${esc(p.name)}</p>\n` : ''}${p.items.map((t) => navItem(g, t)).join('\n')}
       </div>`).join('\n')}
     </div>`).join('\n');
 
-  const card = (g, p, t, i) => `            <a class="st-card" href="${t.href}" data-key="${esc(t.key)}" data-total="${t.items || 0}" data-text="${esc((t.title + ' ' + g.name + ' ' + p.name + ' ' + t.lead).toLowerCase())}"><span class="sn">${i + 1}</span><span class="st-body"><b>${esc(t.title)}</b><em>${esc(t.lead)}</em></span><span class="st-n"><span>${t.items || '?'}항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>`;
+  const card = (g, p, t, i) => `            <a class="st-card" href="${t.href}" data-key="${esc(t.key)}" data-total="${t.items || 0}" data-text="${esc((t.title + ' ' + g.name + ' ' + p.name + ' ' + t.lead).toLowerCase())}"><span class="st-body"><b>${esc(t.title)}</b><em>${esc(t.lead)}</em></span><span class="st-n"><span>${t.items || '?'}항목</span><span class="bar"><i></i></span><span class="pct"></span></span></a>`;
 
   const cards = groups.map((g, gi) => `      <section class="vgroup" id="v-${g.id}" data-v="${g.id}">
-        <button type="button" class="vh" aria-expanded="true"><span class="cx">▸</span><span class="sn">${gi + 1}</span><h2>${esc(g.name)}</h2><span class="vn">${g.items.length}</span></button>
+        <button type="button" class="vh" aria-expanded="true"><span class="cx">▸</span><h2>${esc(g.name)}</h2><span class="vn">${g.items.length}</span></button>
         <p class="vsub">${esc(g.sub)}</p>
 ${g.parts.map((p) => `        <div class="kpart" data-k="${p.id}">
 ${g.split ? `          <p class="kh"><span class="kn">${esc(p.name)}</span><span class="kc">${p.items.length}</span></p>\n` : ''}          <div class="stage-grid">
@@ -290,8 +291,7 @@ ${p.items.map((t, i) => card(g, p, t, i)).join('\n')}
 <div class="app">
 <aside class="side">
   <div class="side-head">
-    <a class="brand" href="#top">IT 학습자료</a>
-    <p class="meta">${topics.length} topics · ${groups.length} vendors<button type="button" class="side-foldall">모두 접기</button></p>
+    <a class="brand" href="#top">IT 학습자료</a><button type="button" class="side-foldall">모두 접기</button>
   </div>
   <nav class="tree">
 ${nav}
@@ -299,9 +299,8 @@ ${nav}
   </nav>
 </aside>
 <main class="main">
-  <div class="topbar"><span class="crumb">전체 토픽</span><span class="pos"></span>
+  <div class="topbar"><span class="pos"></span>
     <button type="button" class="search-btn" title="검색 (Ctrl/⌘+K)">검색 <kbd>⌘K</kbd></button>
-    <span class="keys"><kbd>Esc</kbd> 지우기</span>
     <button type="button" class="theme" title="테마 전환 (다크/라이트)">☾</button></div>
   <div class="scroll">
     <div class="wrap" id="top">
@@ -321,6 +320,7 @@ ${nav}
       <input class="filter hero" type="text" placeholder="토픽 검색…" spellcheck="false" aria-label="토픽 검색">
 ${cards}
       <p class="note">읽은 진도와 화면 배율은 이 브라우저에만 저장된다. 다른 기기에서는 따로 쌓인다.</p>
+      <p class="zq"></p>
     </div>
   </div>
 </main>
@@ -406,6 +406,19 @@ ${cards}
   paintFold();
 
   // ── 필터 : 사이드바와 카드를 같이 걸러 낸다
+  var ZQKEY=NS+'hub:zq', lastZq='';
+  function logZq(q){
+    q=(q||'').trim(); if(!q||q===lastZq) return; lastZq=q;
+    try{ var a=JSON.parse(localStorage.getItem(ZQKEY)||'[]'); if(a[0]!==q){ a=[q].concat(a).slice(0,6); localStorage.setItem(ZQKEY,JSON.stringify(a)); } }catch(e){}
+  }
+  function paintZq(){
+    var box=document.querySelector('.zq');
+    if(!box) return;
+    try{
+      var a=JSON.parse(localStorage.getItem(ZQKEY)||'[]');
+      box.textContent=a.length?('최근 못 찾은 검색: '+a.join(', ')):'';
+    }catch(e){ box.textContent=''; }
+  }
   function apply(){
     var q=filter.value.trim().toLowerCase(), n=0;
     document.body.classList.toggle('searching',!!q);
@@ -422,6 +435,7 @@ ${cards}
     stages.forEach(function(s){ s.classList.toggle('hide',!s.querySelector('.nav-item:not(.hide)')); });
     empty.classList.toggle('hide',n>0);
     pos.textContent=q?(n+' / '+cards.length):'';
+    if(q&&n===0) logZq(q);
   }
   filter.addEventListener('input',apply);
   var sbtn=document.querySelector('.search-btn');
@@ -449,6 +463,7 @@ ${cards}
   function drawer(on){ side.classList.toggle('open',on); scrim.classList.toggle('on',on); }
   burger.addEventListener('click',function(){ drawer(!side.classList.contains('open')); });
   scrim.addEventListener('click',function(){ drawer(false); });
+  paintZq();
 })();
 </script>
 </body></html>

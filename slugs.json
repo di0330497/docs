@@ -83,6 +83,7 @@
     "ENCOR_350-401": "97fbe53c26582f1a",
     "SCOR_350-701": "cff1de3d1a25cd21",
     "MySQL": "3a020b3ae055b8c3",
-    "PostgreSQL": "5a6726c9806ed509"
+    "PostgreSQL": "5a6726c9806ed509",
+    "Semantic_Versioning": "75a63efbfc1d4959"
   }
 }

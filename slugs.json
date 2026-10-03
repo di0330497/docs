@@ -81,6 +81,7 @@
     "Kafka": "ec706c8d1b9663f8",
     "DCCOR_350-601": "8a0ecca5e38c3a80",
     "ENCOR_350-401": "97fbe53c26582f1a",
-    "SCOR_350-701": "cff1de3d1a25cd21"
+    "SCOR_350-701": "cff1de3d1a25cd21",
+    "MySQL": "3a020b3ae055b8c3"
   }
 }

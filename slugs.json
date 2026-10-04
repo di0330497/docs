@@ -14,7 +14,6 @@
     "Amazon_GuardDuty": "95f99803e27ecf8e",
     "Amazon_RDS": "f803782404ab96a1",
     "Amazon_S3": "88e9819e9f9cab4e",
-    "Amazon_VPC": "2c05be0043835dae",
     "Argo_CD": "814cae054287442b",
     "AWS_Backup": "2505cc3fce76a513",
     "AWS_Certificate_Manager": "83c9716a0b6c800f",

@@ -9,7 +9,6 @@
     "Amazon_DynamoDB": "6c69a44d0ec02612",
     "Amazon_EC2": "0d3e0f112acb4b11",
     "Amazon_ECR": "3e3e74b242eff716",
-    "Amazon_ECS": "c5356d996122422c",
     "Amazon_EKS": "fe84f51c8efefb22",
     "Amazon_ElastiCache": "45a33f702aae501d",
     "Amazon_GuardDuty": "95f99803e27ecf8e",

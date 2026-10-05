@@ -1,6 +1,8 @@
 {
   "hub": "8d1deb0ef954c6cb8a",
   "pages": {
-    "Amazon_ECS": "dfb6f89055335369"
+    "Amazon_ECS": "dfb6f89055335369",
+    "Docker": "5050456e98abe2b1",
+    "Kubernetes": "956b136c0b8f0c4b"
   }
 }

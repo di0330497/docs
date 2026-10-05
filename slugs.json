@@ -9,6 +9,7 @@
     "Amazon_RDS": "f6d075a011b21067",
     "Amazon_VPC": "71e9b6d317173b3b",
     "Amazon_S3": "b59be6d53e0b3687",
-    "Amazon_EKS": "3529a22b0102ce08"
+    "Amazon_EKS": "3529a22b0102ce08",
+    "Amazon_Lambda": "dc29277fc5900301"
   }
 }

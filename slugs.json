@@ -12,6 +12,7 @@
     "Amazon_EKS": "3529a22b0102ce08",
     "Amazon_Lambda": "dc29277fc5900301",
     "Amazon_GuardDuty": "7e932aad52a38a48",
-    "Amazon_API_Gateway": "5447a3f302976ade"
+    "Amazon_API_Gateway": "5447a3f302976ade",
+    "Amazon_Route_53": "98f7b4eba77dd656"
   }
 }

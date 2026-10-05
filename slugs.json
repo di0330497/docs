@@ -7,6 +7,7 @@
     "Amazon_Aurora": "0f1d7a7b09bd51f3",
     "Amazon_EC2": "ab2da59223a90b5c",
     "Amazon_RDS": "f6d075a011b21067",
-    "Amazon_VPC": "71e9b6d317173b3b"
+    "Amazon_VPC": "71e9b6d317173b3b",
+    "Amazon_S3": "b59be6d53e0b3687"
   }
 }

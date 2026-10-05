@@ -15,6 +15,7 @@
     "Amazon_API_Gateway": "5447a3f302976ade",
     "Amazon_Route_53": "98f7b4eba77dd656",
     "Elastic_Load_Balancing": "e12ddecfde454354",
-    "Amazon_Bedrock": "17ef6d7185fdfa0d"
+    "Amazon_Bedrock": "17ef6d7185fdfa0d",
+    "Amazon_Elastic_File_System": "cb38c3f03e3c14cb"
   }
 }

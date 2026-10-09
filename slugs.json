@@ -1,6 +1,9 @@
 {
   "hub": "8d1deb0ef954c6cb8a",
   "pages": {
-    "Amazon_ECS": "66e753051ee6c66f"
+    "Amazon_ECS": "66e753051ee6c66f",
+    "Amazon_EC2": "ca0bc21cae90316d",
+    "Amazon_VPC": "edea9c305a5988b3",
+    "Elastic_Load_Balancing": "d521ab350903951a"
   }
 }

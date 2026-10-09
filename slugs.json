@@ -5,6 +5,9 @@
     "Amazon_EC2": "ca0bc21cae90316d",
     "Amazon_VPC": "edea9c305a5988b3",
     "Elastic_Load_Balancing": "d521ab350903951a",
-    "Amazon_Cloudfront": "9613d9798d4020a4"
+    "Amazon_Cloudfront": "9613d9798d4020a4",
+    "Amazon_EKS": "b0dfe5f1da4dc5f1",
+    "Amazon_Lambda": "bee04414c660ac77",
+    "Amazon_S3": "1aaf486f6f6ea2e6"
   }
 }

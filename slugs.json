@@ -9,6 +9,9 @@
     "Amazon_EKS": "b0dfe5f1da4dc5f1",
     "Amazon_Lambda": "bee04414c660ac77",
     "Amazon_S3": "1aaf486f6f6ea2e6",
-    "Amazon_EventBridge": "da6c3376e8c07177"
+    "Amazon_EventBridge": "da6c3376e8c07177",
+    "Amazon_Aurora": "7c286968731b092d",
+    "Amazon_Cloudwatch": "661b85fa2c45db11",
+    "Amazon_Route53": "5acab823b28eacfe"
   }
 }

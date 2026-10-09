@@ -1,31 +1,6 @@
 {
   "hub": "8d1deb0ef954c6cb8a",
   "pages": {
-    "Docker": "5050456e98abe2b1",
-    "Kubernetes": "956b136c0b8f0c4b",
-    "Amazon_Aurora": "0f1d7a7b09bd51f3",
-    "Amazon_EC2": "ab2da59223a90b5c",
-    "Amazon_RDS": "f6d075a011b21067",
-    "Amazon_VPC": "71e9b6d317173b3b",
-    "Amazon_S3": "b59be6d53e0b3687",
-    "Amazon_EKS": "3529a22b0102ce08",
-    "Amazon_Lambda": "dc29277fc5900301",
-    "Amazon_GuardDuty": "7e932aad52a38a48",
-    "Amazon_API_Gateway": "5447a3f302976ade",
-    "Amazon_Route_53": "98f7b4eba77dd656",
-    "Elastic_Load_Balancing": "e12ddecfde454354",
-    "Amazon_Bedrock": "17ef6d7185fdfa0d",
-    "Amazon_Elastic_File_System": "cb38c3f03e3c14cb",
-    "Amazon_DynamoDB": "e5cffa1e69dc6f58",
-    "AWS_Certified_Developer_Associate": "d4227085f796f0df",
-    "AWS_Certified_SysOps_Administrator_Associate": "1b52f9ee5a7cbc18",
-    "SDLC": "4d3e70d75a181453",
-    "ITSM": "bfad4dac95ade33b",
-    "PMBOK": "5545e7e94ebe07a6",
-    "MySQL": "a3c9d9fdc6719680",
-    "Python": "630ed249bf9e1a67",
-    "Amazon_Athena": "c7c06eae2665af36",
-    "Amazon_Opensearch_Service_영문버전으로": "71c8f4a99580bd33",
     "Amazon_ECS": "66e753051ee6c66f"
   }
 }

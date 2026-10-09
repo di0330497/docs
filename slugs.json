@@ -15,6 +15,7 @@
     "Amazon_Route53": "5acab823b28eacfe",
     "Amazon_API_Gateway": "2397d82410f7c956",
     "Amazon_SQS": "aa84d9f5f7e918d4",
-    "SDLC": "820e2f2cf6739167"
+    "SDLC": "820e2f2cf6739167",
+    "Amazon_EFS": "15dd33dec4bf7cdc"
   }
 }

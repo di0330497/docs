@@ -8,9 +8,16 @@ import { vendorOf, kindOf } from './vendors.mjs';
 import { renderGateway } from './gateway.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const SOURCES = [
-  'C:/Users/user/Downloads/it-course-pipeline/out',
-];
+// NB_LANG=en 로 영문 책을 배치한다. 소스 폴더·슬러그 버킷·출력 경로만 갈라지고,
+// 페이지 HTML 은 원본 그대로 복사한다. 한국어 폴더(p/,h/)와 영문 폴더(en/p,en/h)는 겹치지 않는다.
+const LANG = String(process.env.NB_LANG || 'ko').toLowerCase() === 'en' ? 'en' : 'ko';
+const SUB = LANG === 'en' ? 'en' : '';
+const SOURCES = LANG === 'en'
+  ? ['C:/Users/user/Downloads/it-course-pipeline-eng/out']
+  : ['C:/Users/user/Downloads/it-course-pipeline/out'];
+const PAGES_KEY = LANG === 'en' ? 'pagesEn' : 'pages';
+const HUB_KEY = LANG === 'en' ? 'hubEn' : 'hub';
+const outDir = (...p) => (SUB ? join(ROOT, SUB, ...p) : join(ROOT, ...p));
 
 // 같은 시험의 신·구 폴더명은 하나로 합친다. 후보 중 생성일 최신본이 이긴다.
 const ALIASES = new Map([
@@ -58,19 +65,32 @@ for (const src of SOURCES) {
   }
 }
 
-const topics = [...candidates.values()].sort((a, b) => a.topic.localeCompare(b.topic, 'ko'));
-if (!topics.length) { console.error('소스에서 index.html 을 하나도 못 찾았습니다.'); process.exit(1); }
+const topics = [...candidates.values()].sort((a, b) => a.topic.localeCompare(b.topic, LANG === 'en' ? 'en' : 'ko'));
+if (!topics.length) {
+  // 영문 책이 아직 없는 동안에는 en/ 을 지우지도, 실패로 보고하지도 않는다 — 한국어 책만 있는 상태가 정상이다.
+  if (LANG === 'en') {
+    console.log('영문 책이 없다 — en/ 은 그대로 둔다.');
+    process.exit(0);
+  }
+  console.error('소스에서 index.html 을 하나도 못 찾았습니다.');
+  process.exit(1);
+}
 
 // ── 2. 슬러그 배정 (기존 것 유지) ───────────────────────────────
+// 언어마다 버킷이 다르다. pages 를 건드리면 영문 책이 한국어 페이지 자리를 덮어쓴다.
 const slugPath = join(ROOT, 'slugs.json');
 const slugs = existsSync(slugPath) ? JSON.parse(readFileSync(slugPath, 'utf8')) : { hub: null, pages: {} };
-slugs.hub ??= randomBytes(9).toString('hex');
-for (const t of topics) slugs.pages[t.topic] ??= randomBytes(8).toString('hex');
+slugs.pages ??= {};
+slugs[PAGES_KEY] ??= {};
+slugs[HUB_KEY] ??= randomBytes(9).toString('hex');
+const pages = slugs[PAGES_KEY];
+for (const t of topics) pages[t.topic] ??= randomBytes(8).toString('hex');
 // 합병·백업 제외로 사라진 토픽의 슬러그는 함께 정리한다 (기존 키의 URL은 그대로 재사용)
-for (const k of Object.keys(slugs.pages)) if (!topics.some((t) => t.topic === k)) delete slugs.pages[k];
+for (const k of Object.keys(pages)) if (!topics.some((t) => t.topic === k)) delete pages[k];
 
 // ── 3. 출력 ────────────────────────────────────────────────────
-for (const d of ['p', 'h']) rmSync(join(ROOT, d), { recursive: true, force: true });
+rmSync(outDir('p'), { recursive: true, force: true });
+rmSync(outDir('h'), { recursive: true, force: true });
 
 const inject = (html) => {
   if (/name=["']robots["']/i.test(html)) return html;
@@ -94,8 +114,8 @@ function meta(html) {
   return {
     title: strip(pick(html, /<article class="page cover"[^>]*>[\s\S]*?<h1>([\s\S]*?)<\/h1>/) || pick(html, /<title>([^<]*)<\/title>/) || ''),
     key: pick(html, /var TITLE\s*=\s*"((?:[^"\\]|\\.)*)"/) || '',
-    items: Number(stats['항목']) || 0,
-    stages: Number(stats['단계']) || 0,
+    items: Number(stats['항목'] ?? stats['items']) || 0,      // 영문 표지는 "items"
+    stages: Number(stats['단계'] ?? stats['stages']) || 0,    // 영문 표지는 "stages"
     lead: short,
   };
 }
@@ -105,16 +125,16 @@ const BACK_CSS = '<style>.gw-back{display:block;margin:0 0 8px;font-family:var(-
   'color:var(--faint);text-decoration:none}.gw-back:hover{color:var(--blue)}</style>';
 const addBackLink = (html, hub) => html
   .replace(/<\/head>/i, BACK_CSS + '</head>')
-  .replace(/<a class="brand"/, `<a class="gw-back" href="../../h/${hub}/">← 전체 목록</a><a class="brand"`);
+  .replace(/<a class="brand"/, `<a class="gw-back" href="../../h/${hub}/">${LANG === 'en' ? '← All English books' : '← 전체 목록'}</a><a class="brand"`);
 
 for (const t of topics) {
-  const dir = join(ROOT, 'p', slugs.pages[t.topic]);
+  const dir = outDir('p', pages[t.topic]);
   mkdirSync(dir, { recursive: true });
   let src = readFileSync(t.file, 'utf8');
   Object.assign(t, meta(src), {
     vendor: vendorOf(t.topic).id,
     kind: kindOf(t.topic).id,
-    href: `../../p/${slugs.pages[t.topic]}/`,
+    href: `../../p/${pages[t.topic]}/`,
   });
   if (!t.title) t.title = t.topic.replace(/_/g, ' ');
   if (t.title.includes('_')) t.title = t.title.replace(/_/g, ' '); // 구 파이프라인의 밑줄 제목 보정
@@ -126,7 +146,7 @@ for (const t of topics) {
       .replace(/(<article class="page cover"[^>]*>[\s\S]*?<h1>)[\s\S]*?(<\/h1>)/, `$1${short}$2`)
       .replace(/(<title>)[^<]*(<\/title>)/, `$1${short}$2`);
   }
-  writeFileSync(join(dir, 'index.html'), addBackLink(inject(src), slugs.hub));
+  writeFileSync(join(dir, 'index.html'), addBackLink(inject(src), slugs[HUB_KEY]));
 }
 
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -134,20 +154,66 @@ const label = (s) => s.replace(/_/g, ' ');
 const fmt = (ms) => { const d = new Date(ms); const z = (n) => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; };  // 로컬 시각 기준
 
-mkdirSync(join(ROOT, 'h', slugs.hub), { recursive: true });
-writeFileSync(join(ROOT, 'h', slugs.hub, 'index.html'),
-  renderGateway({ topics, noindex: NOINDEX, updated: fmt(Date.now()) }));
+// 영문 책은 한국어 게이트웨이를 재사용하지 않는다 — 카드 UI 문구가 한국어로 새면 영문 책 목록이 반쪽 한국어가 된다.
+// 각 책이 self-contained HTML 이므로 링크·개수·한 줄 요약만 잇는 얇은 목록이면 충분하다.
+function renderEnHub(list, noindex, updated) {
+  const cards = list.map((t) => `<li><a href="../../p/${t.slug}/">${esc(t.title)}</a>` +
+    `<span class="m">${t.items} items · ${t.stages} stages · ${esc(updated)}</span>` +
+    (t.lead ? `<p>${esc(t.lead)}</p>` : '') + `</li>`).join('\n');
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8">${noindex}
+<title>English books</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{color-scheme:dark}
+body{margin:0;background:#0d1117;color:#c9d1d9;font:15px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:860px;margin:0 auto;padding:40px 20px 72px}
+h1{font-size:26px;margin:0 0 4px}
+p.sub{color:#8b949e;margin:0 0 28px}
+ul{list-style:none;padding:0;margin:0}
+li{border:1px solid #21262d;border-radius:10px;padding:14px 16px;margin-bottom:10px}
+a{color:#58a6ff;text-decoration:none;font-weight:600;font-size:16px}
+a:hover{text-decoration:underline}
+.m{display:block;color:#8b949e;font-size:12px;margin-top:2px}
+li p{margin:6px 0 0;color:#b1bac4;font-size:14px}
+</style></head>
+<body><main>
+<h1>English books</h1>
+<p class="sub">${list.length} book(s) · generated from official documentation · ${esc(updated)}</p>
+<ul>
+${cards}
+</ul>
+</main></body></html>
+`;
+}
 
-// 루트/404 — 아무 정보도 링크도 없는 껍데기
-const blank = `<!doctype html>
+mkdirSync(outDir('h', slugs[HUB_KEY]), { recursive: true });
+if (LANG === 'en') {
+  const updated = fmt(Date.now());
+  const list = topics.map((t) => ({ title: t.title, items: t.items, stages: t.stages, lead: t.lead, slug: pages[t.topic] }));
+  writeFileSync(outDir('h', slugs[HUB_KEY], 'index.html'), renderEnHub(list, NOINDEX, updated));
+  // en/ 루트는 항상 살아 있는 주소로 두기 위해 허브로 넘긴다 (URL이 바뀌어도 링크는 안 죽는다)
+  writeFileSync(outDir('index.html'),
+    `<!doctype html>\n<html lang="en"><head><meta charset="utf-8">${NOINDEX}<title>English books</title>` +
+    `<meta http-equiv="refresh" content="0; url=h/${slugs[HUB_KEY]}/"></head>` +
+    `<body><a href="h/${slugs[HUB_KEY]}/">English books</a></body></html>\n`);
+} else {
+  writeFileSync(outDir('h', slugs[HUB_KEY], 'index.html'),
+    renderGateway({ topics, noindex: NOINDEX, updated: fmt(Date.now()) }));
+}
+
+// 루트/404 — 아무 정보도 링크도 없는 껍데기. 영문 배치는 한국어 루트를 건드리지 않는다.
+if (LANG === 'ko') {
+  const blank = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8">${NOINDEX}<title>404</title>
 <style>body{margin:0;display:grid;place-items:center;height:100vh;background:#111;color:#555;
 font:14px system-ui,sans-serif}</style></head><body>404</body></html>
 `;
-writeFileSync(join(ROOT, 'index.html'), blank);
-writeFileSync(join(ROOT, '404.html'), blank);
-writeFileSync(join(ROOT, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
-writeFileSync(join(ROOT, '.nojekyll'), '');
+  writeFileSync(join(ROOT, 'index.html'), blank);
+  writeFileSync(join(ROOT, '404.html'), blank);
+  writeFileSync(join(ROOT, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
+  writeFileSync(join(ROOT, '.nojekyll'), '');
+}
 writeFileSync(slugPath, JSON.stringify(slugs, null, 2) + '\n');
 
 // ── 4. 로컬 링크 목록 (git 에 안 올라감) ────────────────────────
@@ -155,12 +221,14 @@ const base = existsSync(join(ROOT, '.baseurl'))
   ? readFileSync(join(ROOT, '.baseurl'), 'utf8').trim().replace(/\/$/, '')
   : 'https://<USER>.github.io/<REPO>';
 const links = [
-  `# 링크 목록 (${fmt(Date.now())})`, '',
-  `허브: ${base}/h/${slugs.hub}/`, '',
-  ...topics.map((t) => `- ${label(t.topic)}\n  ${base}/p/${slugs.pages[t.topic]}/`),
+  `# ${LANG === 'en' ? 'Link list (EN)' : '링크 목록'} (${fmt(Date.now())})`, '',
+  `${LANG === 'en' ? 'Hub' : '허브'}: ${base}/${SUB ? SUB + '/' : ''}h/${slugs[HUB_KEY]}/`, '',
+  ...topics.map((t) => `- ${label(t.topic)}\n  ${base}/${SUB ? SUB + '/' : ''}p/${pages[t.topic]}/`),
 ].join('\n') + '\n';
-writeFileSync(join(ROOT, 'LINKS.md'), links);
+writeFileSync(outDir('LINKS.md'), links);
 
-console.log(`토픽 ${topics.length}개 배치 완료`);
+console.log(LANG === 'en'
+  ? `영문 토픽 ${topics.length}개 배치 완료`
+  : `토픽 ${topics.length}개 배치 완료`);
 for (const t of topics) console.log(`  ${fmt(t.mtime)}  ${t.topic.padEnd(56)} <- ${t.src.split('/').slice(-2)[0]}`);
-console.log(`\n허브: ${base}/h/${slugs.hub}/`);
+console.log(`\n${LANG === 'en' ? '영문 허브' : '허브'}: ${base}/${SUB ? SUB + '/' : ''}h/${slugs[HUB_KEY]}/`);

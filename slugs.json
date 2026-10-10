@@ -19,6 +19,7 @@
     "Amazon_DynamoDB": "aa83bcbb4a79af92",
     "Amazon_RDS": "9e9baa672f4c8212",
     "MySQL": "0f74dfc304c97433",
-    "Amazon_IAM": "6aa58d4ceade01a6"
+    "Amazon_IAM": "6aa58d4ceade01a6",
+    "L2_Network": "f7f230181f2bc34a"
   }
 }

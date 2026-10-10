@@ -13,11 +13,14 @@
     "Amazon_Aurora": "7c286968731b092d",
     "Amazon_Cloudwatch": "661b85fa2c45db11",
     "Amazon_Route53": "5acab823b28eacfe",
-    "Amazon_API_Gateway": "2397d82410f7c956",
     "Amazon_SQS": "aa84d9f5f7e918d4",
     "SDLC": "820e2f2cf6739167",
     "Amazon_EFS": "15dd33dec4bf7cdc",
     "Amazon_DynamoDB": "aa83bcbb4a79af92",
-    "Amazon_RDS": "9e9baa672f4c8212"
+    "Amazon_RDS": "9e9baa672f4c8212",
+    "Amazon_Bedrock": "6b7396e5edce81d8",
+    "MySQL": "0f74dfc304c97433",
+    "PostgreSQL": "d159acc38bf28487",
+    "TCP_IP_Stack": "6101d66911040471"
   }
 }

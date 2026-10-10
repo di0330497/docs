@@ -21,6 +21,9 @@
     "MySQL": "0f74dfc304c97433",
     "Amazon_IAM": "6aa58d4ceade01a6",
     "L2_Network": "f7f230181f2bc34a",
-    "TCP_IP_Stack": "9b2853b9fe9de8b7"
+    "TCP_IP_Stack": "9b2853b9fe9de8b7",
+    "Amazon_Bedrock": "8d2aedd17af1fd6d",
+    "L3_Network": "f31bb58a304c00df",
+    "PostgreSQL": "bcf7d96245721c0c"
   }
 }

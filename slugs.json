@@ -24,6 +24,7 @@
     "TCP_IP_Stack": "9b2853b9fe9de8b7",
     "Amazon_Bedrock": "8d2aedd17af1fd6d",
     "L3_Network": "f31bb58a304c00df",
-    "PostgreSQL": "bcf7d96245721c0c"
+    "PostgreSQL": "bcf7d96245721c0c",
+    "AWS_Auto_Scaling": "b26cd0e99d0946b0"
   }
 }

@@ -27,6 +27,9 @@
     "PostgreSQL": "bcf7d96245721c0c",
     "AWS_Auto_Scaling": "b26cd0e99d0946b0",
     "Amazon_API_Gateway": "ec74a16321bfc6e4",
-    "L1_Network": "21a6e6e80316b19d"
+    "L1_Network": "21a6e6e80316b19d",
+    "L4_Network": "c6ca720fa7760769",
+    "PMBOK": "6f7b74851478bb46",
+    "TOGAF": "b71fa4d7a76c3d7a"
   }
 }

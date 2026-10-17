@@ -434,8 +434,8 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>관측 가능성은 임계치 없이도 원시 신호를 넓게 수집해 문제가 드러난 뒤 아무 축으로든 조합하여 탐색하게 한다.</p>
 <p>그래서 예측된 장애는 모니터링이 먼저 잡고, 예측되지 않은 새 장애는 관측 가능성이 원인을 찾게 한다. 결론: 모든 장애를 미리 알 수 없는 현실에서는 예측된 것을 빠르게 잡는 모니터링과 예측되지 않은 것을 끝까지 추적하는 관측 가능성이 둘 다 필요하다.</p></section>
 <section class="part" id="s-t002-3"><h3><a class="anchor" href="#s-t002-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>지난주 CPU 90% 알람이 울려 재시작으로 해결한 팀은 정해진 임계치가 효과적으로 작동했음을 확인했다. 하지만 "결제 실패가 가끔 난다"는 신고는 임계치를 넘지 않아 알람이 울리지 않았고, 로그와 추적을 임의로 조합해야 원인을 찾았다.</p>
-<ul><li>세 번째로, 배포 후 응답 지연이 특정 사용자군에서만 발생했는데 사전 규칙에는 해당 조건이 없어서 모니터링으로는 놓쳤다.</li></ul>
-<p>이 세 현상은 미리 정한 규칙은 알려진 문제에 강하고, 알 수 없는 문제는 넓은 데이터 탐색이 필요하다는 패턴으로 수렴한다. 모니터링과 관측 가능성은 알려진 질문에 빠르게 답하는 도구와 알려지지 않은 질문을 탐색하는 도구라는 정의로 정리된다.</p></section>
+<p>세 번째로, 배포 후 응답 지연이 특정 사용자군에서만 발생했는데 사전 규칙에는 해당 조건이 없어서 모니터링으로는 놓쳤다. 이 세 현상은 미리 정한 규칙은 알려진 문제에 강하고, 알 수 없는 문제는 넓은 데이터 탐색이 필요하다는 패턴으로 수렴한다.</p>
+<p>모니터링과 관측 가능성은 알려진 질문에 빠르게 답하는 도구와 알려지지 않은 질문을 탐색하는 도구라는 정의로 정리된다.</p></section>
 <section class="part" id="s-t002-4"><h3><a class="anchor" href="#s-t002-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>모니터링</strong>: 미리 정한 지표와 임계치로 알려진 문제를 빠르게 감지하는 구조다.</li><li><strong>관측 가능성</strong>: 넓게 수집한 신호를 자유롭게 조합해 새로운 문제의 원인을 추적하는 구조다.</li><li><strong>역할 분담</strong>: 둘은 대체 관계가 아니라 서로 다른 질문 유형에 답하는 보완 관계다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t001"><em>← 이전</em><b>관측 가능성(Observability)이란?</b></a><a class="nx" href="#t003"><em>다음 →</em><b>CloudWatch 서비스 개요</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t002"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t002-1" data-sec="s-t002-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t002-2" data-sec="s-t002-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t002-3" data-sec="s-t002-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t002-4" data-sec="s-t002-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
 <article class="page" id="page-t003" data-crumb="1부. 관측 가능성과 CloudWatch 입문" data-pos="3"><div class="wrap wide"><header class="phead"><p class="crumb">1부. 관측 가능성과 CloudWatch 입문<code class="pid">003</code></p><h2>CloudWatch 서비스 개요</h2><p class="deft">AWS 관측 플랫폼으로 Metrics·Logs·Alarms·Dashboards 역할 한 판을 설명한다.</p></header><div class="cols"><div class="prose"><section class="part intro"><p>이 글은 AWS 인프라와 애플리케이션을 한곳에서 지켜보는 관측 도구 묶음의 의미로 CloudWatch 서비스 개요를 설명한다.</p></section>
@@ -1260,8 +1260,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>CloudWatch Logs Anomaly Detection은 과거 로그에서 패턴 빈도의 기준선을 학습한 뒤, 실시간 스트림에서 기준선에서 크게 벗어나는 변화를 감지한다. 새로 등장한 메시지 패턴도 기존 분류에 안 맞으면 이상으로 분류한다.</p>
 <p>이러한 자동 기준선·편차 탐지 원리 아래에서는 수동 검토를 대체하는 자동 이상 탐지 기능이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t075-3"><h3><a class="anchor" href="#s-t075-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>한 백엔드 서비스에서 매 deploy 이후 새로운 에러 문구 <code>NullPointerException in OrderService</code> 가 처음 나타났고, anomaly 알람이 즉시 발송됐다. 다른 날에는 데이터베이스 타임아웃 로그 빈도가 평소 대비 15배 증가하자 anomaly 점수 이벤트가 기록됐다.</p>
-<ul><li>세 번째로 배치 작업 성공 로그가 갑자기 사라지자 빈도 감소 현상도 감지됐다.</li></ul>
-<p>세 현상에서 공통 패턴은 "평소 패턴에서 벗어난 빈도·신규 문구를 감지한다"이다.</p>
+<p>세 번째로 배치 작업 성공 로그가 갑자기 사라지자 빈도 감소 현상도 감지됐다. 세 현상에서 공통 패턴은 "평소 패턴에서 벗어난 빈도·신규 문구를 감지한다"이다.</p>
 <p>따라서 Logs Anomaly Detection이란 과거 로그 기반 패턴 빈도 기준선을 세우고 실시간 스트림에서 편차를 감지해 이상 신호로 보고하는 기능이다.</p></section>
 <section class="part" id="s-t075-4"><h3><a class="anchor" href="#s-t075-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>기준선 학습</strong>: 과거 로그에서 빈도 패턴을 학습해 정상 범위를 세운 뒤 편차를 잰다.</li><li><strong>신규 패턴 감지</strong>: 처음 보는 메시지 형태도 기존 분류와 맞지 않으면 이상으로 분류한다.</li><li><strong>상태 보고</strong>: 감지된 이상은 이벤트나 알람으로 보고돼 운영자가 조치할 수 있다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t074"><em>← 이전</em><b>CloudWatch Logs Live Tail</b></a><a class="nx" href="#t076"><em>다음 →</em><b>Contributor Insights</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t075"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t075-1" data-sec="s-t075-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t075-2" data-sec="s-t075-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t075-3" data-sec="s-t075-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t075-4" data-sec="s-t075-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
@@ -1272,8 +1271,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>Contributor Insights는 사용자가 정의한 규칙(rule)에 맞는 로그를 실시간 수집해, 선택한 필드(예: IP 주소)별 카운트를 유지한다. 서비스는 상위 N개 계산을 지속적으로 갱신하고 CloudWatch 지표로 내보낸다.</p>
 <p>이러한 실시간 TOP-N 집계 원리 아래에서는 원인자를 빠르게 식별하는 Contributor Insights가 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t076-3"><h3><a class="anchor" href="#s-t076-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>한 API 게이트웨이에서 "response code가 429인 요청의 source IP TOP 10" 규칙을 걸어 두었더니 세 IP가 지속적으로 상위에 올라 rate limit 초과를 유발하는 클라이언트를 식별했다. 다른 상황에서는 "error field 값이 AuthenticationError 인 사용자 ID TOP 5" 규칙으로 어떤 사용자가 반복 인증 실패를 만들었는지 밝혀냈다.</p>
-<ul><li>세 번째로 ALB 로그에서 "5xx 발생 비율이 높은 target group" 을 top-N 으로 집계해 문제 target group을 찾았다.</li></ul>
-<p>세 현상에서 공통 패턴은 "Выбор field 값별 빈도를 실시간 유지하여 상위 기여자를 식별"이다.</p>
+<p>세 번째로 ALB 로그에서 "5xx 발생 비율이 높은 target group" 을 top-N 으로 집계해 문제 target group을 찾았다. 세 현상에서 공통 패턴은 "Выбор field 값별 빈도를 실시간 유지하여 상위 기여자를 식별"이다.</p>
 <p>따라서 Contributor Insights란 로그의 지정 필드 값을 기준으로 실시간 카운트·TOP-N 집계를 만들어 주요 기여자를 식별하는 기능이다.</p></section>
 <section class="part" id="s-t076-4"><h3><a class="anchor" href="#s-t076-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>규칙 기반</strong>: 어떤 로그를 어떤 필드로 집계할지 rule로 정의해야 동작한다.</li><li><strong>실시간 TOP-N</strong>: 카운트가 지속 갱신되므로 최신 순위를 즉시 파악할 수 있다.</li><li><strong>지표 연동</strong>: 집계 결과는 CloudWatch Metrics로 내보내 알람과 대시보드에 쓸 수 있다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t075"><em>← 이전</em><b>Logs Anomaly Detection</b></a><a class="nx" href="#t077"><em>다음 →</em><b>Logs Subscription Filters</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t076"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t076-1" data-sec="s-t076-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t076-2" data-sec="s-t076-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t076-3" data-sec="s-t076-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t076-4" data-sec="s-t076-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
@@ -1283,8 +1281,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>그래서 로그가 생성되는 시점에 조건에 맞는 레코드를 포워딩하는 매커니즘이 필요하다. Subscription Filters는 로그 그룹에 필터 패턴을 붙이고 일치하는 이벤트를 지정한 대상으로 전달한다.</p>
 <p>필터가 없으면 모든 이벤트가 대상으로 나가고, 있으면 조건 매칭된 것만 나간다. 이 포워딩 원리 아래에서는 실시간 소비 경로를 여는 Subscription Filters가 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t077-3"><h3><a class="anchor" href="#s-t077-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>한 팀이 애플리케이션 로그 그룹에 Kinesis Data Firehose subscription filter를 걸어 모든 이벤트를 S3 데이터 레이크로 스트리밍했다. 다른 팀은 ERROR만 골라 Lambda subscription filter로 PagerDuty 알림을 보내 실시간 페이징을 구현했다.</p>
-<ul><li>세 번째로 모니터링 계정의 Logs 그룹에 subscription filter를 걸어 원본 계정 로그를 중앙 수집 그룹으로 복제했다.</li></ul>
-<p>세 현상에서 공통 패턴은 "지정 조건에 맞는 로그 이벤트를 다른 대상으로 즉시 전달한다"이다.</p>
+<p>세 번째로 모니터링 계정의 Logs 그룹에 subscription filter를 걸어 원본 계정 로그를 중앙 수집 그룹으로 복제했다. 세 현상에서 공통 패턴은 "지정 조건에 맞는 로그 이벤트를 다른 대상으로 즉시 전달한다"이다.</p>
 <p>따라서 Subscription Filters란 CloudWatch Logs 그룹의 이벤트를 필터 패턴에 따라 Lambda·Kinesis·Firehose 등 대상으로 실시간 전달하는 기능이다.</p></section>
 <section class="part" id="s-t077-4"><h3><a class="anchor" href="#s-t077-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>필터 패턴</strong>: 일치 규칙을 정의해 일부 이벤트만 전달하거나 전체를 보낼 수 있다.</li><li><strong>대상 선택</strong>: Lambda, Kinesis Data Streams, Firehose, 다른 Logs 그룹 등으로 보낼 수 있다.</li><li><strong>지연 전달</strong>: 실시간 스트리밍으로 외부 시스템이 로그를 즉시 소비하게 한다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t076"><em>← 이전</em><b>Contributor Insights</b></a><a class="nx" href="#t078"><em>다음 →</em><b>Cross-Account 로그 구독</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t077"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t077-1" data-sec="s-t077-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t077-2" data-sec="s-t077-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t077-3" data-sec="s-t077-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t077-4" data-sec="s-t077-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
@@ -1296,8 +1293,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>그래서 source 계정이 destination 계정 리소스로 데이터를 보내려면 양쪽에 권한이 있어야 한다. Cross-Account 로그 구독은 destination 측 Logs 그룹 또는 Kinesis에 resource policy를 설정해 source 계정의 subscription filter가 쓸 수 있게 하고, source 측에는 filter와 IAM 권한을 둔다.</p>
 <p>이 양방향 권한 원리 아래에서는 멀티 계정 환경에서 중앙 수집을 가능하게 하는 Cross-Account 구독이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t078-3"><h3><a class="anchor" href="#s-t078-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>한 조직이 각 서비스 계정의 VPC Flow Logs를 중앙 보안 계정의 Logs 그룹으로 보내는 subscription filter를 구성했다. destination 측에 <code>aws logs put-destination-policy</code> 로 source account 권한을 부여하자 전달이 성공했다.</p>
-<p>다른 상황에서는 CloudTrail 로그를 조직관리 계정의 S3 버킷이 아닌 별도 로그 계정의 Kinesis 스트림으로 보내 중앙 분석 파이프라인에 연결했다.</p>
-<ul><li>세 번째로 subscription filter 동작 전에 destination policy를 설정하지 않자 "access denied" 오류가 났다.</li></ul>
+<p>다른 상황에서는 CloudTrail 로그를 조직관리 계정의 S3 버킷이 아닌 별도 로그 계정의 Kinesis 스트림으로 보내 중앙 분석 파이프라인에 연결했다. 세 번째로 subscription filter 동작 전에 destination policy를 설정하지 않자 "access denied" 오류가 났다.</p>
 <p>세 현상에서 공통 패턴은 "source와 destination 양쪽 정책을 모두 맞추어야 cross-account 전달이 성립한다"이다.</p>
 <p>따라서 Cross-Account 로그 구독이란 source 계정 로그를 destination 계정 리소스로 전달하기 위해 양쪽에 정책과 필터를 구성하는 구독 방식이다.</p></section>
 <section class="part" id="s-t078-4"><h3><a class="anchor" href="#s-t078-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>destination 정책</strong>: destination 계정 리소스에 source 계정 권한을 부여해야 데이터가 들어온다.</li><li><strong>source 필터</strong>: source 계정의 subscription filter가 destination을 가리켜야 전달이 시작된다.</li><li><strong>IAM 권한</strong>: source 측 실행 역할에도 대상 접근 권한이 있어야 오류 없이 동작한다.</li></ol></section>
@@ -1448,7 +1444,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>이를 막으려면 컨테이너별 사용량을 시간 흐름에 따라 측정하고 저장해야 한다. 측정값이 지표로 쌓이면 운영자는 어느 시점에 누가 많이 썼는지 따라갈 수 있다.</p>
 <p>그래서 많은 컨테이너를 다루는 환경에서는 컨테이너 단위 관측 기능이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t091-3"><h3><a class="anchor" href="#s-t091-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>마이크로서비스로 나눈 서비스 하나가 갑자기 느려졌는데 로그는 정상이고 호스트 전체 CPU는 평온했다. 또 노드 한 대의 메모리는 남아 있는데 특정 컨테이너만 재시작을 반복했다.</p>
-<ul><li>세 번째로 오토스케일링이 일어난 직후 요청 지연이 늘어났다.</li></ul>
+<p>세 번째로 오토스케일링이 일어난 직후 요청 지연이 늘어났다.</p>
 <p>공통 패턴은 컨테이너 개별 자원 사용이 보이지 않는다는 점이다. 패턴에서 정의되듯 Container Insights는 컨테이너·파드 단위로 CPU, 메모리, 네트워크, 디스크 사용을 수집해 보여주는 관측 기능이다.</p></section>
 <section class="part" id="s-t091-4"><h3><a class="anchor" href="#s-t091-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>범위</strong>: 호스트가 아닌 컨테이너와 파드 단위로 지표를 모은다.</li><li><strong>목적</strong>: 사용량 추이를 시간별로 따라 장애 시점을 찾는다.</li><li><strong>효과</strong>: 자동 확장 전후 자원 병목을 눈으로 확인한다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t090"><em>← 이전</em><b>Container Insights 대시보드</b></a><a class="nx" href="#t092"><em>다음 →</em><b>ECS 모니터링</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t091"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t091-1" data-sec="s-t091-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t091-2" data-sec="s-t091-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t091-3" data-sec="s-t091-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t091-4" data-sec="s-t091-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
@@ -1473,7 +1469,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>측정값을 보면 어느 계층에서 병목이 발생했는지 구분할 수 있다.</p>
 <p>따라서 EKS 운영에서는 다층 관측이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t093-3"><h3><a class="anchor" href="#s-t093-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>트래픽 증가 시 파드 수는 HPA(HPA: 부하에 따라 파드 수를 조절하는 기능)로 늘었지만 노드 CPU가 포화되어 신규 파드가 스케줄링되지 않았다. 또 파드는 Running인데 컨테이너 내부 OOM(메모리 초과 종료)으로 재시작이 반복되었다.</p>
-<ul><li>세 번째로 로그와 지표를 함께 봐야 노드 이슈인지 애플리케이션 이슈인지 구분할 수 있었다.</li></ul>
+<p>세 번째로 로그와 지표를 함께 봐야 노드 이슈인지 애플리케이션 이슈인지 구분할 수 있었다.</p>
 <p>공통 패턴은 층마다 관측이 따로 필요하다는 점이다.</p>
 <p>그래서 EKS 모니터링은 노드·파드·컨테이너 층의 자원과 상태를 통합 수집해 병목 계층을 찾는 기능이다.</p></section>
 <section class="part" id="s-t093-4"><h3><a class="anchor" href="#s-t093-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>노드 계층</strong>: 노드 CPU·메모리 포화를 먼저 확인한다.</li><li><strong>파드 계층</strong>: Pending과 재시작 상태를 추적한다.</li><li><strong>통합 관측</strong>: 지표와 로그를 함께 봐 원인 계층을 구분한다.</li></ol></section>
@@ -1486,7 +1482,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>측정 결과로 메모리 설정과 타임아웃을 조정한다.</p>
 <p>따라서 Lambda 운영에서는 실행 단위 관측이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t094-3"><h3><a class="anchor" href="#s-t094-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>함수 하나가 p99 지연(상위 1% 지연)에서 느려졌지만 평균은 정상이었다. 다른 함수는 메모리를 128MB로 설정했지만 실제 사용은 100MB 미만으로 비용이 남았다.</p>
-<ul><li>세 번째로 콜드 스타트가 동시 호출 폭주 시 지연을 일으켰다.</li></ul>
+<p>세 번째로 콜드 스타트가 동시 호출 폭주 시 지연을 일으켰다.</p>
 <p>공통 패턴은 실행별 자원과 지연을 보지 않으면 최적 설정을 못 한다는 점이다.</p>
 <p>그래서 Lambda Insights는 함수 실행의 CPU, 메모리, 실행 시간, 네트워크를 수집하는 관측 기능이다.</p></section>
 <section class="part" id="s-t094-4"><h3><a class="anchor" href="#s-t094-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>실행 시간</strong>: 지연 분포를 p99 수준까지 본다.</li><li><strong>메모리</strong>: 설정 대비 실제 사용량 차이를 줄인다.</li><li><strong>콜드 스타트</strong>: 동시 호출 시 초기 지연을 별도로 추적한다.</li></ol></section>
@@ -1499,7 +1495,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>세 요소를 함께 수집해야 비용과 성능과 신뢰성을 동시에 판단한다.</p>
 <p>따라서 Lambda 모니터링에서는 로그·지표·추적 통합이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t095-3"><h3><a class="anchor" href="#s-t095-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>함수 하나에서 에러가 발생했는데 로그가 수천 줄로 분산되어 원인을 찾기 어려웠다. 다른 함수는 CPU 사용률이 높아도 메모리 설정을 바꾸지 않아 지연이 지속되었다.</p>
-<ul><li>세 번째로 API Gateway 호출 체인이 길어지면서 어느 함수에서 실패했는지 알 수 없었다.</li></ul>
+<p>세 번째로 API Gateway 호출 체인이 길어지면서 어느 함수에서 실패했는지 알 수 없었다.</p>
 <p>공통 패턴은 단일 지표로는 운영 판단이 안 된다는 점이다.</p>
 <p>그래서 모범 사례는 로그 구조화, 지표 수집, 분산 추적을 동시에 운영하는 방식이다.</p></section>
 <section class="part" id="s-t095-4"><h3><a class="anchor" href="#s-t095-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>로그 구조화</strong>: 에러를 필드별로 찾아 읽는다.</li><li><strong>지표 추적</strong>: 비용과 지연을 정량으로 관리한다.</li><li><strong>분산 추적</strong>: 호출 체인에서 실패 지점을 찾는다.</li></ol></section>
@@ -1511,7 +1507,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>이를 찾으려면 요청 라이프사이클마다 시간과 호출 관계를 기록해야 한다. 기록된 데이터를 분석하면 병목을 어느 계층에서 줄일지 결정할 수 있다.</p>
 <p>따라서 사용자 대면 프로그램에서는 end-to-end 관측이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t096-3"><h3><a class="anchor" href="#s-t096-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>요청 하나가 평균 200ms였는데 특정 사용자에게만 5초 지연이 발생했다. 다른 요청은 DB 호출이 80% 시간을 차지했지만 앱 서버 지표는 정상이었다.</p>
-<ul><li>세 번째로 배포 직후 에러율이 올랐지만 어떤 변경이 원인인지 코드 배포와 지표를 연결해야 알 수 있었다.</li></ul>
+<p>세 번째로 배포 직후 에러율이 올랐지만 어떤 변경이 원인인지 코드 배포와 지표를 연결해야 알 수 있었다.</p>
 <p>공통 패턴은 요청 경로 전체를 봐야 원인을 찾는다는 점이다.</p>
 <p>그래서 Application Insights는 요청·에러·지연·의존 호출을 end-to-end로 수집해 정의하는 관측 기능이다.</p></section>
 <section class="part" id="s-t096-4"><h3><a class="anchor" href="#s-t096-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>요청 추적</strong>: 사용자 요청의 전체 경로를 본다.</li><li><strong>의존성</strong>: DB·API 호출 시간을 분리한다.</li><li><strong>배포 연결</strong>: 변경과 에러율을 함께 판단한다.</li></ol></section>

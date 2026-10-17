@@ -507,8 +507,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>그래서 AWS는 서버 프로비저닝과 관리를 숨기고 자원 요구량만 받아 ECS 태스크를 격리된 환경에서 실행하는 런타임(Fargate)을 제공한다. 사용자는 작업 정의에 CPU·메모리 값을 넣고, Fargate는 조건을 만족하는 호스트에서 컨테이너를 스케줄·격리·종료한다.</p>
 <p>결론적으로 서버 운영 부담 없이 선언한 자원만으로 컨테이너를 돌리려면 Fargate 런타임이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t008-3"><h3><a class="anchor" href="#s-t008-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>작은 팀이 평일 저녁 EC2 키 페어 교체와 OS 업데이트를 수동으로 하느라 야간 배포를 미룬 경험을 떠올렸다. 또 다른 조직은 피크 트래픽 때 EC2 Auto Scaling이 10분 지연되어 컨테이너 대기가 길어졌다고 보고했다.</p>
-<ul><li>세 번째 현상으로 개발자가 정확한 컨테이너 메모리 요구량을 알면서도 EC2 인스턴스 단위로 묶여 낭비가 발생했다.</li></ul>
-<p>세 현상 모두 사용자가 서버 단위로 자원을 관리하다 보니 실제 필요와 공급 단위가 어긋난 데서 발생했다.</p>
+<p>세 번째 현상으로 개발자가 정확한 컨테이너 메모리 요구량을 알면서도 EC2 인스턴스 단위로 묶여 낭비가 발생했다. 세 현상 모두 사용자가 서버 단위로 자원을 관리하다 보니 실제 필요와 공급 단위가 어긋난 데서 발생했다.</p>
 <p>공통 패턴은 "서버를 숨기고 요청한 자원만 할당·격리·회수하는 실행 계층"이 필요하다는 점이다.</p>
 <p>따라서 ECS Fargate 런타임은 EC2 관리 없이 필요한 CPU·메모리만으로 컨테이너를 실행·격리·회수하는 서버리스 실행 환경을 뜻한다.</p></section>
 <section class="part" id="s-t008-4"><h3><a class="anchor" href="#s-t008-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>서버리스 실행</strong>: EC2를 직접 고르지 않고 컨테이너에 필요한 자원만 선언하면 런타임이 호스트를 준비한다.</li><li><strong>격리</strong>: 태스크마다 독립된 네트워크와 자원 경계를 제공해 다른 태스크에 영향을 주지 않는다.</li><li><strong>자동 회수</strong>: 컨테이너 종료 후 자원을 반납해 지속적인 비용이 줄어든다.</li></ol></section>
@@ -547,8 +546,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>그래서 AWS는 클러스터라는 관리 단위를 제공하고, 생성 시 실행 용량 유형(Fargate, EC2, External)과 네트워크 경계(VPC·서브넷)를 지정한다. 클러스터 생성 후 인스턴스 등록·태스크 정의·서비스 설정이 이 단위 내에서 수행된다.</p>
 <p>결론적으로 컨테이너 시스템을 운영하려면 실행 경계를 정하는 클러스터를 먼저 생성해야 한다.</p></section>
 <section class="part" id="s-t011-3"><h3><a class="anchor" href="#s-t011-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>팀이 컨테이너를 EC2에 바로 띄우다 네트워크 보안 정책이 없어 출처 불명 트래픽이 유입된 사례가 있었다. 또 다른 팀은 개발·운영을 한 서버에 섞어 테스트 트래픽이 운영 응답 지연을 유발했다.</p>
-<ul><li>세 번째로 마이그레이션 중 클러스터가 없어서 자원과 정책을 어디에 둘지 찾지 못한 사례가 있었다.</li></ul>
-<p>세 현상 모두 "컨테이너 실행을 담을 격리된 관리 단위"가 먼저 없었기 때문에 발생했다.</p>
+<p>세 번째로 마이그레이션 중 클러스터가 없어서 자원과 정책을 어디에 둘지 찾지 못한 사례가 있었다. 세 현상 모두 "컨테이너 실행을 담을 격리된 관리 단위"가 먼저 없었기 때문에 발생했다.</p>
 <p>공통 패턴은 실행·네트워크 경계를 정하는 클러스터를 생성하지 않으면 혼잡과 장애 전파가 뒤따른다는 점이다.</p>
 <p>따라서 클러스터 생성은 컨테이너 실행을 논리 단위로 모으고 네트워크·자원 경계를 설정하는 첫 단계다.</p></section>
 <section class="part" id="s-t011-4"><h3><a class="anchor" href="#s-t011-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>격리 단위</strong>: 개발·운영 등 환경별로 클러스터를 나누어 정책과 장애를 분리한다.</li><li><strong>용량 유형</strong>: Fargate, EC2, External 중 실행 환경을 지정한다.</li><li><strong>네트워크 경계</strong>: VPC와 서브넷을 설정해 트래픽 흐름을 통제한다.</li></ol></section>
@@ -560,8 +558,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>따라서 ECS 클러스터는 관리형 제어 평면, 노드(컨테이너 인스턴스), 노드 내부의 ECS 에이전트, 이들이 공유하는 네트워크 정책으로 구성된다. 제어 평면은 Desired 상태를 유지하고, 에이전트는 노드의 가용 자원을 보고하며, 스케줄러가 빈 자원을 골라 태스크를 띄운다.</p>
 <p>결론적으로 견고한 컨테이너 운영을 위해서는 책임이 나뉜 클러스터 구성요소들이 필요하다.</p></section>
 <section class="part" id="s-t012-3"><h3><a class="anchor" href="#s-t012-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>한 팀은 에이전트가 죽은 EC2에서 컨테이너가 살아 있는 줄 알고 모니터링 누락으로 장애를 찾아내지 못했다. 또 다른 팀은 스케줄러가 OS 업데이트 중 노드를 빈 자원으로 판단해 퇴거 직전 노드에 배치해 실패했다.</p>
-<ul><li>세 번째 팀은 VPC 정책이 없어서 클러스터 멤버 간 통신이 차단되어 태스크가 Running 상태로 표시됐지만 응답하지 않았다.</li></ul>
-<p>세 현상 모두 구성요소 간 책임·상태 보고·네트워크 정책이 어긋나 발생했다.</p>
+<p>세 번째 팀은 VPC 정책이 없어서 클러스터 멤버 간 통신이 차단되어 태스크가 Running 상태로 표시됐지만 응답하지 않았다. 세 현상 모두 구성요소 간 책임·상태 보고·네트워크 정책이 어긋나 발생했다.</p>
 <p>공통 패턴은 "실행 노드, 상태 보고 에이전트, 스케줄러, 네트워크 정책이 함께 작동해야 클러스터가 정상 기능한다"는 점이다.</p>
 <p>따라서 클러스터 구성요소는 컨테이너 워크로드를 배치·실행·모니터링하는 역할 분담 체계를 뜻한다.</p></section>
 <section class="part" id="s-t012-4"><h3><a class="anchor" href="#s-t012-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>컨테이너 인스턴스</strong>: 자원을 실제로 제공하는 노드(ECS에 등록된 EC2나 외부 호스트)다.</li><li><strong>ECS 에이전트</strong>: 노드 상태와 가용 자원을 클러스터에 보고하고, 스케줄러 명령을 수행한다.</li><li><strong>스케줄러·네트워크 정책</strong>: 빈 자원을 골라 태스크를 배치하고 보안 그룹으로 통신을 제어한다.</li></ol></section>
@@ -1127,8 +1124,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>그러려면 새 버전이 뜨는 동안 정상 상태를 확인하는 헬스체크가 필요하다. 헬스체크가 통과하면 다음 인스턴스를 순차적으로 교체한다.</p>
 <p>결론적으로 롤링 업데이트는 중단 없이 점진적으로 새 버전으로 전환하는 방법이다.</p></section>
 <section class="part" id="s-t062-3"><h3><a class="anchor" href="#s-t062-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>운영팀이 세 대의 서버를 쓰던 서비스를 한 대씩 새 버전으로 교체하며 재시작한다. 사용자는 중간에도 API 호출을 계속 성공한다.</p>
-<ul><li>두 번째 서버가 교체되는 동안 첫 서버가 옛 버전으로 요청을 받는다.</li></ul>
-<p>세 서버가 모두 새 버전으로 바뀌면 롤링이 끝난다.</p>
+<p>두 번째 서버가 교체되는 동안 첫 서버가 옛 버전으로 요청을 받는다. 세 서버가 모두 새 버전으로 바뀌면 롤링이 끝난다.</p>
 <p>이렇게 세 장면의 공통점은 순차 교체와 중단 없는 요청 처리다. 그 패턴을 롤링 업데이트라고 한다.</p>
 <p>따라서 롤링 업데이트는 사용자를 끊지 않고 인스턴스를 하나씩 새 버전으로 바꾸는 방식이다.</p></section>
 <section class="part" id="s-t062-4"><h3><a class="anchor" href="#s-t062-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>순차 교체</strong>: 동시에 모든 서버를 바꾸지 않고 하나씩 교체한다</li><li><strong>가용성 유지</strong>: 교체 중에도 남은 서버가 요청을 계속 처리한다</li><li><strong>헬스체크</strong>: 새 서버가 정상임을 확인한 뒤 다음으로 넘어간다</li></ol></section>
@@ -1390,8 +1386,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>AWS Secrets Manager 통합은 정확히 이 과정을 ECS 작업 정의에서 선언적으로 처리한다.</p>
 <p>따라서 비밀 관리가 분리된 현 상황에서는 Secrets Manager 통합이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t085-3"><h3><a class="anchor" href="#s-t085-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>어떤 개발팀은 이미지 빌드 파일에 DB 비밀번호를 적어 배포하고 나서 유출 사고를 경험했다. 또 다른 팀은 컨테이너 시작 스크립트에서 비밀 값을 파일에 써 두고 남아 있던 임시 파일을 공격자가 읽었다.</p>
-<ul><li>세 번째 팀은 환경 변수에 직접 넣어 두었다가 로그에 찍혀 유출됐다.</li></ul>
-<p>이 장면들에 공통 패턴은 민감 값을 컨테이너와 실행 파일 안에 평문으로 두는 것이 노출 경로를 만든다는 점이다.</p>
+<p>세 번째 팀은 환경 변수에 직접 넣어 두었다가 로그에 찍혀 유출됐다. 이 장면들에 공통 패턴은 민감 값을 컨테이너와 실행 파일 안에 평문으로 두는 것이 노출 경로를 만든다는 점이다.</p>
 <p>따라서 Secrets Manager 통합은 비밀 값을 외부 저장소에 두고 컨테이너에는 참조만 주입하는 보안 메커니즘이다.</p></section>
 <section class="part" id="s-t085-4"><h3><a class="anchor" href="#s-t085-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>외부 보관</strong>: 비밀 값은 컨테이너 파일 시스템이나 이미지에 남지 않고 별도 저장소에 둔다.</li><li><strong>시작 시 주입</strong>: 태스크가 시작될 때 환경 변수나 파일 형태로 값이 주입되어 앱이 정상 동작한다.</li><li><strong>접근 제어</strong>: 컨테이너 역할에 최소 권한을 부여해 어떤 비밀을 읽을 수 있는지 제한한다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t084"><em>← 이전</em><b>최소 권한 정책</b></a><a class="nx" href="#t086"><em>다음 →</em><b>SSM Parameter Store 통합</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t085"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t085-1" data-sec="s-t085-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t085-2" data-sec="s-t085-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t085-3" data-sec="s-t085-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t085-4" data-sec="s-t085-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
@@ -1402,8 +1397,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>SSM Parameter Store 통합은 이 과정을 ECS 작업 정의에서 선언적으로 처리해 값을 파일로 보관할 필요를 제거한다.</p>
 <p>따라서 환경별 구성 관리가 요구되는 현 상황에서는 SSM 통합이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t086-3"><h3><a class="anchor" href="#s-t086-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>어떤 팀은 개발과 운영 환경의 DB 접속 주소를 각각 이미지에 넣어 관리하다가 업데이트 시마다 이미지를 재빌드했다. 또 다른 팀은 컨테이너 내부 설정 파일을 볼륨에 마운트해 두었고 실수로 운영 값을 개발에 그대로 썼다.</p>
-<ul><li>세 번째 사례는 환경 변수에 직접 적어 둔 값을 변경할 때마다 태스크 정의를 새로 만들어 배포했다.</li></ul>
-<p>이 장면들에 공통 패턴은 설정값이 컨테이너나 이미지와 결합되면 변경 비용과 오류 위험이 커진다는 점이다.</p>
+<p>세 번째 사례는 환경 변수에 직접 적어 둔 값을 변경할 때마다 태스크 정의를 새로 만들어 배포했다. 이 장면들에 공통 패턴은 설정값이 컨테이너나 이미지와 결합되면 변경 비용과 오류 위험이 커진다는 점이다.</p>
 <p>따라서 SSM Parameter Store 통합은 매개변수를 외부에서 관리해 주입하는 구성 메커니즘이다.</p></section>
 <section class="part" id="s-t086-4"><h3><a class="anchor" href="#s-t086-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>중앙 관리</strong>: 매개변수를 한 저장소에 모아 환경별로 값을 나누어 둔다.</li><li><strong>시작 시 주입</strong>: 태스크 시작 시 지정 경로의 값을 읽어 환경 변수로 전달한다.</li><li><strong>변경 반영</strong>: 운영 중 값이 바뀌면 다음 태스크 실행부터 새 값이 적용된다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t085"><em>← 이전</em><b>Secrets Manager 통합</b></a><a class="nx" href="#t087"><em>다음 →</em><b>컨테이너 이미지 보안</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t086"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t086-1" data-sec="s-t086-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t086-2" data-sec="s-t086-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t086-3" data-sec="s-t086-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t086-4" data-sec="s-t086-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
@@ -1414,8 +1408,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>컨테이너 이미지 보안은 이 과정을 표준화해 실행 단계의 공격 표면을 줄인다.</p>
 <p>따라서 신뢰할 수 없는 입력이 이미지에 들어올 수 있는 현 상황에서는 이미지 보안이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t087-3"><h3><a class="anchor" href="#s-t087-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>한 팀은 무거운 베이스 이미지를 써 둔 채 배포했다가 취약점 스캐너에서 여러 경고를 받았다. 다른 팀은 개발용 도구를 남겨 배포 이미지 용량과 공격 표면을 키웠다.</p>
-<ul><li>세 번째 사례에서 공격자는 저장소에 푸시된 이미지 태그를 대상으로 악성 레이어를 주입하려 했다.</li></ul>
-<p>이 장면들에 공통 패턴은 이미지가 실행 환경으로 그대로 전달되는 만큼 빌드 단계의 위생이 런타임 안전을 좌우한다는 점이다.</p>
+<p>세 번째 사례에서 공격자는 저장소에 푸시된 이미지 태그를 대상으로 악성 레이어를 주입하려 했다. 이 장면들에 공통 패턴은 이미지가 실행 환경으로 그대로 전달되는 만큼 빌드 단계의 위생이 런타임 안전을 좌우한다는 점이다.</p>
 <p>따라서 컨테이너 이미지 보안은 빌드 단계에서 위협을 제거·최소화하는 관리이다.</p></section>
 <section class="part" id="s-t087-4"><h3><a class="anchor" href="#s-t087-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>베이스 최소화</strong>: 작고 검증된 베이스 이미지로 시작해 불필요한 라이브러리를 줄인다.</li><li><strong>취약점 스캔</strong>: 빌드와 푸시 단계에서 알려진 취약점을 검사해 차단한다.</li><li><strong>권한 제한</strong>: 컨테이너를 루트 사용자가 아닌 일반 사용자로 실행해 피해 범위를 줄인다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t086"><em>← 이전</em><b>SSM Parameter Store 통합</b></a><a class="nx" href="#t088"><em>다음 →</em><b>네트워크 보안</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t087"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t087-1" data-sec="s-t087-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t087-2" data-sec="s-t087-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t087-3" data-sec="s-t087-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t087-4" data-sec="s-t087-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
@@ -1426,8 +1419,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>네트워크 보안은 이 과정을 ECS 작업 단위에 적용해 서비스 간 접근을 통제한다.</p>
 <p>따라서 다수 컨테이너가 네트워크로 연결되는 현 상황에서는 네트워크 보안이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t088-3"><h3><a class="anchor" href="#s-t088-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>한 서비스에서는 보안 그룹 규칙을 빼놓고 모든 아웃바운드를 열어 두었다가 예기치 않은 호스트와 통신이 발생했다. 다른 서비스는 프론트와 DB 서브넷을 분리하지 않아 프론트에서 DB 포트로 직접 접근할 수 있었다.</p>
-<ul><li>세 번째 사례에서는 컨테이너가 외부 IP에 열려 인터넷 전반에서 접근이 가능했다.</li></ul>
-<p>이 장면들에 공통 패턴은 열린 네트워크 경로가 곧 접근 가능 영역이라는 점이다.</p>
+<p>세 번째 사례에서는 컨테이너가 외부 IP에 열려 인터넷 전반에서 접근이 가능했다. 이 장면들에 공통 패턴은 열린 네트워크 경로가 곧 접근 가능 영역이라는 점이다.</p>
 <p>따라서 네트워크 보안은 허용 통신만 남기는 통제 메커니즘이다.</p></section>
 <section class="part" id="s-t088-4"><h3><a class="anchor" href="#s-t088-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>인바운드 제한</strong>: 필요한 포트와 소스만 허용해 외부 직접 접근을 막는다.</li><li><strong>서브넷 분리</strong>: 계층별 네트워크를 나누어 DB 접근을 제한한다.</li><li><strong>아웃바운드 통제</strong>: 나가는 통신도 필요한 대상으로 한정한다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t087"><em>← 이전</em><b>컨테이너 이미지 보안</b></a><a class="nx" href="#t089"><em>다음 →</em><b>규정 준수와 격리</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t088"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t088-1" data-sec="s-t088-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t088-2" data-sec="s-t088-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t088-3" data-sec="s-t088-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t088-4" data-sec="s-t088-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
@@ -1437,8 +1429,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>그 규칙은 별도의 계정이나 클러스터로 분리하고, 접근 권한과 암호화 수준을 규정에 맞추는 것이다. 규정 준수와 격리는 ECS 에서 태스크 배치와 계정 분리로 이를 구현한다.</p>
 <p>따라서 법적 요구가 존재하는 현 상황에서는 격리가 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t089-3"><h3><a class="anchor" href="#s-t089-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>한 팀은 민감 데이터 처리기를 공용 클러스터에 띄웠다가 감사에서 워크로드 분리 증거를 요구받았다. 다른 팀은 암호화 키 관리가 불충분해 규정 위반으로 지적받았다.</p>
-<ul><li>세 번째 사례는 로그 보관 정책을 지키지 않아 조사가 어렵게 됐다.</li></ul>
-<p>이 장면들에 공통 패턴은 규정 요구가 실행 환경 분리와 보관 정책까지 요구한다는 점이다.</p>
+<p>세 번째 사례는 로그 보관 정책을 지키지 않아 조사가 어렵게 됐다. 이 장면들에 공통 패턴은 규정 요구가 실행 환경 분리와 보관 정책까지 요구한다는 점이다.</p>
 <p>따라서 규정 준수와 격리는 요구사항을 구조적으로 만족시키는 메커니즘이다.</p></section>
 <section class="part" id="s-t089-4"><h3><a class="anchor" href="#s-t089-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>워크로드 분리</strong>: 민감 컨테이너를 별도 계정이나 클러스터에 배치한다.</li><li><strong>암호화 보장</strong>: 저장과 전송 시 암호화를 적용해 요구사항을 충족한다.</li><li><strong>증거 관리</strong>: 로그와 설정을 보관해 감사 대응 증거로 쓴다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t088"><em>← 이전</em><b>네트워크 보안</b></a><a class="nx" href="#t090"><em>다음 →</em><b>감사와 추적</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t089"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t089-1" data-sec="s-t089-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t089-2" data-sec="s-t089-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t089-3" data-sec="s-t089-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t089-4" data-sec="s-t089-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
@@ -1449,8 +1440,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>감사와 추적은 CloudTrail 과 배포 로그 등으로 이를 구현해 변경 경로를 재구성한다.</p>
 <p>따라서 운영 환경의 변경이 잦은 현 상황에서는 감사와 추적이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t090-3"><h3><a class="anchor" href="#s-t090-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>한 장애에서 누가 설정을 바꿨는지 확인하려 했으나 기록이 없어 원인 분석에 며칠 걸렸다. 다른 운영팀은 배포 이력을 남겨 놓아 10분 만에 원저자를 파악하고 롤백했다.</p>
-<ul><li>세 번째 사례는 포렌식 점검에서 접근 로그가 비활성화되어 조사가 중단됐다.</li></ul>
-<p>이 장면들에 공통 패턴은 기록 존재 여부가 문제 해결 속도를 좌우한다는 점이다.</p>
+<p>세 번째 사례는 포렌식 점검에서 접근 로그가 비활성화되어 조사가 중단됐다. 이 장면들에 공통 패턴은 기록 존재 여부가 문제 해결 속도를 좌우한다는 점이다.</p>
 <p>따라서 감사와 추적은 변경과 접근 기록을 남기는 관측 메커니즘이다.</p></section>
 <section class="part" id="s-t090-4"><h3><a class="anchor" href="#s-t090-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>변경 이력</strong>: 배포와 설정 변경을 시간순으로 기록해 추적한다.</li><li><strong>접근 기록</strong>: 누가 어떤 API 를 호출했는지 남겨 책임을 명확히 한다.</li><li><strong>사후 분석</strong>: 로그를 기반으로 원인과 경로를 재구성해 대응한다.</li></ol>
 <p>&lt;/content&gt; &lt;rfl:parameter name="path"&gt; C:/Users/user/Downloads/it-course-pipeline/out/Amazon_ECS/본문/_batch-015.md</p></section>

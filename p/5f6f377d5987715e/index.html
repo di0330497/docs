@@ -634,8 +634,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <article class="page" id="page-t015" data-crumb="2부. 설치와 첫 실행" data-pos="15"><div class="wrap wide"><header class="phead"><p class="crumb">2부. 설치와 첫 실행<code class="pid">015</code></p><h2>podman 명령어 구조 익히기</h2><p class="deft">podman 명령이 어떤 규칙으로 구성되는지와 기본 옵션 읽는 법을 익힌다.</p></header><div class="cols"><div class="prose"><section class="part" id="s-t015-1"><h3><a class="anchor" href="#s-t015-1" aria-hidden="true">#</a><span class="pn">1</span>💡 ELI5 (핵심 직관)</h3><p>podman 명령어는 <code>podman + 대상 + 동작</code>의 순서로 조합되는 체계다.</p>
 <p>예를 들어 <code>podman run nginx</code>는 nginx 이미지를 실행하라는 뜻이고, <code>podman stop my-container</code>는 my-container라는 이름의 컨테이너를 멈추라는 뜻이다. 모든 명령이 같은 패턴을 따르기 때문에 하나만 이해하면 나머지는 자연스럽게 유추할 수 있다.</p></section>
 <section class="part" id="s-t015-2"><h3><a class="anchor" href="#s-t015-2" aria-hidden="true">#</a><span class="pn">2</span>🧠 연역적 설명 (원리 → 결론)</h3><p><strong>기본 원리</strong>: 명령어 체계는 사용자가 의도를 정확하게 전달할 수 있도록 문법을 규정하는 장치다. 규칙이 없으면 같은 동작을 표현하는 방식이 제각각이 되어 도구를 일관되게 사용할 수 없다.</p>
-<p><strong>작동 규칙</strong>: podman은 서브 명령 구조를 취한다.</p>
-<ul><li>첫 번째 단어는 대상이 되는 자원의 종류를 가리키고, 두 번째 단어는 그 자원에 가할 동작을 나타낸다.</li></ul>
+<p><strong>작동 규칙</strong>: podman은 서브 명령 구조를 취한다. 첫 번째 단어는 대상이 되는 자원의 종류를 가리키고, 두 번째 단어는 그 자원에 가할 동작을 나타낸다.</p>
 <p><code>podman container list</code>는 컨테이너라는 자원을 대상으로 목록 조회라는 동작을 수행하고, <code>podman image pull</code>은 이미지를 대상으로 내려받기라는 동작을 수행한다. 옵션은 동작의 세부 사항을 조정한다.</p>
 <p><code>-d</code>는 백그라운드 실행을, <code>-p</code>는 포트 매핑을 의미한다.</p>
 <p><strong>결론</strong>: 명령어 구조가 대상과 동작의 조합으로 규정되어 있기 때문에, 사용자는 새로운 명령을 만나도 대상과 동작을 분석하면 의도를 파악할 수 있다. 이 구조적 일관성이 podman을 학습 비용이 낮은 도구로 만든다.</p></section>

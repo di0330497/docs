@@ -1527,7 +1527,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>예를 들어 집 공유기에서 비밀번호를 설정하지 않으면 이웃이 내 인터넷을 무료로 쓰거나 내 통신 내용을 볼 수 있다. Wi-Fi 보안은 전파를 암호화하고, 접속 기기를 확인해 이런 침입을 원천 차단한다.</p>
 <p>과거에는 WEP가 쓰였지만 지금은 WPA2와 WPA3가 표준이다.</p></section>
 <section class="part" id="s-t083-2"><h3><a class="anchor" href="#s-t083-2" aria-hidden="true">#</a><span class="pn">2</span>🧠 연역적 설명 (원리 → 결론)</h3><p><strong>기본 원리</strong>: 무선 통신은 공기 중으로 전파가 퍼지므로, 수신 장비만 있으면 누구나 신호를 받아 통신 내용을 읽을 수 있다. 그러므로 Wi-Fi 보안은 두 가지 문제를 동시에 해결해야 한다.</p>
-<ul><li>첫째, 전파를 암호화해 내용을 보호하고 둘째, 접속 기기를 인증해 허가받은 기기만 네트워크에 참여하게 해야 한다.</li></ul>
+<p>첫째, 전파를 암호화해 내용을 보호하고 둘째, 접속 기기를 인증해 허가받은 기기만 네트워크에 참여하게 해야 한다.</p>
 <p><strong>작동 규칙</strong>: WPA(Wi-Fi Protected Access) 프로토콜은 연결 시 클라이언트와 AP 사이에 사전 공유 키(Pre-Shared Key, PSK)라는 비밀번호를 주고받으며, 이 키를 바탕으로 암호화 세션을 만든다. WPA2는 TKIP(Temporal Key Integrity Protocol) 대신 AES(Advanced Encryption Standard)라는 더 강한 암호화 방식을 채택해 안전성을 높였다.</p>
 <p>WPA3는 PSK 대신 SAE(Simultaneous Authentication of Equals)라는 키 교환 방식을 도입해, 오프라인 사전 공격(패스워드를 미리 후보별로 대입해 크래킹하는 방식)에 더 강해졌다. 인증 과정에서 클라이언트가 AP에 비밀번호를 제시하고, AP가 이를 검증해 연결을 허가하거나 거부한다.</p>
 <p><strong>결론</strong>: 무선 통신의 물리적 특성상 감청과 무단 접속은 구조적으로 불가피하므로, 암호화와 인증을 동시에 제공하는 보안 프로토콜이 필연적으로 필요하다. Wi-Fi 보안은 이 두 가지 기능을 단계적으로 강화해 온 기술의 연속이다.</p></section>

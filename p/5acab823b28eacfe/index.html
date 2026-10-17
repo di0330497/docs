@@ -638,8 +638,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>그래서 만료 리스크를 줄이려면 미리 갱신 결제를 예약하는 메커니즘이 필요하다. 자동 갱신은 그 결제를 만료 전에 자동으로 실행하는 규칙이다.</p>
 <p>그러려면 만료와 자동 갱신 개념이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t020-3"><h3><a class="anchor" href="#s-t020-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>한 회사의 메인 도메인이 만료일이 지나 끊겼고, 그 사이 경쟁자가 새로운 등록을 받아 트래픽을 잃었다. 또 다른 팀은 자동 갱신이 켜져 있어 만료일 전에 결제가 완료되어 서비스가 지속됐다.</p>
-<ul><li>세 번째 사례에서는 신용카드 만료로 자동 갱신이 실패해 수동 갱신으로 구제했다.</li></ul>
-<p>이 현상들의 공통 패턴은 계약 기간이 끝나는 순간 권리가 끊어지고, 자동 결제가 그것을 대신 관리한다.</p>
+<p>세 번째 사례에서는 신용카드 만료로 자동 갱신이 실패해 수동 갱신으로 구제했다. 이 현상들의 공통 패턴은 계약 기간이 끝나는 순간 권리가 끊어지고, 자동 결제가 그것을 대신 관리한다.</p>
 <p>따라서 도메인 만료와 자동 갱신은 기한 관리로 소유권을 지키는 장치다.</p></section>
 <section class="part" id="s-t020-4"><h3><a class="anchor" href="#s-t020-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>만료</strong>: 기간 계약이 끝나 도메인 권리가 사라지는 시점이다.</li><li><strong>자동 갱신</strong>: 만료 전에 결제를 자동 실행해 주소를 유지한다.</li><li><strong>갱신 실패</strong>: 결제 수단 문제로 자동 갱신 실패 시 수동 조치가 필요하다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t019"><em>← 이전</em><b>도메인 잠금과 이전 잠금</b></a><a class="nx" href="#t021"><em>다음 →</em><b>호스팅 영역 (Hosted Zone) 개념</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t020"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t020-1" data-sec="s-t020-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t020-2" data-sec="s-t020-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t020-3" data-sec="s-t020-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t020-4" data-sec="s-t020-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
@@ -650,8 +649,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>DNS 질의가 들어오면 시스템은 해당 도메인의 장부를 찾아 기록을 읽어 응답한다.</p>
 <p>그러려면 호스팅 영역 개념이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t021-3"><h3><a class="anchor" href="#s-t021-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>한 엔지니어는 company.com의 DNS 설정을 바꾸려 할 때 해당 도메인의 레코드만 모인 전용 공간을 찾았다. 또 다른 팀은 새 도메인을 만들자 자동으로 빈 장부가 생겼다.</p>
-<ul><li>세 번째 사례에서는 여러 도메인을 가진 조직이 각 도메인마다 별도 장부를 관리했다.</li></ul>
-<p>이 현상들의 공통 패턴은 도메인별로 레코드 묶음이 독립적으로 존재한다는 점이다.</p>
+<p>세 번째 사례에서는 여러 도메인을 가진 조직이 각 도메인마다 별도 장부를 관리했다. 이 현상들의 공통 패턴은 도메인별로 레코드 묶음이 독립적으로 존재한다는 점이다.</p>
 <p>따라서 호스팅 영역은 도메인별 DNS 레코드를 보관하는 컨테이너다.</p></section>
 <section class="part" id="s-t021-4"><h3><a class="anchor" href="#s-t021-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>장부 컨테이너</strong>: 도메인별 레코드 묶음을 한곳에 보관한다.</li><li><strong>DNS 질의 응답</strong>: 질의 시 해당 도메인 장부를 찾아 기록을 읽는다.</li><li><strong>도메인당 하나</strong>: 도메인 하나에 해당하는 장부가 생긴다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t020"><em>← 이전</em><b>도메인 만료와 자동 갱신</b></a><a class="nx" href="#t022"><em>다음 →</em><b>퍼블릭 호스팅 영역 생성</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t021"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t021-1" data-sec="s-t021-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t021-2" data-sec="s-t021-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t021-3" data-sec="s-t021-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t021-4" data-sec="s-t021-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
@@ -662,8 +660,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>이때 네임서버 레코드가 자동으로 생성되어 도메인의 공개 질의를 처리할 수 있게 된다.</p>
 <p>그러려면 퍼블릭 호스팅 영역 생성 개념이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t022-3"><h3><a class="anchor" href="#s-t022-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>한 팀은 새 도메인을 등록하고 퍼블릭 호스팅 영역을 만든 뒤 전 세계에서 DNS 조회가 성공했다. 다른 팀은 아직 영역을 만들지 않아 조회가 실패했다.</p>
-<ul><li>세 번째 사례에서는 영역 생성 후 자동으로 NS 레코드가 만들어져 등록소에 반영됐다.</li></ul>
-<p>이 현상들의 공통 패턴은 퍼블릭 장부가 있어야 공개 질의가 동작한다는 점이다.</p>
+<p>세 번째 사례에서는 영역 생성 후 자동으로 NS 레코드가 만들어져 등록소에 반영됐다. 이 현상들의 공통 패턴은 퍼블릭 장부가 있어야 공개 질의가 동작한다는 점이다.</p>
 <p>따라서 퍼블릭 호스팅 영역 생성은 인터넷 공개 DNS 장부를 여는 절차다.</p></section>
 <section class="part" id="s-t022-4"><h3><a class="anchor" href="#s-t022-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>공개 네임서버</strong>: 전 세계에서 접근 가능한 DNS 질의 대상이다.</li><li><strong>자동 NS 레코드</strong>: 영역 생성 시 네임서버 레코드가 자동 만들어진다.</li><li><strong>등록소 연계</strong>: 도메인 등록소가 해당 네임서버를 공개한다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t021"><em>← 이전</em><b>호스팅 영역 (Hosted Zone) 개념</b></a><a class="nx" href="#t023"><em>다음 →</em><b>프라이빗 호스팅 영역 생성</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t022"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t022-1" data-sec="s-t022-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t022-2" data-sec="s-t022-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t022-3" data-sec="s-t022-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t022-4" data-sec="s-t022-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
@@ -674,8 +671,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>바깥에서는 조회 불가능하지만 VPC 내에서는 이름으로 해석된다.</p>
 <p>그러려면 프라이빗 호스팅 영역 생성 개념이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t023-3"><h3><a class="anchor" href="#s-t023-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>한 개발자가 외부 DNS에 내부 API 주소를 등록하려다 보안 검토에서 거부됐다. 다른 팀은 VPC 안에 프라이빗 장부를 만들고 내부 서버들이 이름으로 통신했다.</p>
-<ul><li>세 번째 사례에서는 VPC 외부에서는 같은 이름 조회가 실패했다.</li></ul>
-<p>이 현상들의 공통 패턴은 내부 이름 해석은 VPC 경계 안에서만 가능하다.</p>
+<p>세 번째 사례에서는 VPC 외부에서는 같은 이름 조회가 실패했다. 이 현상들의 공통 패턴은 내부 이름 해석은 VPC 경계 안에서만 가능하다.</p>
 <p>따라서 프라이빗 호스팅 영역 생성은 내부 전용 DNS 장부를 세우는 절차다.</p></section>
 <section class="part" id="s-t023-4"><h3><a class="anchor" href="#s-t023-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>내부 전용</strong>: VPC 안에서만 이름 해석이 동작한다.</li><li><strong>외부 비공개</strong>: 인터넷에서는 보이지 않는다.</li><li><strong>VPC 연결</strong>: 장부를 특정 VPC에 연결해야 사용할 수 있다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t022"><em>← 이전</em><b>퍼블릭 호스팅 영역 생성</b></a><a class="nx" href="#t024"><em>다음 →</em><b>호스팅 영역 ID와 ARN</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t023"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t023-1" data-sec="s-t023-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t023-2" data-sec="s-t023-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t023-3" data-sec="s-t023-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t023-4" data-sec="s-t023-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
@@ -686,8 +682,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>시스템이 자동으로 장부를 가리키거나 권한을 위임할 때 ID와 ARN을 쓴다.</p>
 <p>그래서 동일 자원을 안정적으로 참조하려면 호스팅 영역 ID와 ARN 개념이 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t024-3"><h3><a class="anchor" href="#s-t024-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>한 팀은 여러 장부 사이에서 혼선을 겪어 ID로 정확히 가리켰다. 다른 조직은 교차 계정에서 권한을 위임할 때 ARN을 사용했다.</p>
-<ul><li>세 번째 사례에서는 자동화 스크립트가 ID로 장부를 찾아 설정을 적용했다.</li></ul>
-<p>이 현상들의 공통 패턴은 동일 장부를 지시하려면 유일 식별자가 필요하다.</p>
+<p>세 번째 사례에서는 자동화 스크립트가 ID로 장부를 찾아 설정을 적용했다. 이 현상들의 공통 패턴은 동일 장부를 지시하려면 유일 식별자가 필요하다.</p>
 <p>따라서 호스팅 영역 ID와 ARN은 장부를 정확히 가리키는 식별자와 확장 주소다.</p></section>
 <section class="part" id="s-t024-4"><h3><a class="anchor" href="#s-t024-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>장부 식별자</strong>: ID는 각 장부를 유일하게 가리킨다.</li><li><strong>자원 주소</strong>: ARN은 권한·참조에 쓰는 확장 주소다.</li><li><strong>자동화 사용</strong>: 스크립트와 정책이 ID·ARN으로 장부를 지시한다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t023"><em>← 이전</em><b>프라이빗 호스팅 영역 생성</b></a><a class="nx" href="#t025"><em>다음 →</em><b>네임서버 (NS) 레코드와 위임</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t024"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t024-1" data-sec="s-t024-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t024-2" data-sec="s-t024-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t024-3" data-sec="s-t024-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t024-4" data-sec="s-t024-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
@@ -1275,12 +1270,10 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>연속 실패 횟수가 정한 횟수를 넘기면 그 자원은 unhealthy로 표시되고, failover 정책은 그 자원을 응답에서 제외한다. 그러면 클라이언트는 DNS 새로고침 시점부터 예비 쪽으로만 이동한다.</p>
 <p>따라서 대표 장애를 감지하는 장치 없이 failover는 의미가 없다.</p>
 <p>어떤 앱이 서울 리전의 EC2 하나로만 돌았는데 5분간 502가 났다. 운영팀은 DNS 캐시(TTL)가 만료된 뒤에야 부산 예비 쪽으로 넘어갔다.</p>
-<p>다른 팀은 failover 레코드를 만들었지만 헬스체크 없이 두 A 레코드를 round-robin으로 두다 보니 한쪽이 죽어도 사용자 절반이 계속 502를 봤다.</p>
-<ul><li>세 번째 팀은 health check에 HTTP 200을 요구했더니 정상도 503을 내는 엔드포인트에서 오탐이 났다.</li></ul>
+<p>다른 팀은 failover 레코드를 만들었지만 헬스체크 없이 두 A 레코드를 round-robin으로 두다 보니 한쪽이 죽어도 사용자 절반이 계속 502를 봤다. 세 번째 팀은 health check에 HTTP 200을 요구했더니 정상도 503을 내는 엔드포인트에서 오탐이 났다.</p>
 <p>공통 패턴은, 장애를 사전에 감지하는 센서가 없거나 기준이 잘못되면 failover가 제대로 동작하지 않는다는 사실이다.</p>
 <p>따라서 Failover와 헬스체크 연동은 failover 라우팅 정책과 health check를 한 쌍으로 묶어, 대상 자원이 살아있는지 주기적으로 확인하고 죽었다 판단되면 DNS 응답에서 그 자원을 자동으로 제외하는 구조다. [토픽 079 #6] 어떤 앱이 서울 리전에서 EC2 하나로만 돌았는데 5분간 502가 났다. 운영팀은 시간이 지나 DNS 캐시(TTL)가 만료된 뒤에야 부산 예비 쪽으로 넘어갔다.</p>
-<p>다른 팀은 failover record를 만들었지만 헬스체크 없이 두 A record를 round-robin으로 두다 보니 한쪽이 죽어도 사용자 절반이 계속 502를 봤다.</p>
-<ul><li>세 번째 팀은 health check에 HTTP 200을 요구했더니 정상도 503을 내는 엔드포인트에서 오탐이 났다.</li></ul>
+<p>다른 팀은 failover record를 만들었지만 헬스체크 없이 두 A record를 round-robin으로 두다 보니 한쪽이 죽어도 사용자 절반이 계속 502를 봤다. 세 번째 팀은 health check에 HTTP 200을 요구했더니 정상도 503을 내는 엔드포인트에서 오탐이 났다.</p>
 <p>공통 패턴은, 장애를 사전에 감지하는 센서가 없거나 기준이 잘못되면 failover가 이루어지지 않는다는 사실이다.</p>
 <p>따라서 Failover와 헬스체크 연동은 failover 라우팅 정책과 health check를 한 쌍으로 묶어, 대상 자원이 살아있는지 주기적으로 확인하고 죽었다 판단되면 DNS 응답에서 그 자원을 자동으로 제외하는 구조다.</p></section>
 <section class="part" id="s-t079-3"><h3><a class="anchor" href="#s-t079-3" aria-hidden="true">#</a><span class="pn">3</span>🛠️ 핵심 3가지</h3><ol><li><strong>장애 감지 쌍</strong>: failover 정책과 health check는 따로가 아니라 묶어서 동작하며, 감지 없이는 failover가 발동되지 않는다.</li><li><strong>판단 기준</strong>: 30초 주기 HTTP/TCP 경로 검사와 실패 횟수 임계값으로 healthy/unhealthy 상태를 가른다.</li><li><strong>응답 제어</strong>: unhealthy로 판정된 자원은 DNS 응답에서 제외되고, 다음 쿼리부터 예비 자원만 남는다.</li></ol></section>
@@ -1345,8 +1338,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>rule은 VPC 셋 또는 RAM(Resource Access Manager)으로 다른 계정/VPC와 공유할 수 있다.</p>
 <p>따라서 resolver rule은 쿼리 도메인에 따라 DNS forward 경로를 지정하는 라우팅 표이고, outbound endpoint와 함께 쓸 때 의도한 경로로 전달된다.</p></section>
 <section class="part" id="s-t084-3"><h3><a class="anchor" href="#s-t084-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>팀이 .internal 도메인 쿼리에 rule을 넣지 않으니 .2가 인터넷 root로 보냈다가 timeout. rule에 corp.internal → 10.x.x.x DNS IP를 지정하자 traffic이 온프레 DNS로 향했다.</p>
-<p>다른 팀은 같은 rule을 RAM으로 공유 VPC에 보니 중앙 관리가 쉬워졌다.</p>
-<ul><li>세 번째는 rule suffix가 .com으로 너무 넓어서 모든 .com이 온프레 DNS로 흘러 성능 저하가 났다.</li></ul>
+<p>다른 팀은 같은 rule을 RAM으로 공유 VPC에 보니 중앙 관리가 쉬워졌다. 세 번째는 rule suffix가 .com으로 너무 넓어서 모든 .com이 온프레 DNS로 흘러 성능 저하가 났다.</p>
 <p>공통 패턴은, suffix 범위를 정확히 지정해야 원하는 도메인만 forward되고 범위가 넓으면 의도치 않은 쿼리까지 outbound로 흐른다.</p>
 <p>따라서 Resolver rule은 DNS 쿼리의 도메인 suffix에 따라 query를 특정 IP의 DNS 서버(주로 outward endpoint 경유)로 forward할지 결정하는 규칙이다.</p></section>
 <section class="part" id="s-t084-4"><h3><a class="anchor" href="#s-t084-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>매칭 기준</strong>: 도메인 suffix(예: corp.internal)로 query를 rule에 매칭한다.</li><li><strong>전송 수단</strong>: outbound endpoint와 target DNS IP가 함께 지정되어 forward 경로를 만든다.</li><li><strong>공유와 범위</strong>: RAM으로 공유 가능하며, suffix 범위가 넓으면 의도치 않은 쿼리까지 나간다.</li></ol></section>

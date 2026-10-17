@@ -1434,7 +1434,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <section class="part" id="s-t097-2"><h3><a class="anchor" href="#s-t097-2" aria-hidden="true">#</a><span class="pn">2</span>🧠 연역적 설명 (원리 → 결론)</h3><p>기본 원리로, 서버리스 함수는 정해진 이벤트를 입력으로 받아 결과를 반환하는 독립 실행 단위다. 작동 규칙으로, SAM CLI는 템플릿(YAML)을 읽고 Docker 컨테이너 안에서 Lambda 런타임을 흉내 내어 함수를 실행하며, 이벤트 JSON을 표준 입력으로 넣어 실제 트리거 상황을 재현한다.</p>
 <p>그래서 로컬에서도 클라우드와 같은 호출·응답 흐름을 재현할 수 있고, 배포 전에 경로를 검증해야 한다는 결론으로, SAM 로컬 테스트는 개발 과정에서 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t097-3"><h3><a class="anchor" href="#s-t097-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>현상으로, Lambda에 배포한 뒤 오류가 나면 CloudWatch에서 로그를 찾아야 해서 확인이 느리다. 또 다른 현상으로, <code>sam local invoke</code>를 실행하면 1초 안에 응답과 로그가 터미널에 표시된다.</p>
-<ul><li>세 번째 현상으로, API Gateway 연동 시 <code>sam local start-api</code>가 로컬 포트에서 HTTP 요청을 받아 Lambda 실행을 시뮬레이션한다.</li></ul>
+<p>세 번째 현상으로, API Gateway 연동 시 <code>sam local start-api</code>가 로컬 포트에서 HTTP 요청을 받아 Lambda 실행을 시뮬레이션한다.</p>
 <p>공통 패턴으로, 호출·응답·로그를 클라우드 없이 내 컴퓨터에서 재현할 수 있다.</p>
 <p>따라서 SAM 로컬 테스트는 클라우드에 배포하지 않고 서버리스 함수의 실행 결과를 재현·검증하는 도구다.</p></section>
 <section class="part" id="s-t097-4"><h3><a class="anchor" href="#s-t097-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>Docker 런타임 모사</strong>: SAM은 컨테이너 안에서 Lambda 실행 환경을 흉내 낸다.</li><li><strong>이벤트 JSON 주입</strong>: 실제 트리거와 같은 입력을 넣어 호출 상황을 재현한다.</li><li><strong>빠른 피드백 루프</strong>: 배포 없이 결과와 로그를 즉시 확인한다.</li></ol></section>
@@ -1444,7 +1444,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <section class="part" id="s-t098-2"><h3><a class="anchor" href="#s-t098-2" aria-hidden="true">#</a><span class="pn">2</span>🧠 연역적 설명 (원리 → 결론)</h3><p>기본 원리로, 코드 변경은 항상 오류를 만들 수 있고 사람은 반복 검사에 실수한다. 작동 규칙으로, 파이프라인은 push나 PR 같은 트리거마다 빌드→테스트→배포 단계를 순차 실행하고, 한 단계가 실패하면 이후 단계를 중단한다.</p>
 <p>그래서 변경마다 일관된 검증과 배포가 가능하고, 사람 손으로 하던 절차를 기계가 매번 동일하게 수행하므로 CI/CD 파이프라인은 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t098-3"><h3><a class="anchor" href="#s-t098-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>현상으로, 수동 배포 중 터미널 명령 하나를 빠뜨려 서비스가 멈춘 사례가 있다. 또 다른 현상으로, PR마다 자동 테스트가 달려 있어 깨진 빌드를 병합 전에 차단한다.</p>
-<ul><li>세 번째 현상으로, main 브랜치 병합 시 스크립트가 자동으로 Lambda 버전을 올린다.</li></ul>
+<p>세 번째 현상으로, main 브랜치 병합 시 스크립트가 자동으로 Lambda 버전을 올린다.</p>
 <p>공통 패턴으로, 변경→검증→반영이 매번 같은 순서로 반복된다.</p>
 <p>따라서 CI/CD 파이프라인은 코드 변경을 자동으로 빌드·검증·배포하는 순차 자동화 흐름이다.</p></section>
 <section class="part" id="s-t098-4"><h3><a class="anchor" href="#s-t098-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>트리거 기반 실행</strong>: push나 PR 같은 이벤트가 파이프라인을 시작한다.</li><li><strong>단계별 게이트</strong>: 테스트가 실패하면 배포 단계로 넘어가지 않는다.</li><li><strong>반복 일관성</strong>: 사람이 손으로 하던 절차를 매번 동일하게 수행한다.</li></ol></section>
@@ -1454,7 +1454,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <section class="part" id="s-t099-2"><h3><a class="anchor" href="#s-t099-2" aria-hidden="true">#</a><span class="pn">2</span>🧠 연역적 설명 (원리 → 결론)</h3><p>기본 원리로, 배포는 예측하지 못한 결함을 숨길 수 있고 장애 시간은 곧 비용이다. 작동 규칙으로, 롤백은 이전 버전 식별→트래픽 전환→검증 순서로 진행하며, 모니터링 알람이 임계치를 넘으면 자동으로 이전 버전으로 트래픽을 돌릴 수 있다.</p>
 <p>그래서 문제 발생 시 빠르게 복구할 수 있는 경로가 필요하고, 롤백 절차는 개발·배포 과정에서 필연적으로 존재한다.</p></section>
 <section class="part" id="s-t099-3"><h3><a class="anchor" href="#s-t099-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>현상으로, 새 릴리스 후 5xx 오류가 늘어 CloudWatch 알람이 울리면 자동 롤백이 이전 버전으로 alias를 되돌린다. 또 다른 현상으로, DB 스키마 변경이 포함된 릴리스는 코드만 롤백하면 데이터 불일치가 생긴다.</p>
-<ul><li>세 번째 현상으로, 배포 전 스냅샷이나 백업을 만들어두면 복구 경로가 확보된다.</li></ul>
+<p>세 번째 현상으로, 배포 전 스냅샷이나 백업을 만들어두면 복구 경로가 확보된다.</p>
 <p>공통 패턴으로, 이전 안정 상태로 시스템을 복원한다.</p>
 <p>따라서 롤백 절차는 장애 발생 시 이전 정상 버전으로 시스템을 되돌리는 일련의 복구 단계다.</p></section>
 <section class="part" id="s-t099-4"><h3><a class="anchor" href="#s-t099-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>이전 버전 식별</strong>: 되돌릴 기준 버전(alias나 태그)을 사전에 명확히 한다.</li><li><strong>트래픽 전환</strong>: 사용자 요청을 이전 버전으로 점진 또는 즉시 옮긴다.</li><li><strong>상태 일관성</strong>: 데이터와 스키마 변경도 함께 복원해야 완전한 롤백이 된다.</li></ol></section>
@@ -1464,7 +1464,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <section class="part" id="s-t100-2"><h3><a class="anchor" href="#s-t100-2" aria-hidden="true">#</a><span class="pn">2</span>🧠 연역적 설명 (원리 → 결론)</h3><p>기본 원리로, 개발 중인 코드는 버그와 테스트 데이터를 만들어내고 운영 환경은 안정성이 필요하다. 작동 규칙으로, 환경마다 계정·스택·리소스를 분리하고 권한과 데이터를 공유하지 않도록 설정한다.</p>
 <p>그래서 한 환경의 변경이 다른 환경을 오염시키지 않고, 운영 안정성을 지킬 수 있기 때문에 환경 분리는 시스템 설계에서 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t100-3"><h3><a class="anchor" href="#s-t100-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>현상으로, 개발 스택에 테스트 이벤트를 보낸 뒤 실수로 운영 데이터베이스에 쓴 사례가 있다. 또 다른 현상으로, 운영 환경을 별도 AWS 계정으로 격리해 IAM 경계를 강화한다.</p>
-<ul><li>세 번째 현상으로, 스테이징에서 통합 테스트를 거친 뒤에야 운영 배포 승인 게이트를 통과한다.</li></ul>
+<p>세 번째 현상으로, 스테이징에서 통합 테스트를 거친 뒤에야 운영 배포 승인 게이트를 통과한다.</p>
 <p>공통 패턴으로, 격리된 런타임 공간과 승인 절차가 반복된다.</p>
 <p>따라서 환경 분리는 개발·검증·운영 단계의 인프라·데이터·권한을 서로 오염되지 않게 나누는 구조다.</p></section>
 <section class="part" id="s-t100-4"><h3><a class="anchor" href="#s-t100-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>격리된 리소스</strong>: 환경마다 별도 스택·계정·데이터를 둔다.</li><li><strong>승인 게이트</strong>: 운영 반영 전 검증을 거친다.</li><li><strong>설정 차등화</strong>: 메모리·동시성·로그 레벨을 환경별로 조정한다.</li></ol></section>
@@ -1474,7 +1474,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <section class="part" id="s-t101-2"><h3><a class="anchor" href="#s-t101-2" aria-hidden="true">#</a><span class="pn">2</span>🧠 연역적 설명 (원리 → 결론)</h3><p>기본 원리로, 모든 시스템은 동시에 처리할 수 있는 요청 수에 한계가 있다. 작동 규칙으로, 한도 초과 시 시스템은 429나 Throttling 응답을 보내고, 클라이언트는 지수 백오프로 재시도하며, 앞단에 큐나 버킷을 두어 몰림을 평준화한다.</p>
 <p>그래서 한도를 넘는 순간에도 시스템이 붕괴하지 않게 제어해야 하고, 스로틀 처리는 고부하 상황에서 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t101-3"><h3><a class="anchor" href="#s-t101-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>현상으로, Lambda 초당 요청이 reserved concurrency를 넘으면 ThrottlingException이 발생한다. 또 다른 현상으로, SQS 큐를 앞단에 두면 burst 요청을 흡수해 뒷단 Lambda 부하를 평준화한다.</p>
-<ul><li>세 번째 현상으로, API Gateway 사용량 계획(throttling)이 과다 호출을 429로 막는다.</li></ul>
+<p>세 번째 현상으로, API Gateway 사용량 계획(throttling)이 과다 호출을 429로 막는다.</p>
 <p>공통 패턴으로, 한도 초과 시 제어·재시도·제한이 반복된다.</p>
 <p>따라서 스로틀 처리는 처리 한도 초과 상황을 지연·재시도·제한으로 안전하게 다루는 메커니즘이다.</p></section>
 <section class="part" id="s-t101-4"><h3><a class="anchor" href="#s-t101-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>한도 모니터링</strong>: 동시성이나 TPS 한계를 지표로 추적한다.</li><li><strong>재시도 전략</strong>: 지수 백오프로 몰림을 분산한다.</li><li><strong>흡수 계층</strong>: 큐나 버킷으로 burst를 평준화한다.</li></ol></section>
@@ -1484,7 +1484,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <section class="part" id="s-t102-2"><h3><a class="anchor" href="#s-t102-2" aria-hidden="true">#</a><span class="pn">2</span>🧠 연역적 설명 (원리 → 결론)</h3><p>기본 원리로, 배치 처리는 여러 메시지를 한 번에 처리해 비용과 지연을 줄이지만 일부 메시지는 항상 실패할 수 있다. 작동 규칙으로, Lambda는 batchItemFailures를 반환해 실패한 메시지 ID만 큐에 남기고 성공한 메시지는 삭제한다.</p>
 <p>그래서 배치 효율을 유지하면서 재처리 범위를 최소화해야 하고, 부분 배치 실패 처리는 메시지 처리 파이프라인에서 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t102-3"><h3><a class="anchor" href="#s-t102-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>현상으로, 10개 메시지 중 2개가 검증에 실패하면 전체를 실패 처리해 8개가 중복 처리된다. 또 다른 현상으로, PartialBatchResponse를 활성화하면 실패한 2건만 나중에 다시 처리된다.</p>
-<ul><li>세 번째 현상으로, ReportBatchItemFailures 설정으로 개별 실패를 보고할 수 있다.</li></ul>
+<p>세 번째 현상으로, ReportBatchItemFailures 설정으로 개별 실패를 보고할 수 있다.</p>
 <p>공통 패턴으로, 배치 내 실패 항목만 분리해 재처리한다.</p>
 <p>따라서 부분 배치 실패 처리는 배치 실행 중 실패 항목만 식별·재처리하는 메커니즘이다.</p></section>
 <section class="part" id="s-t102-4"><h3><a class="anchor" href="#s-t102-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>실패 항목 식별</strong>: itemIdentifier로 실패 메시지 ID를 반환한다.</li><li><strong>성공 항목 보존</strong>: 성공 메시지는 큐에서 삭제해 중복 처리를 막는다.</li><li><strong>재처리 범위 축소</strong>: 실패분만 재처리해 처리량 효율을 유지한다.</li></ol></section>
@@ -1555,8 +1555,8 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>관측 결과가 기대와 다르면 설계 또는 설정을 고치고 다시 시험한다.</p>
 <p>결국 실패가 일상인 분산 환경에서는 resilience 테스트가 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t110-3"><h3><a class="anchor" href="#s-t110-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>한 팀은 평일 점심 시간대에 일부 Lambda 동시 실행 수를 인위적으로 제한해 큐 적체를 만들었고, 오토스케일링이 따라오는 시점을 측정했다. 다른 팀은 의존 서비스에 500ms 지연을 넣어 타임아웃과 회로 차단기가 기대대로 동작하는지 본다.</p>
-<ul><li>세 번째로 데이터베이스 failover 훈련을 월 1회 돌려 RDS 복제본 승격 시간을 기록한다.</li></ul>
-<p>이 장면들의 공통 패턴은 "정상 상태를 기준으로 실패를 주입하고 회복을 측정한다"는 점이다. Resilience 테스트는 정상 동작을 전제로 일부러 장애를 일으켜 시스템의 복원력을 검증하는 시험이다.</p></section>
+<p>세 번째로 데이터베이스 failover 훈련을 월 1회 돌려 RDS 복제본 승격 시간을 기록한다. 이 장면들의 공통 패턴은 "정상 상태를 기준으로 실패를 주입하고 회복을 측정한다"는 점이다.</p>
+<p>Resilience 테스트는 정상 동작을 전제로 일부러 장애를 일으켜 시스템의 복원력을 검증하는 시험이다.</p></section>
 <section class="part" id="s-t110-4"><h3><a class="anchor" href="#s-t110-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>장애 주입</strong>: 인스턴스 종료나 지연처럼 실제 고장을 통제된 방식으로 넣는다.</li><li><strong>기준과 측정</strong>: 정상 상태 지표를 기준으로 회복 시간과 손실을 측정한다.</li><li><strong>반복 개선</strong>: 결과를 바탕으로 설정이나 설계를 고치고 주기적으로 다시 시험한다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t109"><em>← 이전</em><b>장애 대응 런북</b></a><a class="nx" href="#t111"><em>다음 →</em><b>Lambda 가격 구조</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t110"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t110-1" data-sec="s-t110-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t110-2" data-sec="s-t110-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t110-3" data-sec="s-t110-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t110-4" data-sec="s-t110-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
 <article class="page" id="page-t111" data-crumb="12부. 비용·최적화·종합" data-pos="111"><div class="wrap wide"><header class="phead"><p class="crumb">12부. 비용·최적화·종합<code class="pid">111</code></p><h2>Lambda 가격 구조</h2><p class="deft">요청 수·실행 시간·메모리 과금 방식을 설명한다</p></header><div class="cols"><div class="prose"><section class="part" id="s-t111-1"><h3><a class="anchor" href="#s-t111-1" aria-hidden="true">#</a><span class="pn">1</span>💡 ELI5 (핵심 직관)</h3><p>Lambda는 함수를 실행한 만큼만 요금을 매긴다. 호출 한 번당 고정 요청 요금과 함수가 실행된 시간 곱하기 메모리 크기에 따른 요금 두 부분이 붙는다.</p>
@@ -1566,8 +1566,8 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>따라서 Lambda 요금은 호출당 요청 단가와 실행 시간·메모리 곱의 두 축으로 분리된다. 실행 시간은 밀리초 단위로 측정되고 메모리는 MB 단위로 지정되며, 지정 메모리에 비례해 CPU도 같이 증가한다.</p>
 <p>고정 서버와 다르게 사용한 만큼만 내야 한다는 원리 아래, 요청당 고정 요금과 자원 소비량 기반 변동 요금의 2층 구조는 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t111-3"><h3><a class="anchor" href="#s-t111-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>어떤 워크로드는 월 수백만 호출이지만 각 호출이 50ms로 짧아 시간 요금이 요청 요금보다 낮았다. 다른 워크로드는 호출 수는 적지만 15분 풀 타임아웃을 채우고 3GB 메모리를 써 시간 요금이 높았다.</p>
-<ul><li>세 번째는 provisioned concurrency를 켜 고정 비용처럼 매 초 요금을 더 내는 경우가 있었다.</li></ul>
-<p>이 장면들의 공통 패턴은 "요청 수와 자원 소비량 두 변수로 비용이 갈라진다"는 점이다. Lambda 가격 구조는 호출 수에 비례하는 요청 요금과 실행 시간×메모리에 비례하는 자원 요금을 합산한 과금 체계다.</p></section>
+<p>세 번째는 provisioned concurrency를 켜 고정 비용처럼 매 초 요금을 더 내는 경우가 있었다. 이 장면들의 공통 패턴은 "요청 수와 자원 소비량 두 변수로 비용이 갈라진다"는 점이다.</p>
+<p>Lambda 가격 구조는 호출 수에 비례하는 요청 요금과 실행 시간×메모리에 비례하는 자원 요금을 합산한 과금 체계다.</p></section>
 <section class="part" id="s-t111-4"><h3><a class="anchor" href="#s-t111-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>요청 요금</strong>: 호출 한 번마다 고정 단가가 붙는다.</li><li><strong>자원 요금</strong>: billed duration(밀리초) × 할당 메모리(GB)로 계산한다.</li><li><strong>메모리- CPU 연동</strong>: 메모리를 늘리면 처리 속도가 빨라져 총비용이 더 낮을 수 있다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t110"><em>← 이전</em><b>Resilience 테스트</b></a><a class="nx" href="#t112"><em>다음 →</em><b>GB-초(GB-second) 계산</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t111"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t111-1" data-sec="s-t111-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t111-2" data-sec="s-t111-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t111-3" data-sec="s-t111-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t111-4" data-sec="s-t111-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
 <article class="page" id="page-t112" data-crumb="12부. 비용·최적화·종합" data-pos="112"><div class="wrap wide"><header class="phead"><p class="crumb">12부. 비용·최적화·종합<code class="pid">112</code></p><h2>GB-초(GB-second) 계산</h2><p class="deft">비용 계산 단위와 예시를 설명한다</p></header><div class="cols"><div class="prose"><section class="part" id="s-t112-1"><h3><a class="anchor" href="#s-t112-1" aria-hidden="true">#</a><span class="pn">1</span>💡 ELI5 (핵심 직관)</h3><p>GB-초는 Lambda 비용의 시간 부분을 하나의 숫자로 환산하는 단위다. 메모리를 GB(기가바이트)로 바꾸고 실행 시간을 초로 바꾼 뒤 곱하면 GB-초가 된다.</p>
@@ -1577,8 +1577,8 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>따라서 두 축을 곱한 복합 단위가 필요하다. Lambda는 할당 메모리(MB)를 GB로 환산하고 billed duration(ms)을 초로 환산한 뒤 곱해 GB-초를 만든다.</p>
 <p>이 값에 GB-초당 단가를 곱하면 함수 실행의 변동 요금이 정해진다. 자원을 메모리와 시간의 곱으로 표현해야 공정한 과금이 가능하다는 원리 아래, GB-초 계산은 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t112-3"><h3><a class="anchor" href="#s-t112-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>128MB 메모리로 4초 실행한 함수는 0.125GB × 4초 = 0.5 GB-초였다. 1024MB로 0.5초 실행한 함수는 1GB × 0.5초 = 0.5 GB-초로 동일 비용이 나왔다.</p>
-<ul><li>세 번째로 provisioned concurrency 설정에서는 GB-초가 더 쌓여 비용이 달라진다.</li></ul>
-<p>이 장면들의 공통 패턴은 "같은 GB-초면 같은 변동 요금이 적용된다"는 점이다. GB-초 계산은 할당 메모리(GB)와 실행 시간(초)을 곱해 변동 과금의 기준 단위를 만드는 계산이다.</p></section>
+<p>세 번째로 provisioned concurrency 설정에서는 GB-초가 더 쌓여 비용이 달라진다. 이 장면들의 공통 패턴은 "같은 GB-초면 같은 변동 요금이 적용된다"는 점이다.</p>
+<p>GB-초 계산은 할당 메모리(GB)와 실행 시간(초)을 곱해 변동 과금의 기준 단위를 만드는 계산이다.</p></section>
 <section class="part" id="s-t112-4"><h3><a class="anchor" href="#s-t112-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>변환</strong>: MB 메모리를 GB로, ms duration을 초로 바꿔 곱한다.</li><li><strong>동일 단위</strong>: 어떤 메모리·시간 조합도 같은 GB-초면 같은 요금이 된다.</li><li><strong>최적화 여지</strong>: 메모리를 줄이거나 시간을 줄이면 GB-초가 줄어 비용이 내려간다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t111"><em>← 이전</em><b>Lambda 가격 구조</b></a><a class="nx" href="#t113"><em>다음 →</em><b>프리 티어(Free Tier)</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t112"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t112-1" data-sec="s-t112-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t112-2" data-sec="s-t112-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t112-3" data-sec="s-t112-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t112-4" data-sec="s-t112-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
 <article class="page" id="page-t113" data-crumb="12부. 비용·최적화·종합" data-pos="113"><div class="wrap wide"><header class="phead"><p class="crumb">12부. 비용·최적화·종합<code class="pid">113</code></p><h2>프리 티어(Free Tier)</h2><p class="deft">무료 사용 한도와 초과 조건을 설명한다</p></header><div class="cols"><div class="prose"><section class="part" id="s-t113-1"><h3><a class="anchor" href="#s-t113-1" aria-hidden="true">#</a><span class="pn">1</span>💡 ELI5 (핵심 직관)</h3><p>프리 티어는 신규 사용자가 Lambda를 처음 써 볼 수 있게 일정량까지 무료로 제공하는 구간이다. 매월 요청 100만 건과 40만 GB-초까지 무료이며, 이 한도를 넘는 부분만 과금된다.</p>
@@ -1588,8 +1588,8 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>따라서 진입 장벽을 낮추려면 일정 수준 이하의 사용량은 무료로 허용해 실제 사용 사례를 경험할 수 있게 해야 한다. Lambda 프리 티어는 12개월 제한 없이 지속되며 매월 요청 수와 GB-초 두 한도를 비용 0으로 제공한다.</p>
 <p>두 한도 중 먼저 초과한 시점부터 해당 초과분만 과금된다. 신규 사용자 유입과 실험 비용 부담을 줄여야 한다는 원리 아래, 일정 수준 무료 제공 구간은 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t113-3"><h3><a class="anchor" href="#s-t113-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>학습자가 매주 Lambda를 호출하는 작은 API를 만들었지만 월 호출 5만 건과 2천 GB-초라 비용 청구서가 0이었다. 스타트업 초기 트래픽도 몇 달 동안 한도 안에 들어 요금이 없다.</p>
-<ul><li>세 번째로 마케팅 이벤트로 호출 수가 150만 건으로 뛰자 초과분 50만 건에 대한 요청 요금만 새로 발생했다.</li></ul>
-<p>이 장면들의 공통 패턴은 "한도 아래는 무료, 초과분만 과금"이라는 점이다. 프리 티어는 매월 정해진 요청 수와 GB-초까지 무료로 사용할 수 있는 구간이다.</p></section>
+<p>세 번째로 마케팅 이벤트로 호출 수가 150만 건으로 뛰자 초과분 50만 건에 대한 요청 요금만 새로 발생했다. 이 장면들의 공통 패턴은 "한도 아래는 무료, 초과분만 과금"이라는 점이다.</p>
+<p>프리 티어는 매월 정해진 요청 수와 GB-초까지 무료로 사용할 수 있는 구간이다.</p></section>
 <section class="part" id="s-t113-4"><h3><a class="anchor" href="#s-t113-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>월간 한도</strong>: 요청 100만 건과 40만 GB-초가 무료로 제공된다.</li><li><strong>초과분만 과금</strong>: 한도를 넘은 요청과 GB-초에만 단가가 적용된다.</li><li><strong>장기 지속</strong>: 12개월 제한 없이 계속 유지되어 학습과 소규모 운영에 적합하다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t112"><em>← 이전</em><b>GB-초(GB-second) 계산</b></a><a class="nx" href="#t114"><em>다음 →</em><b>메모리 적정화(Right-sizing)</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t113"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t113-1" data-sec="s-t113-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t113-2" data-sec="s-t113-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t113-3" data-sec="s-t113-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t113-4" data-sec="s-t113-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
 <article class="page" id="page-t114" data-crumb="12부. 비용·최적화·종합" data-pos="114"><div class="wrap wide"><header class="phead"><p class="crumb">12부. 비용·최적화·종합<code class="pid">114</code></p><h2>메모리 적정화(Right-sizing)</h2><p class="deft">실제 사용량 기반 메모리 선택을 설명한다</p></header><div class="cols"><div class="prose"><section class="part" id="s-t114-1"><h3><a class="anchor" href="#s-t114-1" aria-hidden="true">#</a><span class="pn">1</span>💡 ELI5 (핵심 직관)</h3><p>메모리 적정화는 Lambda에 할당할 메모리 크기를 비용과 속도의 균형점에 맞추는 일이다. 메모리를 키우면 CPU도 함께 늘어 실행 시간이 짧아지지만 단가가 높아진다.</p>
@@ -1599,8 +1599,8 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>따라서 무조건 최소 메모리로 설정하면 실행 시간이 길어져 GB-초가 오히려 커질 수 있고, 무조건 최대로 설정하면 단가가 높아진다. 적정화는 여러 메모리 설정(128MB부터 10240MB까지)으로 같은 워크로드를 실행해 GB-초와 지연 시간을 측정하고, 둘의 곱으로 환산된 총비용이 최소인 지점을 찾는다.</p>
 <p>속도가 빨라질수록 시간 단위 비용이 내려가는 구조 아래, 메모리 단일 지표가 아닌 GB-초 전체를 최소화하는 적정화는 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t114-3"><h3><a class="anchor" href="#s-t114-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>어떤 팀은 128MB 설정에서 8초 걸려 1 GB-초를 썼고, 512MB 설정에서는 2초 걸려 역시 1 GB-초로 총비용이 동일했다. 또 다른 함수는 1024MB에서 지연 시간이 크게 줄어 사용자 경험과 비용 모두 개선됐다.</p>
-<ul><li>세 번째로 계산 중심 함수는 3008MB 부근에서 지연이 급감해 그 지점이 최적값으로 채택됐다.</li></ul>
-<p>이 장면들의 공통 패턴은 "메모리 단가와 실행 시간의 곱을 비교해 최소점을 찾는다"는 점이다. 메모리 적정화는 할당 메모리를 조정해 비용과 처리 속도 사이의 최적 지점을 찾는 작업이다.</p></section>
+<p>세 번째로 계산 중심 함수는 3008MB 부근에서 지연이 급감해 그 지점이 최적값으로 채택됐다. 이 장면들의 공통 패턴은 "메모리 단가와 실행 시간의 곱을 비교해 최소점을 찾는다"는 점이다.</p>
+<p>메모리 적정화는 할당 메모리를 조정해 비용과 처리 속도 사이의 최적 지점을 찾는 작업이다.</p></section>
 <section class="part" id="s-t114-4"><h3><a class="anchor" href="#s-t114-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>메모리- CPU 연동</strong>: 메모리를 올리면 CPU도 함께 늘어 처리가 빨라진다.</li><li><strong>GB-초 최소화</strong>: 실행 시간 × 메모리의 곱이 가장 작은 설정을 고른다.</li><li><strong>워크로드별 차이</strong>: 계산 중심과 I/O 중심 함수는 최적 메모리 지점이 다르다.</li></ol></section>
 <nav class="pager"><a class="pv" href="#t113"><em>← 이전</em><b>프리 티어(Free Tier)</b></a><a class="nx" href="#t115"><em>다음 →</em><b>Lambda Power Tuning</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t114"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t114-1" data-sec="s-t114-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t114-2" data-sec="s-t114-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t114-3" data-sec="s-t114-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t114-4" data-sec="s-t114-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
 <article class="page" id="page-t115" data-crumb="12부. 비용·최적화·종합" data-pos="115"><div class="wrap wide"><header class="phead"><p class="crumb">12부. 비용·최적화·종합<code class="pid">115</code></p><h2>Lambda Power Tuning</h2><p class="deft">최적 메모리와 비용·성능 균형을 찾는 도구를 설명한다</p></header><div class="cols"><div class="prose"><section class="part" id="s-t115-1"><h3><a class="anchor" href="#s-t115-1" aria-hidden="true">#</a><span class="pn">1</span>💡 ELI5 (핵심 직관)</h3><p>Lambda 함수는 실행 시간과 할당 메모리의 곱에 비례해서 비용이 나온다.</p>

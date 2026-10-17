@@ -1137,8 +1137,8 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p><strong>작동 규칙</strong>: 프롬프트 구성은 먼저 에이전트가 수행할 역할을 한 문장으로 선언한다. 다음에 사용 가능한 도구 목록과 각 도구의 호출 조건을 명시하고, 출력 형식과 금지 사항을 규정한다.</p>
 <p>시스템 프롬프트에는 이 고정 지시를 담고, 사용자 입력은 별도 자리에 두어 역할 정의가 매번 재확인되게 한다. 반복 실험을 통해 지시 문구를 다듬는다.</p>
 <p><strong>결론</strong>: 모델의 행동이 주어진 텍스트에 의해 결정되는 구조라면, 원하는 행동을 유도하는 프롬프트를 체계적으로 구성하는 것은 에이전트 설계의 핵심 작업이다. 역할, 도구 사용 범위, 출력 제약이 함께 정의될 때 에이전트는 예측 가능한 방식으로 작동한다.</p></section>
-<section class="part" id="s-t057-3"><h3><a class="anchor" href="#s-t057-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><ul><li>첫째, "너는 번역가다.</li></ul>
-<p>입력된 한국어 문장을 영어로 바꾸되, 원문의 톤을 유지해라"라고 정의한 에이전트가 같은 문장에 대해 매번 비슷한 스타일의 번역을 내는 경우가 관찰된다. 역할 선언이 응답 스타일을 고정한다.</p>
+<section class="part" id="s-t057-3"><h3><a class="anchor" href="#s-t057-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>첫째, "너는 번역가다. 입력된 한국어 문장을 영어로 바꾸되, 원문의 톤을 유지해라"라고 정의한 에이전트가 같은 문장에 대해 매번 비슷한 스타일의 번역을 내는 경우가 관찰된다.</p>
+<p>역할 선언이 응답 스타일을 고정한다.</p>
 <p>둘째, 데이터베이스 질의 에이전트에게 "읽기 전용 쿼리만 실행하고 데이터를 수정하는 구문은 거부해라"라고 제약을 줬을 때 삭제 요청이 차단되는 경우가 관찰된다. 명시적 금지 사항이 안전 경계로 작동한다.</p>
 <p>셋째, "결과는 JSON 형식으로 반환하고, 키 이름은 다음과 같이 맞춰라"라고 출력 형식을 규정했을 때 파싱 오류가 사라지는 경우가 관찰된다. 형식 명시가 후처리 비용을 줄인다.</p>
 <p>공통 패턴은 역할 선언, 도구 사용 조건, 출력 형식과 금지 사항을 텍스트로 명시해 모델의 행동 범위를 좁히는 점이다. 에이전트 프롬프트 구성은 수행할 역할, 사용 가능한 도구, 출력 형식과 제약을 명시해 모델의 행동을 원하는 범위로 정의하는 작업이다.</p></section>
@@ -1707,9 +1707,9 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>따라서 변경 관리는 이 절차를 문서화하고, 누가 언제 무엇을 바꿨는지 기록하며, 문제 발생 시 즉시 복구할 수 있게 보장하는 활동이다. 시스템이 반드시 변한다는 원리 아래에서는 이 관리가 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t097-3"><h3><a class="anchor" href="#s-t097-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>어떤 기업이 데이터베이스를 업그레이드한 뒤 관리 절차 없이 바로 실서버에 반영했다. 업그레이드 후 기존 프로그램이 데이터베이스와 호환되지 않아 서비스가 4시간 동안 중단되었다.</p>
 <p>다른 기업에서는 보안 패치를 적용할 때 변경 내용을 기록하지 않았다. 패치 후 특정 기능이 오작동했는데, 원인이 무엇이었는지 찾는 데 이틀이 걸렸다.</p>
-<ul><li>세 번째 기업은 변경 관리 도구를 도입해 모든 변경 사항을 추적했다.</li></ul>
-<p>장애가 발생했을 때 기록을 보고 즉시 원인을 찾아 30분 만에 복구했다. 세 사례 모두 변경을 추적하고 절차를 따르는지 여부가 장애 발생과 복구 시간을 결정했다.</p>
-<p>관리 절차가 없는 조직은 장애가 자주 발생하고 복구가 느렸다. 이 패턴을 바탕으로 업그레이드 및 변경 관리는 시스템에 가해지는 모든 변경을 계획하고, 기록하고, 검증하고, 추적하는 일련의 절차와 도구의 집합이다.</p></section>
+<p>세 번째 기업은 변경 관리 도구를 도입해 모든 변경 사항을 추적했다. 장애가 발생했을 때 기록을 보고 즉시 원인을 찾아 30분 만에 복구했다.</p>
+<p>세 사례 모두 변경을 추적하고 절차를 따르는지 여부가 장애 발생과 복구 시간을 결정했다. 관리 절차가 없는 조직은 장애가 자주 발생하고 복구가 느렸다.</p>
+<p>이 패턴을 바탕으로 업그레이드 및 변경 관리는 시스템에 가해지는 모든 변경을 계획하고, 기록하고, 검증하고, 추적하는 일련의 절차와 도구의 집합이다.</p></section>
 <section class="part" id="s-t097-4"><h3><a class="anchor" href="#s-t097-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>변경 요청서</strong>: 무엇을 왜 바꾸는지 문서화해 책임과 근거를 분명히 한다</li><li><strong>영향 평가와 승인</strong>: 변경이 다른 시스템에 미칠 영향을 사전에 검토하고 결재를 받는다</li><li><strong>롤백 계획</strong>: 변경 후 문제가 생기면 즉시 이전 상태로 복구할 수 있게 준비한다</li></ol></section>
 <nav class="pager"><a class="pv" href="#t096"><em>← 이전</em><b>백업 및 복구</b></a><a class="nx" href="#t098"><em>다음 →</em><b>용량 계획</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t097"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t097-1" data-sec="s-t097-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t097-2" data-sec="s-t097-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t097-3" data-sec="s-t097-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t097-4" data-sec="s-t097-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
 <article class="page" id="page-t098" data-crumb="10부. 운영 및 모니터링" data-pos="98"><div class="wrap wide"><header class="phead"><p class="crumb">10부. 운영 및 모니터링<code class="pid">098</code></p><h2>용량 계획</h2><p class="deft">트래픽 예측과 리소스 준비</p></header><div class="cols"><div class="prose"><section class="part" id="s-t098-1"><h3><a class="anchor" href="#s-t098-1" aria-hidden="true">#</a><span class="pn">1</span>💡 ELI5 (핵심 직관)</h3><p>식당을 운영한다고 해보자. 주말 저녁에 손님이 몰리면 테이블과 주방 인원이 부족해진다.</p>
@@ -1733,9 +1733,8 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>따라서 운영 체크리스트는 인간의 실수를 구조적으로 막고 운영의 일관성과 추적 가능성을 확보하는 문서화된 점검 절차다. 사람이 반드시 실수를 한다는 원리 아래에서는 이 도구가 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t099-3"><h3><a class="anchor" href="#s-t099-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>한 데이터센터에서 정기 점검 담당자가 서버실 온도 확인을 빠뜨려 냉각 장치가 고장 났음에도 몰랐다. 서버 과열로 장비 일부가 손상되고 복구에 이틀이 걸렸다.</p>
 <p>다른 조직에서는 백업 작업 체크리스트를 도입해 매일 저녁 백업 완료 여부와 데이터 무결성 검증을 기록했다. 한 달 후 저장 장치 장애가 발생했지만, 체크리스트 기록 덕분에 정상적인 백업 시점을 즉시 찾아 데이터 손실 없이 복구했다.</p>
-<ul><li>세 번째 사례에서는 보안 팀이 월별 패치 체크리스트를 운영했다.</li></ul>
-<p>리눅스 커널 취약점이 공표되었을 때 체크리스트를 어떤 서버가 영향을 받는지 10분 만에 파악해 패치할 수 있었다. 세 사례 공통으로 사전에 점검 항목을 문서화하고 실행 기록을 남겼는지가 사고 예방과 복구 속도를 결정했다.</p>
-<p>이 패턴을 바탕으로 운영 체크리스트는 반복 작업에서 반드시 수행해야 할 단계를 목록화하고 실행 기록을 보관하는 운영 관리 도구다.</p></section>
+<p>세 번째 사례에서는 보안 팀이 월별 패치 체크리스트를 운영했다. 리눅스 커널 취약점이 공표되었을 때 체크리스트를 어떤 서버가 영향을 받는지 10분 만에 파악해 패치할 수 있었다.</p>
+<p>세 사례 공통으로 사전에 점검 항목을 문서화하고 실행 기록을 남겼는지가 사고 예방과 복구 속도를 결정했다. 이 패턴을 바탕으로 운영 체크리스트는 반복 작업에서 반드시 수행해야 할 단계를 목록화하고 실행 기록을 보관하는 운영 관리 도구다.</p></section>
 <section class="part" id="s-t099-4"><h3><a class="anchor" href="#s-t099-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>필수 단계 목록화</strong>: 절대 빠져서는 안 되는 작업 순서를 문서로 만든다</li><li><strong>순서대로 확인</strong>: 실행 시에 목록을 따라가며 각 항목을 반드시 체크한다</li><li><strong>기록 남기기</strong>: 언제 누가 무엇을 확인했는지 증거로 보관한다</li></ol></section>
 <nav class="pager"><a class="pv" href="#t098"><em>← 이전</em><b>용량 계획</b></a><a class="nx" href="#t100"><em>다음 →</em><b>운영 모범 사례 종합</b></a></nav><div class="pagefoot"><div class="vote" data-vote="t099"><span>도움됐나요?</span><button type="button" data-v="up">도움됨</button><button type="button" data-v="down">아쉬움</button><button type="button" class="copy">링크 복사</button></div></div></div><aside class="toc" aria-label="이 페이지 목차"><h4>이 페이지</h4><a href="#s-t099-1" data-sec="s-t099-1"><span class="tn">1</span>💡 ELI5 (핵심 직관)</a><a href="#s-t099-2" data-sec="s-t099-2"><span class="tn">2</span>🧠 연역적 설명 (원리 → 결론)</a><a href="#s-t099-3" data-sec="s-t099-3"><span class="tn">3</span>🔍 귀납적 설명 (현상 → 정의)</a><a href="#s-t099-4" data-sec="s-t099-4"><span class="tn">4</span>🛠️ 핵심 3가지</a></aside></div></div></article>
 <article class="page" id="page-t100" data-crumb="10부. 운영 및 모니터링" data-pos="100"><div class="wrap wide"><header class="phead"><p class="crumb">10부. 운영 및 모니터링<code class="pid">100</code></p><h2>운영 모범 사례 종합</h2><p class="deft">안정적인 Bedrock 운영을 위한 원칙</p></header><div class="cols"><div class="prose"><section class="part" id="s-t100-1"><h3><a class="anchor" href="#s-t100-1" aria-hidden="true">#</a><span class="pn">1</span>💡 ELI5 (핵심 직관)</h3><p>운영 모범 사례는 많은 조직이 시행착오를 거쳐 검증한 잘 되는 운영 방법이다. 요리로 치면 수백 명의 셰프가 수십 년에 걸쳐 정리한 표준 레시피 모음이라고 할 수 있다.</p>
@@ -1746,8 +1745,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <p>따라서 운영 모범 사례는 개별 경험을 조직 차원의 표준으로 승격시켜 운영의 안정성과 예측 가능성을 높이는 체계적인 지식이다. 실수의 비용이 크다는 원리 아래에서는 이 지식 체계가 필연적으로 필요하다.</p></section>
 <section class="part" id="s-t100-3"><h3><a class="anchor" href="#s-t100-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>한 글로벌 클라우드 제공업체는 수백 개 서비스를 운영하면서 매년 수천 번의 장애를 겪었다. 이 회사는 모든 장애의 원인과 대응 과정을 체계적으로 기록하고 분석해 공개적인 운영 가이드라인을 만들었다.</p>
 <p>이 가이드라인을 따른 팀은 장애 빈도가 40% 감소했고, 장애 발생 시 평균 복구 시간이 절반으로 줄었다. 다른 조직에서는 모범 사례 문서를 만들어 두고 실제 운영에는 반영하지 않았다.</p>
-<p>신규 입사자가 문서를 무시하고 기존 습관대로 작업하면서 보안 사고가 반복적으로 발생했다.</p>
-<ul><li>세 번째 조직은 모범 사례를 정기적인 감사와 연결했다.</li></ul>
+<p>신규 입사자가 문서를 무시하고 기존 습관대로 작업하면서 보안 사고가 반복적으로 발생했다. 세 번째 조직은 모범 사례를 정기적인 감사와 연결했다.</p>
 <p>분기별로 실제 운영이 기준에 맞는지 평가하고 위반 사항을 시정했으며, 그 결과 규제 감사에서 모든 항목을 통과했다. 세 사례 공통으로 모범 사례를 만드는 것만으로는 부족하고 실제 운영에 적용하고 지속적으로 점검해야 효과가 나타났다.</p>
 <p>이 패턴을 바탕으로 운영 모범 사례는 검증된 운영 절차를 문서화하고 이를 조직 전반에 적용하며 지속적으로 개선하는 체계적인 지식 관리 활동이다.</p></section>
 <section class="part" id="s-t100-4"><h3><a class="anchor" href="#s-t100-4" aria-hidden="true">#</a><span class="pn">4</span>🛠️ 핵심 3가지</h3><ol><li><strong>지침 문서화</strong>: 검증된 운영 절차를 표준으로 만들어 모두가 같은 기준을 따르게 한다</li><li><strong>주기적 점검</strong>: 실제 운영이 지침대로 이루어지고 있는지 정기적으로 검토한다</li><li><strong>지속적 개선</strong>: 새로운 기술과 사고를 반영해 지침을 업데이트한다</li></ol></section>

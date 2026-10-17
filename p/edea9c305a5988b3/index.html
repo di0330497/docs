@@ -1074,8 +1074,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 <section class="part" id="s-t059-2"><h3><a class="anchor" href="#s-t059-2" aria-hidden="true">#</a><span class="pn">2</span>🧠 연역적 설명 (원리 → 결론)</h3><p>VPC는 기본적으로 격리된 네트워크이다. 서로 다른 VPC가 동일 사설 IP 대역을 써도 통신할 수 없으므로 의도적 연결이 필요하다.</p>
 <p>VPC Peering은 AWS 백본 위에 양 VPC를 1:1로 직접 연결하고 홉을 줄인다. 트랜지티브 라우팅(경유)은 지원되지 않으므로 A-B와 B-C를 연결해도 A-C는 직접 피어링해야 한다.</p>
 <p>결론은 가까운 VPC 간 저지연 통신에는 피어링이 적합하지만 네트워크 수가 늘면 관리 부담이 커진다는 점이다.</p></section>
-<section class="part" id="s-t059-3"><h3><a class="anchor" href="#s-t059-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>운영 중 두 VPC를 피어링으로 연결했더니 사설 IP로 SSH·DB 접근이 즉시 됐다.</p>
-<ul><li>세 번째 VPC를 추가하니 피어링 연결이 3개로 늘어 관리가 복잡해졌다.</li></ul>
+<section class="part" id="s-t059-3"><h3><a class="anchor" href="#s-t059-3" aria-hidden="true">#</a><span class="pn">3</span>🔍 귀납적 설명 (현상 → 정의)</h3><p>운영 중 두 VPC를 피어링으로 연결했더니 사설 IP로 SSH·DB 접근이 즉시 됐다. 세 번째 VPC를 추가하니 피어링 연결이 3개로 늘어 관리가 복잡해졌다.</p>
 <p>IP 대역이 겹친 피어링은 생성조차 거부되었다.</p>
 <p>공통 패턴은 피어링이 단순·저지연이다가 연결 수가 늘며 관리 한계에 부딪힌다는 점이다.</p>
 <p>따라서 VPC Peering 개념은 비중복 CIDR을 가진 두 VPC를 1:1 프라이빗 네트워크로 연결하는 것이다.</p></section>

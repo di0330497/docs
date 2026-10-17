@@ -20,7 +20,6 @@
     "Amazon_RDS": "9e9baa672f4c8212",
     "MySQL": "0f74dfc304c97433",
     "Amazon_IAM": "6aa58d4ceade01a6",
-    "L2_Network": "f7f230181f2bc34a",
     "TCP_IP_Stack": "9b2853b9fe9de8b7",
     "Amazon_Bedrock": "8d2aedd17af1fd6d",
     "L3_Network": "f31bb58a304c00df",
@@ -32,6 +31,7 @@
     "PMBOK": "6f7b74851478bb46",
     "TOGAF": "b71fa4d7a76c3d7a",
     "Kubernetes": "dcd6b5796469f26a",
-    "Docker": "2de9ef742a8ccad4"
+    "Docker": "2de9ef742a8ccad4",
+    "Enterprise_Architecture": "9d07f172242b4672"
   }
 }

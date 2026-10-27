@@ -56,6 +56,7 @@
     "VPN_Gateway_L2TP_PPTP": "75f05862d2a42302",
     "Clean_Architecture": "a6c2a05e450a26fe",
     "Domain-Driven_Design": "31793899a81c4a9b",
-    "Application_Delivery_Controller_ADC": "7588cac98ad74317"
+    "Application_Delivery_Controller_ADC": "7588cac98ad74317",
+    "WLAN_Controller": "474f756a7f3af896"
   }
 }

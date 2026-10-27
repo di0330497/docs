@@ -50,6 +50,8 @@
     "Windows_Server": "391be9bc8d87c41c",
     "Router_integrated_switching": "adc0f8af43e9b013",
     "Packet_Filter_Firewall": "09b32bab2758b7ca",
-    "Wireless_Access_Point_WLAN_AP": "f633d9ff7442ff2d"
+    "Wireless_Access_Point_WLAN_AP": "f633d9ff7442ff2d",
+    "IPsec_Security_Gateway": "102072e61828c608",
+    "NAT_Network_Address_Translator": "fdfd01f4b330f1f1"
   }
 }

@@ -55,6 +55,7 @@
     "NAT_Network_Address_Translator": "fdfd01f4b330f1f1",
     "VPN_Gateway_L2TP_PPTP": "75f05862d2a42302",
     "Clean_Architecture": "a6c2a05e450a26fe",
-    "Domain-Driven_Design": "31793899a81c4a9b"
+    "Domain-Driven_Design": "31793899a81c4a9b",
+    "Application_Delivery_Controller_ADC": "7588cac98ad74317"
   }
 }

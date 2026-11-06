@@ -58,6 +58,7 @@
     "Domain-Driven_Design": "31793899a81c4a9b",
     "Application_Delivery_Controller_ADC": "7588cac98ad74317",
     "WLAN_Controller": "474f756a7f3af896",
-    "CMMI": "0d83011f0a070346"
+    "CMMI": "0d83011f0a070346",
+    "Multiport_MAC_Bridge": "fb898004b89307c2"
   }
 }

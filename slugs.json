@@ -59,6 +59,7 @@
     "Application_Delivery_Controller_ADC": "7588cac98ad74317",
     "WLAN_Controller": "474f756a7f3af896",
     "CMMI": "0d83011f0a070346",
-    "Multiport_MAC_Bridge": "fb898004b89307c2"
+    "Multiport_MAC_Bridge": "fb898004b89307c2",
+    "Session_Border_Controller_SBC": "7a7fc6dd91a7df3e"
   }
 }

@@ -2,6 +2,7 @@
 <html lang="ko"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex"><meta name="googlebot" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="dark light">
+<script>(function(){try{var t=localStorage.getItem('it-course:theme')||localStorage.getItem('it-2026-09-05:theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t;}catch(e){}})()</script>
 <title>Amazon_EKS</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>/* Mintlify 표준 폰트 — Inter latin static(base64). 코드는 시스템 mono 스택 사용 */
@@ -21,9 +22,10 @@
   --blue:#2563eb; --cyan:#3b82f6; --magenta:#16a34a;
   --green:#16a34a; --orange:#b54708; --yellow:#b54708; --red:#d92d20;
   --info-bg:#eff6ff; --info-bd:#bfdbfe; --tip-bg:#f0fdf4; --tip-bd:#bbf7d0;
-  /* 본문은 Inter 계열 산세리프(한글은 맑은 고딕 폴백), 코드는 IBM Plex Mono 유지 */
-  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"Malgun Gothic","맑은 고딕",monospace;
-  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","맑은 고딕",system-ui,sans-serif;
+  /* 화면 전체가 한 글꼴을 쓴다 — 본문·숫자·라벨·코드 모두 Pretendard 계열.
+     라틴만 Inter, 한글만 Malgun Gothic 으로 갈라지던 것을 없앤다. */
+  --mono:var(--sans);
+  --sans:"Pretendard Variable","Pretendard","Malgun Gothic","맑은 고딕",sans-serif;
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
@@ -36,8 +38,8 @@
   --green:#3fb950; --orange:#d29922; --yellow:#d29922; --red:#f85149;
   --info-bg:rgba(56,139,253,.12); --info-bd:rgba(56,139,253,.4);
   --tip-bg:rgba(63,185,80,.12); --tip-bd:rgba(63,185,80,.4);
-  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"Malgun Gothic","맑은 고딕",monospace;
-  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","맑은 고딕",system-ui,sans-serif;
+  --mono:var(--sans);
+  --sans:"Pretendard Variable","Pretendard","Malgun Gothic","맑은 고딕",sans-serif;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;height:100%}
@@ -398,7 +400,6 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
 .prose h4{margin:22px 0 8px;font-size:15px;font-weight:600;color:var(--fg)}
 .part.intro{margin-bottom:28px}
 .missing{color:var(--faint);font-style:italic}
-.mapping{white-space:pre-wrap;font-family:var(--sans);font-size:12.5px;color:var(--muted);line-height:1.7;margin:10px 0 0}
 </style><style>.gw-back{display:block;margin:0 0 8px;font-family:var(--mono);font-size:11px;color:var(--faint);text-decoration:none}.gw-back:hover{color:var(--blue)}</style></head>
 <body>
 <a class="skip" href="#main">본문으로 건너뛰기</a>
@@ -2094,9 +2095,13 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
   function narrow(){ var w=window.innerWidth; document.documentElement.classList.toggle('narrow',w<1024); document.documentElement.classList.toggle('mid',w<1280); }
   window.addEventListener('resize',narrow);
   narrow();
-  // 테마 전환 — 다크(기본) / 라이트. localStorage 에 기억.
-  var TK='it-course:theme', tb=document.querySelector('.theme'), th='dark';
-  try{ th=localStorage.getItem(TK)||'light'; }catch(e){}
+  // 테마 전환 — 라이트(기본) / 다크. localStorage 에 기억.
+  // 게이트웨이(허브)와 같은 키를 쓴다. 예전 게이트웨이가 쓰던 키도 읽어서 한 번 옮긴다.
+  var TK='it-course:theme', OLD_TK='it-2026-09-05:theme', tb=document.querySelector('.theme'), th=document.documentElement.dataset.theme||'light';
+  try{
+    var savedTheme=localStorage.getItem(TK)||localStorage.getItem(OLD_TK);
+    if(savedTheme==='dark'||savedTheme==='light'){ th=savedTheme; localStorage.setItem(TK,savedTheme); }
+  }catch(e){}
   function applyTheme(){ document.documentElement.dataset.theme=th; if(tb) tb.textContent=th==='light'?'☀':'☾'; }
   if(tb) tb.addEventListener('click',function(){ th=th==='light'?'dark':'light'; try{ localStorage.setItem(TK,th); }catch(e){} applyTheme(); });
   applyTheme();

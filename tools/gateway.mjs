@@ -282,6 +282,7 @@ ${p.items.map((t, i) => card(g, p, t, i)).join('\n')}
 <html lang="ko"><head><meta charset="utf-8">${noindex}
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="dark light">
+<script>(function(){try{var t=localStorage.getItem('it-course:theme')||localStorage.getItem('it-2026-09-05:theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t;}catch(e){}})()</script>
 <title>IT 학습자료</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>${CSS}</style></head>
@@ -450,9 +451,13 @@ ${cards}
   window.addEventListener('resize',narrow);
   narrow();
 
-  // ── 테마 전환 : 학습자료 페이지와 같은 키를 써서 설정이 이어진다
-  var TK=NS+'theme', tb=document.querySelector('.theme'), th='dark';
-  try{ th=localStorage.getItem(TK)||'light'; }catch(e){}
+  // ── 테마 전환 : 학습자료 페이지와 같은 키(it-course:theme)를 써서 설정이 이어진다.
+  //    예전 키(it-2026-09-05:theme)가 남아 있으면 읽어서 새 키로 옮긴다.
+  var TK='it-course:theme', OLD_TK='it-2026-09-05:theme', tb=document.querySelector('.theme'), th=document.documentElement.dataset.theme||'light';
+  try{
+    var savedTheme=localStorage.getItem(TK)||localStorage.getItem(OLD_TK);
+    if(savedTheme==='dark'||savedTheme==='light'){ th=savedTheme; localStorage.setItem(TK,savedTheme); }
+  }catch(e){}
   function applyTheme(){ document.documentElement.dataset.theme=th; if(tb) tb.textContent=th==='light'?'☀':'☾'; }
   if(tb) tb.addEventListener('click',function(){ th=th==='light'?'dark':'light';
     try{ localStorage.setItem(TK,th); }catch(e){} applyTheme(); });

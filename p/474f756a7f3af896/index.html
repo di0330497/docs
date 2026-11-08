@@ -2,6 +2,7 @@
 <html lang="ko"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex"><meta name="googlebot" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="dark light">
+<script>(function(){try{var t=localStorage.getItem('it-course:theme')||localStorage.getItem('it-2026-09-05:theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t;}catch(e){}})()</script>
 <title>WLAN_Controller</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>/* Mintlify 표준 폰트 — Inter latin static(base64). 코드는 시스템 mono 스택 사용 */
@@ -1169,9 +1170,13 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
   function narrow(){ var w=window.innerWidth; document.documentElement.classList.toggle('narrow',w<1024); document.documentElement.classList.toggle('mid',w<1280); }
   window.addEventListener('resize',narrow);
   narrow();
-  // 테마 전환 — 다크(기본) / 라이트. localStorage 에 기억.
-  var TK='it-course:theme', tb=document.querySelector('.theme'), th='dark';
-  try{ th=localStorage.getItem(TK)||'light'; }catch(e){}
+  // 테마 전환 — 라이트(기본) / 다크. localStorage 에 기억.
+  // 게이트웨이(허브)와 같은 키를 쓴다. 예전 게이트웨이가 쓰던 키도 읽어서 한 번 옮긴다.
+  var TK='it-course:theme', OLD_TK='it-2026-09-05:theme', tb=document.querySelector('.theme'), th=document.documentElement.dataset.theme||'light';
+  try{
+    var savedTheme=localStorage.getItem(TK)||localStorage.getItem(OLD_TK);
+    if(savedTheme==='dark'||savedTheme==='light'){ th=savedTheme; localStorage.setItem(TK,savedTheme); }
+  }catch(e){}
   function applyTheme(){ document.documentElement.dataset.theme=th; if(tb) tb.textContent=th==='light'?'☀':'☾'; }
   if(tb) tb.addEventListener('click',function(){ th=th==='light'?'dark':'light'; try{ localStorage.setItem(TK,th); }catch(e){} applyTheme(); });
   applyTheme();

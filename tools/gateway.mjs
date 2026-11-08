@@ -305,14 +305,14 @@ ${nav}
     <button type="button" class="theme" title="테마 전환 (다크/라이트)">☾</button></div>
   <div class="scroll">
     <div class="wrap" id="top">
-      <p class="eyebrow">벤더별 색인</p>
+      <p class="eyebrow">토픽 색인</p>
       <h1>IT 학습자료</h1>
-      <div class="stats"><span class="stat"><b>${topics.length}</b>토픽</span><span class="stat"><b>${groups.length}</b>벤더</span><span class="stat"><b>${totalItems.toLocaleString('en-US')}</b>항목</span></div>
+      <div class="stats"><span class="stat"><b>${topics.length}</b>토픽</span><span class="stat"><b>${groups.length}</b>분류</span><span class="stat"><b>${totalItems.toLocaleString('en-US')}</b>항목</span></div>
       <div class="resume"><a href="#"><span class="tag">이어서 읽기</span><b></b><em></em></a></div>
       <section class="panel">
-        <p class="lead">공식 문서를 근거로 만든 IT 학습자료 모음이다. 만든 회사·재단 기준으로 묶고, 그 안에서 다시 서비스·제품과 공인 자격증으로 갈랐다. 카드를 누르면 해당 자료로 바로 넘어간다. 읽은 진도는 각 자료가 이 브라우저에 남긴 기록을 그대로 읽어 표시한다.</p>
+        <p class="lead">공식 문서를 근거로 만든 IT 학습자료 모음이다. 회사·재단이 분명한 토픽은 벤더로, 나머지는 주제로 묶고, 그 안에서 다시 서비스·제품과 공인 자격증으로 갈랐다. 카드를 누르면 해당 자료로 바로 넘어간다. 읽은 진도는 각 자료가 이 브라우저에 남긴 기록을 그대로 읽어 표시한다.</p>
         <dl class="kv">
-          <div><dt>분류</dt><dd>벤더 → 서비스 · 자격증</dd></div>
+          <div><dt>분류</dt><dd>벤더 · 주제 → 서비스 · 자격증</dd></div>
           <div><dt>갱신</dt><dd>${updated}</dd></div>
           <div><dt>색인</dt><dd>검색엔진 비노출</dd></div>
         </dl>

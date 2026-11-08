@@ -955,7 +955,9 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
   var filter=document.querySelector('.filter');
   var scroll=document.querySelector('.scroll');
   var TOTAL=120;
+  // TITLE 은 폴더 슬러그(읽은 자리 기억 키), BOOK 은 화면에 보이는 이름.
   var TITLE="PMBOK";
+  var BOOK="PMBOK";
 
   // 읽은 자리 기억 — 항목이 수십 개라 어디까지 읽었는지 기억해 주지 않으면 매번 표지에서 다시 찾는다.
   // 브라우저 localStorage 에만 남는다(파일 자체는 그대로).
@@ -1010,7 +1012,7 @@ html.narrow .burger{display:grid;place-items:center;position:fixed;z-index:31;ri
     close();
     paintToc(pid);
     var t=document.querySelector('.nav-item.on:not(.home)');
-    document.title=(t?navTitle(t)+' · ':'')+TITLE;
+    document.title=(t?navTitle(t)+' · ':'')+BOOK;
   }
   function fromHash(){
     var h=(location.hash||'').replace(/^#/,'');

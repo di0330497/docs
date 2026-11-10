@@ -64,6 +64,8 @@
     "Web_Application_Firewall_WAF": "1fd303d0efeaa682",
     "Application_Gateway": "5d4a99e6fa1fb732",
     "Load_Balancer": "9b3f58a9af01d876",
-    "Reverse_Proxy": "39bdf86289d5e4e3"
+    "Reverse_Proxy": "39bdf86289d5e4e3",
+    "AI": "609747dcfbfbbcd9",
+    "IT_직무_역할": "349535b5eb9e0fd4"
   }
 }

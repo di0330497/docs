@@ -63,6 +63,7 @@
     "Session_Border_Controller_SBC": "7a7fc6dd91a7df3e",
     "Web_Application_Firewall_WAF": "1fd303d0efeaa682",
     "Application_Gateway": "5d4a99e6fa1fb732",
-    "Load_Balancer": "9b3f58a9af01d876"
+    "Load_Balancer": "9b3f58a9af01d876",
+    "Reverse_Proxy": "39bdf86289d5e4e3"
   }
 }

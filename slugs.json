@@ -72,6 +72,8 @@
     "Amazon_ElastiCache": "fde17bf9c20c86f3",
     "Amazon_Kinesis": "9a0a76778cee1665",
     "Amazon_GuardDuty": "de6a04dbffbf8a21",
-    "AWS_Backup": "b73995ced35247ac"
+    "AWS_Backup": "b73995ced35247ac",
+    "Amazon_KMS": "901c8981c9a512cb",
+    "Amazon_Secrets_Manager": "0970188623dc9067"
   }
 }

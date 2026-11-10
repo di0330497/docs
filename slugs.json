@@ -74,6 +74,7 @@
     "Amazon_GuardDuty": "de6a04dbffbf8a21",
     "AWS_Backup": "b73995ced35247ac",
     "Amazon_KMS": "901c8981c9a512cb",
-    "Amazon_Secrets_Manager": "0970188623dc9067"
+    "Amazon_Secrets_Manager": "0970188623dc9067",
+    "Ubuntu_Server_LTS": "2409f576c2efadc2"
   }
 }

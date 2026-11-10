@@ -68,6 +68,8 @@
     "AI": "609747dcfbfbbcd9",
     "IT_직무_역할": "349535b5eb9e0fd4",
     "Git": "6a0ce7c535b6445e",
-    "Amazon_Step_Functions": "67c60421614c470f"
+    "Amazon_Step_Functions": "67c60421614c470f",
+    "Amazon_ElastiCache": "fde17bf9c20c86f3",
+    "Amazon_Kinesis": "9a0a76778cee1665"
   }
 }

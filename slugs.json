@@ -75,6 +75,11 @@
     "AWS_Backup": "b73995ced35247ac",
     "Amazon_KMS": "901c8981c9a512cb",
     "Amazon_Secrets_Manager": "0970188623dc9067",
-    "Ubuntu_Server_LTS": "2409f576c2efadc2"
+    "Ubuntu_Server_LTS": "2409f576c2efadc2",
+    "Amazon_Inspector": "675c62d5bb2a05de",
+    "AWS_Certificate_Manager": "3e39b1b7c886a5b7",
+    "AWS_Network_Firewall": "2b8d9b416ad57561",
+    "AWS_Security_Hub": "edbdb9f2b50273d1",
+    "AWS_WAF": "3da987458f698aaa"
   }
 }
